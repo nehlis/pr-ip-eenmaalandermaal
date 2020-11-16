@@ -15,7 +15,7 @@ class View
      */
     public static function render($view, $variables = [])
     {
-        $file = Router::getBaseDir() . '/views/' . $view . '.php';
+        $file = Router::$base . '/views/' . $view . '.php';
         
         if (file_exists($file)) {
             extract($variables);

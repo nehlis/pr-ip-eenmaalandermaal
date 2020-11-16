@@ -16,7 +16,7 @@ class Router
     /**
      * @var
      */
-    private static $baseDir;
+    public static $base;
     
     /**
      * @var string[]
@@ -35,19 +35,10 @@ class Router
      */
     public function __construct($dir)
     {
-        self::$baseDir = $dir;
+        self::$base = $dir;
         
         $this->request = $_SERVER['REQUEST_URI'];
         $this->check();
-    }
-    
-    /**
-     * Returns the project's base dir.
-     * @return mixed
-     */
-    public static function getBaseDir()
-    {
-        return self::$baseDir;
     }
     
     /**
