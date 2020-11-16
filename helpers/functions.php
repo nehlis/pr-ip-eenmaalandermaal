@@ -1,12 +1,17 @@
 <?php
 
 // Autoload all classes that are not in same namespace.
-spl_autoload_register(function($class): void
+spl_autoload_register('universalDirectories');
+
+/**
+ * Registers the directories cross platform ending with a php tag.
+ * @param $class
+ */
+function universalDirectories($class): void
 {
-    $class = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-    
-    include_once $class;
-});
+    include_once str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+}
+
 
 /**
  * Return stylesheets map URL.
