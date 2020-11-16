@@ -18,7 +18,7 @@ class View
      * @param $view
      * @param array $variables
      */
-    public static function render($view, $variables = [])
+    public static function render($view, $variables = []): void
     {
         foreach (self::$folders as $folder) {
             $path = Router::$base . '/' . $folder . '/' . $view . '.php';

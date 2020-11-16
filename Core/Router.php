@@ -43,7 +43,7 @@ class Router
     /**
      * Check if route matches and render matching view.
      */
-    private function check()
+    private function check(): void
     {
         foreach ($this->routes as $route => $view) {
             if ($this->request === $route) {
