@@ -29,7 +29,7 @@ class View
             }
         }
         
-        if (isset($file)) {
+        if (isset($file) && file_exists($file)) {
             extract($variables);
             require $file;
         }
