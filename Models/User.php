@@ -13,7 +13,7 @@ class User extends Model
      * Basic db columns ('NULL' necessary).
      * @var array|null[]
      */
-    public static array $fields = [
+    public static $fields = [
         'id'        => 'NULL',
         'name'      => 'NULL',
         'email'     => 'NULL',
@@ -24,7 +24,7 @@ class User extends Model
      * Database column that should be selected.
      * @var string
      */
-    public static string $table = 'users';
+    public static $table = 'users';
     
     /**
      * User constructor.

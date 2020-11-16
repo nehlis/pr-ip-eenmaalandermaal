@@ -25,7 +25,7 @@ interface IController
      * @param int $id
      * @return IModel
      */
-    public function get(int $id): IModel;
+    public function get(int $id);
     
     /**
      * Put's the selected ID from the model.
@@ -33,7 +33,7 @@ interface IController
      * @param int $id
      * @return IModel
      */
-    public function put(array $args, int $id): IModel;
+    public function put(array $args, int $id);
     
     /**
      * Removes a certain index from the model.

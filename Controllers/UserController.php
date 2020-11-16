@@ -14,7 +14,7 @@ class UserController implements IController
     /**
      * @var Database
      */
-    private Database $database;
+    private $database;
     
     /**
      * UserController constructor.
@@ -48,7 +48,7 @@ class UserController implements IController
      * @param int $id
      * @return User
      */
-    public function get(int $id): User
+    public function get(int $id)
     {
         $user = $this->database->get(User::$table, $id);
         
@@ -61,7 +61,7 @@ class UserController implements IController
      * @param int $id
      * @return mixed
      */
-    public function put(array $args, int $id): User
+    public function put(array $args, int $id)
     {
         $this->database->update(User::$table, $args, $id);
         

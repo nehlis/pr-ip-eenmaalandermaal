@@ -6,8 +6,8 @@ use Interfaces\IModel;
 
 abstract class Model implements IModel
 {
-    public static array $fields;
-    public static string $table;
+    public static $fields;
+    public static $table;
     
     /**
      * Set's the fields from the model.

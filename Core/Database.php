@@ -33,7 +33,7 @@ class Database
     /**
      * @var mysqli
      */
-    private mysqli $connection;
+    private $connection;
     
     /**
      * Create method for Controllers.
