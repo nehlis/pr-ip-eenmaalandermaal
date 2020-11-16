@@ -1,7 +1,7 @@
 <?php
 
 // Autoload all classes that are not in same namespace.
-spl_autoload_register(function ($class) {
+spl_autoload_register(function($class) {
     $class = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
     
     file_exists($class) ? include_once $class : null;
