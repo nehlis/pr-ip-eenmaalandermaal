@@ -18,7 +18,7 @@ class Database
     /**
      * Database user.
      */
-    private const BD_USER = 'root';
+    private const DB_USER = 'root';
     
     /**
      * Database password.
@@ -119,7 +119,7 @@ class Database
      */
     private function connect(): void
     {
-        $this->connection = new mysqli(self::DB_HOST, self::BD_USER, self::DB_PASS, self::DB_NAME);
+        $this->connection = new mysqli(self::DB_HOST, self::DB_USER, self::DB_PASS, self::DB_NAME);
     }
     
     /**
