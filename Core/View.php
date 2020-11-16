@@ -8,6 +8,9 @@ namespace Core;
  */
 class View
 {
+    /**
+     * @var string[]
+     */
     private static $folders = ['views', 'components'];
     
     /**
