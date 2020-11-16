@@ -26,7 +26,6 @@ class Router
         ''             => 'home',
         '/inloggen'    => 'login',
         '/registreren' => 'register',
-        'default'      => '404',
     ];
     
     /**
@@ -49,7 +48,10 @@ class Router
         foreach ($this->routes as $route => $view) {
             if ($this->request === $route) {
                 View::render($view);
+                return;
             }
         }
+        
+        View::render('404');
     }
 }
