@@ -5,7 +5,7 @@ spl_autoload_register(function($class): void
 {
     $class = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
     
-    file_exists($class) ? include_once $class : null;
+    include_once $class;
 });
 
 /**
