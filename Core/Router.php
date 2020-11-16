@@ -35,19 +35,10 @@ class Router
      */
     public function __construct($dir)
     {
-        self::setBaseDir($dir);
+        self::$baseDir = $dir;
         
         $this->request = $_SERVER['REQUEST_URI'];
         $this->check();
-    }
-    
-    /**
-     * Sets the project's base dir.
-     * @param mixed $baseDir
-     */
-    public static function setBaseDir($baseDir): void
-    {
-        self::$baseDir = $baseDir;
     }
     
     /**
