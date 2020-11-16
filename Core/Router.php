@@ -16,7 +16,7 @@ class Router
     /**
      * @var
      */
-    private $dir;
+    private static $baseDir;
     
     /**
      * @var string[]
@@ -35,9 +35,28 @@ class Router
      */
     public function __construct($dir)
     {
+        self::setBaseDir($dir);
+        
         $this->request = $_SERVER['REQUEST_URI'];
-        $this->dir     = $dir;
         $this->check();
+    }
+    
+    /**
+     * Sets the project's base dir.
+     * @param mixed $baseDir
+     */
+    public static function setBaseDir($baseDir): void
+    {
+        self::$baseDir = $baseDir;
+    }
+    
+    /**
+     * Returns the project's base dir.
+     * @return mixed
+     */
+    public static function getBaseDir()
+    {
+        return self::$baseDir;
     }
     
     /**
@@ -47,9 +66,7 @@ class Router
     {
         foreach ($this->routes as $route => $view) {
             if ($this->request === $route) {
-                require $this->dir . '/views/' . $view . '.php';
-                
-                return;
+                View::render($view);
             }
         }
     }
