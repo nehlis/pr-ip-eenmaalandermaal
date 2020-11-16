@@ -16,7 +16,7 @@ class Router
     /**
      * @var
      */
-    private $dir;
+    public static $base;
     
     /**
      * @var string[]
@@ -26,7 +26,6 @@ class Router
         ''             => 'home',
         '/inloggen'    => 'login',
         '/registreren' => 'register',
-        'default'      => '404',
     ];
     
     /**
@@ -35,22 +34,24 @@ class Router
      */
     public function __construct($dir)
     {
+        self::$base = $dir;
+        
         $this->request = $_SERVER['REQUEST_URI'];
-        $this->dir     = $dir;
         $this->check();
     }
     
     /**
-     * Check if route matches
+     * Check if route matches and render matching view.
      */
     private function check()
     {
         foreach ($this->routes as $route => $view) {
             if ($this->request === $route) {
-                require $this->dir . '/views/' . $view . '.php';
-                
+                View::render($view);
                 return;
             }
         }
+        
+        View::render('404');
     }
 }
