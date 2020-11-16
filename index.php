@@ -1,30 +1,23 @@
-<?php
-
-use Controllers\UserController;
-
-require_once 'functions.php';
-
-// ROUTER HIER
-
-?>
-
-<!doctype html>
-<html lang="nl">
-<?php require_once 'layouts/head.php'; ?>
-<body>
 
 <?php
+$request = $_SERVER['REQUEST_URI'];
 
-$uc = new UserController();
-
-$uc->create([
-    'name'      => 'test',
-    'email'     => 'testEmail',
-    'last_name' => 'testLastName',
-]);
-
-?>
-
-<?php require_once 'layouts/footer.php'; ?>
-</body>
-</html>
+// ROUTER
+switch ($request) {
+    case '/':
+        require __DIR__ . '/views/home.php';
+        break;
+    case '':
+        require __DIR__ . '/views/home.php';
+        break;
+    case '/inloggen':
+        require __DIR__ . '/views/login.php';
+        break;
+    case '/registreren':
+        require __DIR__ . '/views/register.php';
+        break;
+    default:
+        http_response_code(404);
+        require __DIR__ . '/views/404.php';
+        break;
+}
