@@ -93,8 +93,7 @@ class Database
      */
     public function formatArguments(array $args): array
     {
-        $keys   = [];
-        $values = [];
+        $keys = $values = [];
         
         foreach (array_keys($args) as $key) {
             $newKey = "`{$key}`";

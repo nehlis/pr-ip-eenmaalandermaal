@@ -34,9 +34,9 @@ class Router
      */
     public function __construct($dir)
     {
-        self::$base = $dir;
-        
+        self::$base    = $dir;
         $this->request = $_SERVER['REQUEST_URI'];
+        
         $this->check();
     }
     
