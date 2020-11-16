@@ -23,6 +23,7 @@ class Router
      */
     private $routes = [
         '/'            => 'home',
+        ''             => 'home',
         '/inloggen'    => 'login',
         '/registreren' => 'register',
         'default'      => '404',
@@ -40,7 +41,7 @@ class Router
     }
     
     /**
-     *
+     * Check if route matches
      */
     private function check()
     {
