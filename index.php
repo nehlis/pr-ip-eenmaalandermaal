@@ -4,6 +4,8 @@ use Controllers\UserController;
 
 require_once 'functions.php';
 
+// ROUTER HIER
+
 ?>
 
 <!doctype html>
