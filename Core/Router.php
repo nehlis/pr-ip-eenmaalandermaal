@@ -16,7 +16,7 @@ class Router
     /**
      * @var
      */
-    private $baseDir;
+    private $dir;
     
     /**
      * @var string[]
@@ -31,12 +31,12 @@ class Router
     
     /**
      * Router constructor.
-     * @param $baseDir
+     * @param $dir
      */
-    public function __construct($baseDir)
+    public function __construct($dir)
     {
         $this->request = $_SERVER['REQUEST_URI'];
-        $this->baseDir = $baseDir;
+        $this->dir     = $dir;
         $this->check();
     }
     
@@ -45,9 +45,9 @@ class Router
      */
     private function check()
     {
-        foreach ($this->routes as $key => $route) {
-            if ($this->request === $key) {
-                require $this->baseDir . '/views/' . $route . '.php';
+        foreach ($this->routes as $route => $view) {
+            if ($this->request === $route) {
+                require $this->dir . '/views/' . $view . '.php';
                 
                 return;
             }
