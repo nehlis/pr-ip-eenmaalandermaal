@@ -51,7 +51,7 @@ class Router
     }
     
     /**
-     * Check if route matches
+     * Check if route matches and render matching view.
      */
     private function check()
     {
