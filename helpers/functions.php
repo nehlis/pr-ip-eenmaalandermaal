@@ -11,7 +11,7 @@ spl_autoload_register(function ($class_name) {
  */
 function styles_url(): string
 {
-    return 'public/styles';
+    return 'public/assets/css';
 }
 
 /**
@@ -20,5 +20,5 @@ function styles_url(): string
  */
 function scripts_url(): string
 {
-    return 'public/scripts';
+    return 'public/assets/js';
 }
