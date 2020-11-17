@@ -65,8 +65,8 @@ class Router
             if ($this->request === $key) {
                 View::render($route['view'], [
                     'title' => $route['title'] ?? null
-                ], true);
-                
+                ], false);
+        
                 return;
             }
         }

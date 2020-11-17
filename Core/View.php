@@ -17,9 +17,9 @@ class View
      * Renders a view.
      * @param string $view PHP File that has to be rendered. These files are pulled from the 'views' or 'components' folder.
      * @param array $variables Optional extra variables.
-     * @param bool $isLayout
+     * @param bool $component
      */
-    public static function render(string $view, $variables = [], $isLayout = false): void
+    public static function render(string $view, $variables = [], $component = true): void
     {
         foreach (self::$folders as $folder) {
             $basePath = Router::$base . DS . $folder . DS;
@@ -32,12 +32,7 @@ class View
         }
         
         if (isset($file) && file_exists($file)) {
-            if ($isLayout) {
-                self::layout($file, $variables);
-            } else {
-                extract($variables);
-                require $file;
-            }
+            $component ? self::component($file, $variables) : self::layout($file, $variables);
         } else {
             exit('Er is iets fout met de routes.');
         }
@@ -57,4 +52,16 @@ class View
         
         Layout::render('footer');
     }
+    
+    /**
+     * Renders a component (without base imports).
+     * @param $file
+     * @param $variables
+     */
+    public static function component($file, $variables)
+    {
+        extract($variables);
+        require $file;
+    }
+    
 }
