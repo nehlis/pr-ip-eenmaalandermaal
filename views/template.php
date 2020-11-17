@@ -1,1 +1,1 @@
-Bla
+<div>Template</div>

@@ -46,11 +46,13 @@ class View
     public static function layout($file, $variables)
     {
         Layout::render('head', $variables);
+        Layout::render('header');
         
         extract($variables);
         require $file;
         
         Layout::render('footer');
+        Layout::render('scripts');
     }
     
     /**
