@@ -9,14 +9,14 @@ namespace Core;
 class View
 {
     /**
-     * @var string[]
+     * @var string[]    $folders    Folders where views and components are stored.
      */
     private static $folders = ['views', 'components'];
     
     /**
-     * Renders a view with parameter options.
-     * @param $view
-     * @param array $variables
+     * Renders a view.
+     * @param String    $view       PHP File that has to be rendered. These files are pulled from the 'views' or 'components' folder.
+     * @param array     $variables  Optional extra variabeles.
      */
     public static function render($view, $variables = []): void
     {
@@ -25,6 +25,10 @@ class View
             
             if (file_exists($path)) {
                 $file = $path;
+                break;
+            } else {
+                // Show 404 page when file does not exist.
+                $file = Router::$base . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . "404.php";
                 break;
             }
         }
