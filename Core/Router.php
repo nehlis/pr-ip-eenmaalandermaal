@@ -38,10 +38,10 @@ class Router
             'view'  => 'register',
             'title' => 'Registreren',
         ],
-        '/test'        => [
-            'view'  => 'template',
-            'title' => 'test',
-        ],
+        '404' => [
+            'view'  => '404',
+            'title' => 'Pagina niet gevonden',
+        ]
     ];
     
     /**
@@ -63,14 +63,11 @@ class Router
     {
         foreach ($this->routes as $key => $route) {
             if ($this->request === $key) {
-                View::render($route['view'], [
-                    'title' => $route['title'] ?? null
-                ], false);
-        
+                View::render(null, $route);
                 return;
             }
         }
         
-        View::render('404');
+        View::render($this->routes['404']);
     }
 }
