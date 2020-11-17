@@ -25,3 +25,6 @@ Component::render('card', [
 <h4><?= $title; ?></h4>
 <button><?= $cta; ?></button>
 ```
+
+## Projectstructuur
+Als je database acties wilt voldoen dien je gebruik te maken van een controller. Een controller hoort qua naamgeving altijd dit formaat aan te nemen `[Model]Controller.php` en hoort in de map Controllers te staan. Deze dient `IController` te implementeren en als namespace `Controllers;` te hebben. Om Controllers gemakkelijk te gebruiken dient `Database.php` geoptimaliseerd te zijn om je te helpen met basis queries. (CRUD).
