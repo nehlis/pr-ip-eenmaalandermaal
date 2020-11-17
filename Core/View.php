@@ -21,7 +21,7 @@ class View
     public static function render($view, $variables = []): void
     {
         foreach (self::$folders as $folder) {
-            $path = Router::$base . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $view . '.php';
+            $path = Router::$base . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $view;
             
             if (file_exists($path)) {
                 $file = $path;

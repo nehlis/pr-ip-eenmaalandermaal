@@ -22,10 +22,10 @@ class Router
      * @var string[]
      */
     private $routes = [
-        '/'            => 'home',
-        ''             => 'home',
-        '/inloggen'    => 'login',
-        '/registreren' => 'register',
+        '/'            => 'home.php',
+        ''             => 'home.php',
+        '/inloggen'    => 'login.php',
+        '/registreren' => 'register.php',
     ];
     
     /**
