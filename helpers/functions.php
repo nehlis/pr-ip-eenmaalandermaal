@@ -14,7 +14,6 @@ function universalDirectories($class): void
     include_once str_replace('\\', DS, $class) . '.php';
 }
 
-
 /**
  * Return stylesheets map URL.
  * @return string

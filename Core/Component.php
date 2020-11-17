@@ -12,7 +12,7 @@ class Component implements IRenderable
 {
     /**
      * Renders a component (re-usable).
-     * @param $renderable
+     * @param       $renderable
      * @param array $variables
      * @return mixed|void
      */

@@ -30,7 +30,7 @@ interface IController
     /**
      * Put's the selected ID from the model.
      * @param array $args
-     * @param int $id
+     * @param int   $id
      * @return IModel
      */
     public function put(array $args, int $id);

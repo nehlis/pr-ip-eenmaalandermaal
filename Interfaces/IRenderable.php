@@ -6,7 +6,8 @@ namespace Interfaces;
  * Interface IRenderable
  * @package Interfaces
  */
-interface IRenderable {
+interface IRenderable
+{
     /**
      * Renders the template.
      * @param $renderable

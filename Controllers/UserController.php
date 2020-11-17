@@ -58,7 +58,7 @@ class UserController implements IController
     /**
      * Edits a single user.
      * @param array $args
-     * @param int $id
+     * @param int   $id
      * @return mixed
      */
     public function put(array $args, int $id)
