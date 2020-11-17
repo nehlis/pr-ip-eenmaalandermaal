@@ -26,7 +26,7 @@ class Router
         ''             => 'home',
         '/inloggen'    => 'login',
         '/registreren' => 'register',
-        '/test' => 'template'
+        '/test'        => 'template',
     ];
 
     /**
@@ -53,6 +53,6 @@ class Router
             }
         }
 
-        View::render('404.php');
+        View::render('404');
     }
 }
