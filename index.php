@@ -1,7 +1,7 @@
 <?php
 
-include_once 'helpers/functions.php';
+include_once 'helpers/autoload.php';
 
 use Core\Router;
 
-new Router(__DIR__);
+new Router();

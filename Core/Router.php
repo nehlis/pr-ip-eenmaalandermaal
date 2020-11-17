@@ -14,11 +14,6 @@ class Router
     private $request;
     
     /**
-     * @var
-     */
-    public static $base;
-    
-    /**
      * @var string[]
      */
     private $routes = [
@@ -46,13 +41,10 @@ class Router
     
     /**
      * Router constructor.
-     * @param $dir
      */
-    public function __construct($dir)
+    public function __construct()
     {
-        self::$base    = $dir;
         $this->request = $_SERVER['REQUEST_URI'];
-        
         $this->check();
     }
     

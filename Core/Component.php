@@ -18,9 +18,7 @@ class Component implements IRenderable
      */
     public static function render($renderable, $variables = [])
     {
-        $componentDirectory = Router::$base . DS . 'components' . DS;
-        
         extract($variables);
-        require $componentDirectory . $renderable . '.php';
+        require COMPONENTS_DIR . DS . $renderable . '.php';
     }
 }

@@ -18,6 +18,6 @@ class View implements IRenderable
     public static function render($renderable = null, $variables = []): void
     {
         extract($variables);
-        include_once Router::$base . DS . 'layouts' . DS . 'template.php';
+        include_once LAYOUTS_DIR . DS . 'template.php';
     }
 }

@@ -1,4 +1,3 @@
-<?php use Core\Router; ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title><?= $title ?? ''; ?> | EenmaalAndermaal</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="<?= styles_url(); ?>/style.css">
+  <link rel="stylesheet" href="<?= ASSETS_DIR; ?>/css/style.css">
 </head>
 <body>
-<?php include_once Router::$base . DS . 'views' . DS . $view . '.php'; ?>
+<?php include_once VIEWS_DIR . DS . $view . '.php'; ?>
 
-<script src="<?= scripts_url(); ?>/script.js"></script>
+<script src="<?= ASSETS_DIR; ?>/js/script.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
