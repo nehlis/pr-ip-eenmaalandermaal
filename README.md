@@ -5,7 +5,7 @@
 Routes kunnen worden toegevoegd in Core\Route.php. Als je hier de array met routes aanpast kan je routes verwijderen of aanpassen.
 ```php
 private $routes = [
-    '/inloggen'    => [
+    '/inloggen' => [
         'view'  => 'login',
         'title' => 'Inloggen',
     ],
