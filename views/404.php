@@ -1,1 +1,1 @@
-<h1>404 error Pagina</h1>
+<h1>404 Error pagina</h1>

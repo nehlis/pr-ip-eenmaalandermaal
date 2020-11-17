@@ -12,22 +12,23 @@ class Router
      * @var mixed
      */
     private $request;
-    
+
     /**
      * @var
      */
     public static $base;
-    
+
     /**
      * @var string[]
      */
     private $routes = [
-        '/'            => 'home.php',
-        ''             => 'home.php',
-        '/inloggen'    => 'login.php',
-        '/registreren' => 'register.php',
+        '/'            => 'home',
+        ''             => 'home',
+        '/inloggen'    => 'login',
+        '/registreren' => 'register',
+        '/test' => 'template'
     ];
-    
+
     /**
      * Router constructor.
      * @param $dir
@@ -36,10 +37,10 @@ class Router
     {
         self::$base    = $dir;
         $this->request = $_SERVER['REQUEST_URI'];
-        
+
         $this->check();
     }
-    
+
     /**
      * Check if route matches and render matching view.
      */
@@ -51,7 +52,7 @@ class Router
                 return;
             }
         }
-        
+
         View::render('404.php');
     }
 }
