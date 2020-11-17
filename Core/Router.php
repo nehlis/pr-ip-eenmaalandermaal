@@ -69,6 +69,6 @@ class Router
             }
         }
         
-        View::render($this->routes['404']);
+        View::render(null, $this->routes['404']);
     }
 }
