@@ -52,6 +52,6 @@ class Router
             }
         }
         
-        View::render('404');
+        View::render('404.php');
     }
 }
