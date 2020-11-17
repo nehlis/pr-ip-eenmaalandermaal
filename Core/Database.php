@@ -37,7 +37,7 @@ class Database
     
     /**
      * Create method for Controllers.
-     * @param array $args
+     * @param array  $args
      * @param IModel $model
      * @return void
      */
@@ -48,7 +48,7 @@ class Database
     
     /**
      * Insert into query method with it's functionality.
-     * @param array $args
+     * @param array  $args
      * @param IModel $model
      * @return void
      */
@@ -69,7 +69,7 @@ class Database
     
     /**
      * Merge the basic fields from the model with the inputted data.
-     * @param array $args
+     * @param array  $args
      * @param IModel $model
      * @return array
      */
@@ -132,7 +132,7 @@ class Database
     /**
      * Get method for Controllers
      * @param string $table
-     * @param int $id
+     * @param int    $id
      * @return array
      */
     public function get(string $table, int $id): array
@@ -143,7 +143,7 @@ class Database
     /**
      * Basic query method (get, index, delete).
      * @param string $query
-     * @param bool $delete
+     * @param bool   $delete
      * @return array|null
      */
     private function simpleQuery(string $query, bool $delete = false): ?array
@@ -160,24 +160,24 @@ class Database
     /**
      * Update method for Controllers.
      * @param string $table
-     * @param array $args
-     * @param int $id
+     * @param array  $args
+     * @param int    $id
      * @return array
      */
     public function update(string $table, array $args, int $id): array
     {
         $statments = [];
-    
+        
         foreach ($args as $key => $arg) {
             array_push($updateStatements, "{$key} = {$arg}");
         }
-    
+        
         $formattedStatements = implode(',', $statments);
-    
+        
         $result = $this->connection->query("UPDATE `{$table}` SET {$formattedStatements} WHERE `id` = {$id}");
-    
+        
         $this->close();
-    
+        
         return mysqli_fetch_assoc($result);
     }
     
@@ -194,7 +194,7 @@ class Database
     /**
      * Delete method for Controllers.
      * @param string $table
-     * @param int $id
+     * @param int    $id
      * @return void
      */
     public function delete(string $table, int $id): void
