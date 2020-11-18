@@ -4,7 +4,8 @@
     "node-sass": "^5.0.0"
   },
   "scripts": {
-    "watch": "node-sass --watch public/assets/scss -o public/dist/css"
+    "clean": "rm -rf ./public/dist",
+    "sass:watch": "node-sass --watch public/assets/scss --recursive -o public/dist/css"
   },
   "author": "I-Project 2020 Groep 3",
   "license": "ISC"
