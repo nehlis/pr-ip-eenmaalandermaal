@@ -2,7 +2,9 @@
 
 $placeholderImg = 'https://sovschoice.com/wp-content/uploads/2020/08/placeholder.png';
 
-use Core\Component; ?>
+use Core\Component;
+
+?>
 
 <main role="main" class="container">
     <div class="row">
