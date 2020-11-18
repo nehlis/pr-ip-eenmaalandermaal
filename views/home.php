@@ -7,11 +7,10 @@ use Core\Component; ?>
 <main role="main" class="container">
     <div class="row">
         <div class="col-12">
-
             <?php Component::render('jumbotron-image', [
-                'background'    => $placeholderImg,
-                'title'         => 'Hier een pakkende advertentie titel',
-                'textColor'     => 'purple'
+                'background' => $placeholderImg,
+                'title'      => 'Hier een pakkende advertentie titel',
+                'textColor'  => 'purple',
             ]); ?>
         </div>
     </div>
@@ -24,13 +23,11 @@ use Core\Component; ?>
         </div>
         <div class="col-12">
             <div class="row">
-                <?php for ($x = 0; $x < 3; $x++) : ?>
+                <?php for ($x = 0; $x < 3; $x++): ?>
                     <div class="col-xs-12 col-md-4">
-                        <?php Component::render('card', [
-                            'image' => $placeholderImg
-                        ]) ?>
+                        <?php Component::render('card', ['image' => $placeholderImg]); ?>
                     </div>
-                <?php endfor ?>
+                <?php endfor; ?>
             </div>
         </div>
     </div>
@@ -41,15 +38,15 @@ use Core\Component; ?>
         </div>
         <div class="col-12">
             <div class="row">
-                <?php for ($x = 0; $x < 8; $x++) : ?>
+                <?php for ($x = 0; $x < 8; $x++): ?>
                     <div class="col-xs-12 col-md-6 col-lg-3 p-0">
                         <?php Component::render('category', [
-                            'title'         => "categorie " . $x,
-                            'titleColor'    => 'black',
-                            'background'    => $placeholderImg
-                        ]) ?>
+                            'title'      => "categorie {$x}",
+                            'titleColor' => 'black',
+                            'background' => $placeholderImg,
+                        ]); ?>
                     </div>
-                <?php endfor ?>
+                <?php endfor; ?>
             </div>
         </div>
     </div>
