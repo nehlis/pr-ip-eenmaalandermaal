@@ -6,3 +6,7 @@ gen
 
 # VSCode project files
 .vscode
+
+# Compiled css
+public/assets/css
+node_modules/

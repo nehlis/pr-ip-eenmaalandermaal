@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "node-sass": "^5.0.0"
+  },
+  "scripts": {
+    "watch": "node-sass --watch public/assets/scss -o public/assets/css"
+  },
+  "author": "I-Project 2020 Groep 3",
+  "license": "ISC"
+}
