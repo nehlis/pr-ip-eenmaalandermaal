@@ -110,7 +110,7 @@ class Database
      * @return  array               Returns numeric array with all rows (as an associative arrays).
      * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
      */
-    public function getAll(string $table): array
+    public function index(string $table): array
     {
         $this->connect();
 
