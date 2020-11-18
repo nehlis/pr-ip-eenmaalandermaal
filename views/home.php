@@ -8,10 +8,10 @@ use Core\Component; ?>
     <div class="row">
         <div class="col-12">
 
-            <?= Component::render('jumbotron-image', [
-                'path' => $placeholderImg,
-                'title' => 'Hier een pakkende advertentie titel',
-                'textColor' => 'purple'
+            <?php Component::render('jumbotron-image', [
+                'backgroundImage'   => $placeholderImg,
+                'title'             => 'Hier een pakkende advertentie titel',
+                'textColor'         => 'purple'
             ]); ?>
         </div>
     </div>
@@ -24,16 +24,13 @@ use Core\Component; ?>
         </div>
         <div class="col-12">
             <div class="row">
-                <?php
-                for ($x = 0; $x < 3; $x++) {
-                ?>
+                <?php for ($x = 0; $x < 3; $x++) : ?>
                     <div class="col-xs-12 col-md-4">
-                        <?= Component::render('card', [
+                        <?php Component::render('card', [
                             'img' => $placeholderImg
                         ]) ?>
                     </div>
-                <?php
-                } ?>
+                <?php endfor ?>
             </div>
         </div>
     </div>
@@ -44,18 +41,15 @@ use Core\Component; ?>
         </div>
         <div class="col-12">
             <div class="row">
-                <?php
-                for ($x = 0; $x < 8; $x++) {
-                ?>
+                <?php for ($x = 0; $x < 8; $x++) : ?>
                     <div class="col-xs-12 col-md-6 col-lg-3 p-0">
-                        <?= Component::render('categorie', [
-                            'title' => "categorie " . $x,
-                            'titleColor' => 'black',
-                            'backgroundImage' => $placeholderImg
+                        <?php Component::render('categorie', [
+                            'title'             => "categorie " . $x,
+                            'titleColor'        => 'black',
+                            'backgroundImage'   => $placeholderImg
                         ]) ?>
                     </div>
-                <?php
-                } ?>
+                <?php endfor ?>
             </div>
         </div>
     </div>
