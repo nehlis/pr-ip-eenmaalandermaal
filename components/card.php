@@ -1,14 +1,3 @@
-<?php
-
-/**
- * @var timer De resterende tijd voordat de veiling afgelopen is
- * @var image De afbeelding van de veiling
- * @var title De titel van de veiling
- * @var prijs De prijs van de veiling
- * @var destination De link naar de veiling
- */
-?>
-
 <div class="card">
     <div class="card-label px-3 py-2 rounded-left bg-primary"><?= $timer ?? '00:00:00'; ?></div>
     <img src="<?= $image; ?>" class="card-img-top" alt="...">

@@ -43,7 +43,7 @@ use Core\Component; ?>
             <div class="row">
                 <?php for ($x = 0; $x < 8; $x++) : ?>
                     <div class="col-xs-12 col-md-6 col-lg-3 p-0">
-                        <?php Component::render('categorie', [
+                        <?php Component::render('category', [
                             'title'         => "categorie " . $x,
                             'titleColor'    => 'black',
                             'background'    => $placeholderImg
