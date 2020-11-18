@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $title ?? ''; ?> | EenmaalAndermaal</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= ASSETS_DIR; ?>/css/app.css">
+    <link rel="stylesheet" href="<?= DIST_DIR; ?>/css/app.css">
 </head>
 
 <body>

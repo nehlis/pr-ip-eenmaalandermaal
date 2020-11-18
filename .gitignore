@@ -8,5 +8,5 @@ gen
 .vscode
 
 # Compiled css
-public/assets/css
+dist
 node_modules/
