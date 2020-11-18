@@ -6,7 +6,6 @@
  * @var $prijs       string De huidige prijs van de veiling.
  * @var $destination string De detailpagina URL die bij de card hoort.
  */
-
 ?>
 <div class="card">
     <div class="card-label px-3 py-2 rounded-left bg-primary"><?= $timer ?? '00:00:00'; ?></div>
