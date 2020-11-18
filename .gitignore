@@ -9,3 +9,4 @@ gen
 
 # Compiled css
 public/assets/css
+node_modules/
