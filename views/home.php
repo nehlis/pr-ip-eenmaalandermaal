@@ -39,7 +39,7 @@
                         <?php Component::render('category', [
                             'title'      => "categorie {$x}",
                             'titleColor' => 'black',
-                            'background' => $placeholderImg,
+                            'background' => PLACEHOLDER,
                         ]); ?>
                     </div>
                 <?php endfor; ?>
