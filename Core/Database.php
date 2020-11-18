@@ -45,23 +45,29 @@ class Database
     {
         $this->dbh = null;
     }
-    
+
+
+
+
+
+
     /**
      * Get method to be used in Controllers.
-     * @param string $table From which table?
-     * @param string $id    What ID?
-     * @return  array   Returns retrieved row
-     * @throws Exception
+     * @param   string      $table  Get from which table?
+     * @param   string      $id     Row with ID?
+     * @return  array               Returns fetched row as an associative Arrays.
+     * @throws  Exception           Throws  exception when error occurs while executing the query.
      */
-    public function get(string $table, string $id)
+    public function get(string $table, string $id): array
     {
         // Initialize Database connection
         $this->connect();
 
         // Query
-        $query = "SELECT * FROM [$table] where [ID] = '{$id}'";
+        $query = "SELECT * FROM $table where ID = :id";
 
         $sth = $this->dbh->prepare($query);
+        $sth->bindParam(':id', $id, PDO::PARAM_INT);
 
         // Execute query
         if (!$sth->execute()) {
@@ -72,17 +78,18 @@ class Database
         $buffer = $sth->fetch(PDO::FETCH_ASSOC);
 
         // Close Database connection
+        unset($sth);
         $this->close();
 
         // Return data
         return $buffer;
     }
-    
+
     /**
      * getAll method to be used in Controllers.
-     * @param string $table From which table?
-     * @return  array   Returns array with all data pulled from given table.
-     * @throws Exception
+     * @param   string      $table  Get from which table?
+     * @return  array               Returns numeric array with all rows (as associative arrays).
+     * @throws  Exception           Throws  exception when error occurs while executing the query.
      */
     public function getAll(string $table): array
     {
@@ -90,10 +97,9 @@ class Database
         $this->connect();
 
         // Query
-        $query = "SELECT * FROM :table";
+        $query = "SELECT * FROM $table";
 
         $sth = $this->dbh->prepare($query);
-        $sth->bindParam(':table', $table, PDO::PARAM_STR_CHAR);
 
         // Execute query
         if (!$sth->execute()) {
@@ -103,19 +109,19 @@ class Database
         // Do something with the data.
         $buffer = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-        // Close Database connection
+        // Close Database connection and clear statement handler
+        unset($sth);
         $this->close();
 
         // Return data
         return $buffer;
     }
-    
+
     /**
-     * Index method to be used in Controllers.
-     * @param string $table From which table?
-     * @param string $id
-     * @return void Returns array with all data pulled from given table.
-     * @throws Exception
+     * Delete method to be used in Controllers.
+     * @param   string      $table  Delete from which table?
+     * @param   string      $id     Row with ID?
+     * @throws Exception            Throws  exception when error occurs while executing the query.
      */
     public function delete(string $table, string $id): void
     {
@@ -123,11 +129,9 @@ class Database
         $this->connect();
 
         // Query
-        $query = "DELETE FROM [:table] WHERE [ID] = :id";
+        $query = "DELETE FROM $table WHERE ID = :id";
 
         $sth = $this->dbh->prepare($query);
-
-        $sth->bindParam(':table', $table, PDO::PARAM_STR_CHAR);
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
 
         // Execute query
@@ -136,29 +140,23 @@ class Database
         }
 
         // Close Database connection
+        unset($sth);
         $this->close();
     }
 
-
-
-
-
-
-
-
-
-
-
-    // Test Functie, het werkt
+    // Test Functie
     public function test()
     {
         // Initialize Database connection
         $this->connect();
 
         // Query
-        $query = "SELECT * FROM test";
+        $table = 'test';
+        $id = 3;
 
+        $query = "SELECT * FROM $table WHERE ID = :id";
         $sth = $this->dbh->prepare($query);
+        $sth->bindParam(':id', $id);
 
         // Execute query
         if (!$sth->execute()) {

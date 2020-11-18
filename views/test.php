@@ -8,8 +8,16 @@
 
             $db = new Database();
 
+
             try {
-                print_r($db->test());
+                print_r($db->delete('test', 3));
+            } catch (Exception $e) {
+                echo $e;
+            }
+
+            
+            try {
+                print_r($db->getAll('test'));
             } catch (Exception $e) {
                 echo $e;
             }
