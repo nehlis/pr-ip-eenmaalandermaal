@@ -19,7 +19,7 @@ use Core\Component; ?>
 
     <div class="row">
         <div class="col-12">
-            <h1>Uitgelichte veilingen</h1>
+            <h2>Uitgelichte veilingen</h2>
         </div>
         <div class="col-12">
             <div class="row">
@@ -34,7 +34,7 @@ use Core\Component; ?>
 
     <div class="row mt-5">
         <div class="col-12">
-            <h1>Populaire categorieën</h1>
+            <h2>Populaire categorieën</h2>
         </div>
         <div class="col-12">
             <div class="row">
