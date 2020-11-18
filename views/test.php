@@ -9,13 +9,10 @@
             $db = new Database();
 
             try {
-                print_r($db->getAll('User'));
+                print_r($db->test());
             } catch (Exception $e) {
                 echo $e;
             }
-
-            // print_
-
 
             ?>
         </div>

@@ -89,7 +89,7 @@ class Database
         $this->connect();
 
         // Query
-        $query = "SELECT * FROM [:table]";
+        $query = "SELECT * FROM :table";
 
         $sth = $this->dbh->prepare($query);
         $sth->bindParam(':table', $table, PDO::PARAM_STR_CHAR);
@@ -153,7 +153,7 @@ class Database
         $this->connect();
 
         // Query
-        $query = "SELECT * FROM [User]";
+        $query = "SELECT * FROM test";
 
         $sth = $this->dbh->prepare($query);
 
@@ -163,12 +163,7 @@ class Database
         }
 
         // Do something with the data.
-        $buffer = [];
-
-        while ($row = $sth->fetch(PDO::FETCH_LAZY)) {
-            $buffer['email'] = $row['Email'];
-            $buffer['password'] = $row['Password'];
-        }
+        $buffer = $sth->fetchAll(PDO::FETCH_ASSOC);
 
         // Close Database connection
         $this->close();
