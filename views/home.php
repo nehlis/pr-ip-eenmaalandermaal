@@ -1,16 +1,10 @@
-<?php
-
-$placeholderImg = 'https://sovschoice.com/wp-content/uploads/2020/08/placeholder.png';
-
-use Core\Component;
-
-?>
+<?php use Core\Component; ?>
 
 <main role="main" class="container">
     <div class="row">
         <div class="col-12">
             <?php Component::render('jumbotron-image', [
-                'background' => $placeholderImg,
+                'background' => PLACEHOLDER,
                 'title'      => 'Hier een pakkende advertentie titel',
                 'textColor'  => 'purple',
             ]); ?>
@@ -27,7 +21,7 @@ use Core\Component;
             <div class="row">
                 <?php for ($x = 0; $x < 3; $x++): ?>
                     <div class="col-xs-12 col-md-4">
-                        <?php Component::render('card', ['image' => $placeholderImg]); ?>
+                        <?php Component::render('card', ['image' => PLACEHOLDER]); ?>
                     </div>
                 <?php endfor; ?>
             </div>
