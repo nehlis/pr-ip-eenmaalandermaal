@@ -9,9 +9,9 @@ use Core\Component; ?>
         <div class="col-12">
 
             <?php Component::render('jumbotron-image', [
-                'backgroundImage'   => $placeholderImg,
-                'title'             => 'Hier een pakkende advertentie titel',
-                'textColor'         => 'purple'
+                'background'    => $placeholderImg,
+                'title'         => 'Hier een pakkende advertentie titel',
+                'textColor'     => 'purple'
             ]); ?>
         </div>
     </div>
@@ -27,7 +27,7 @@ use Core\Component; ?>
                 <?php for ($x = 0; $x < 3; $x++) : ?>
                     <div class="col-xs-12 col-md-4">
                         <?php Component::render('card', [
-                            'img' => $placeholderImg
+                            'image' => $placeholderImg
                         ]) ?>
                     </div>
                 <?php endfor ?>
@@ -44,9 +44,9 @@ use Core\Component; ?>
                 <?php for ($x = 0; $x < 8; $x++) : ?>
                     <div class="col-xs-12 col-md-6 col-lg-3 p-0">
                         <?php Component::render('categorie', [
-                            'title'             => "categorie " . $x,
-                            'titleColor'        => 'black',
-                            'backgroundImage'   => $placeholderImg
+                            'title'         => "categorie " . $x,
+                            'titleColor'    => 'black',
+                            'background'    => $placeholderImg
                         ]) ?>
                     </div>
                 <?php endfor ?>

@@ -2,7 +2,8 @@
 
 /**
  * @var timer De resterende tijd voordat de veiling afgelopen is
- * @var title De titel van de kaart
+ * @var image De afbeelding van de veiling
+ * @var title De titel van de veiling
  * @var prijs De prijs van de veiling
  * @var destination De link naar de veiling
  */
@@ -10,7 +11,7 @@
 
 <div class="card">
     <div class="card-label px-3 py-2 rounded-left bg-primary"><?= $timer ?? '00:00:00'; ?></div>
-    <img src="<?= $img; ?>" class="card-img-top" alt="...">
+    <img src="<?= $image; ?>" class="card-img-top" alt="...">
     <div class="card-body">
         <h5 class="card-title text-uppercase mb-5"><?= $title ?? '<< geen titel meegegeven aan deze kaart >>'; ?></h5>
         <div class="row">
