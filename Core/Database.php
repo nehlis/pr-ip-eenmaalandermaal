@@ -45,13 +45,13 @@ class Database
     {
         $this->dbh = null;
     }
-
-
+    
     /**
      * Get method to be used in Controllers.
-     * @param   string  $table  From which table? 
-     * @param   string  $id     What ID?
+     * @param string $table From which table?
+     * @param string $id    What ID?
      * @return  array   Returns retrieved row
+     * @throws Exception
      */
     public function get(string $table, string $id)
     {
@@ -77,11 +77,12 @@ class Database
         // Return data
         return $buffer;
     }
-
+    
     /**
      * getAll method to be used in Controllers.
-     * @param   string  $table  From which table? 
+     * @param string $table From which table?
      * @return  array   Returns array with all data pulled from given table.
+     * @throws Exception
      */
     public function getAll(string $table): array
     {
@@ -108,11 +109,13 @@ class Database
         // Return data
         return $buffer;
     }
-
+    
     /**
      * Index method to be used in Controllers.
-     * @param   string  $table  From which table? 
-     * @return  array   Returns array with all data pulled from given table.
+     * @param string $table From which table?
+     * @param string $id
+     * @return void Returns array with all data pulled from given table.
+     * @throws Exception
      */
     public function delete(string $table, string $id): void
     {
