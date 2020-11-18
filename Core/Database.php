@@ -3,12 +3,15 @@
 namespace Core;
 
 use Config\DatabaseConfig;
-use Exception;
 use PDO;
 use PDOException;
+use RuntimeException;
 
 /**
- * Class Database
+ * Database Class
+ * 
+ * In this class you find all CRUD operations to be used in Controller classes.
+ * 
  */
 class Database
 {
@@ -18,7 +21,7 @@ class Database
     private $dbh;
 
     /**
-     * Connect to the database using the credentials.
+     * Connect to the database.
      */
     private function connect(): void
     {
@@ -46,19 +49,43 @@ class Database
         $this->dbh = null;
     }
 
+    /**
+     * Create method to be used in Controllers.
+     * @param   string      $table      Insert into which table?
+     * @param   array       $data       asd
+     * @throws  RuntimeException               Throws  exception when error occurs while executing the query.
+     */
+    public function create(string $table, array $data): void
+    {
+        // Initialize Database connection
+        $this->connect();
 
+        // Query
+        $columns = implode(', ', array_keys($data));
+        $values  = $this->formatInsertValues(array_values($data));
 
+        $query = "INSERT INTO $table ($columns) VALUES ($values)";
 
+        $sth = $this->dbh->prepare($query);
 
+        // Execute query
+        if (!$sth->execute()) {
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        }
+
+        // Close Database connection
+        unset($sth);
+        $this->close();
+    }
 
     /**
-     * Get method to be used in Controllers.
+     * Read method to be used in Controllers.
      * @param   string      $table  Get from which table?
-     * @param   string      $id     Row with ID?
+     * @param   id          $id     Row with ID?
      * @return  array               Returns fetched row as an associative Arrays.
-     * @throws  Exception           Throws  exception when error occurs while executing the query.
+     * @throws  RuntimeException           Throws  exception when error occurs while executing the query.
      */
-    public function get(string $table, string $id): array
+    public function get(string $table, int $id): array
     {
         // Initialize Database connection
         $this->connect();
@@ -71,7 +98,7 @@ class Database
 
         // Execute query
         if (!$sth->execute()) {
-            throw new Exception("Error bij uitvoeren query... ", 0);
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
         // Do something with the data.
@@ -86,10 +113,10 @@ class Database
     }
 
     /**
-     * getAll method to be used in Controllers.
+     * Read method to be used in Controllers.
      * @param   string      $table  Get from which table?
-     * @return  array               Returns numeric array with all rows (as associative arrays).
-     * @throws  Exception           Throws  exception when error occurs while executing the query.
+     * @return  array               Returns numeric array with all rows (as an associative arrays).
+     * @throws  RuntimeException           Throws  exception when error occurs while executing the query.
      */
     public function getAll(string $table): array
     {
@@ -103,7 +130,7 @@ class Database
 
         // Execute query
         if (!$sth->execute()) {
-            throw new Exception("Error bij uitvoeren query... ", 0);
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
         // Do something with the data.
@@ -118,12 +145,40 @@ class Database
     }
 
     /**
+     * Update method to be used in Controllers.
+     * @param   string      $table  Update row in which table?
+     * @param   int         $id     Row with ID?
+     * @param   array       $data   Associative array of which the key is the column name to be updated with its value.
+     * @throws  RuntimeException           Throws  exception when error occurs while executing the query.
+     */
+    public function update(string $table, int $id, array $data): void
+    {
+        // Initialize Database connection
+        $this->connect();
+
+        // Query
+        $query = "UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id";
+
+        $sth = $this->dbh->prepare($query);
+        $sth->bindParam(':id', $id, PDO::PARAM_INT);
+
+        // Execute query
+        if (!$sth->execute()) {
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        }
+
+        // Close Database connection
+        unset($sth);
+        $this->close();
+    }
+
+    /**
      * Delete method to be used in Controllers.
      * @param   string      $table  Delete from which table?
-     * @param   string      $id     Row with ID?
-     * @throws Exception            Throws  exception when error occurs while executing the query.
+     * @param   int         $id     Row with ID?
+     * @throws  RuntimeException           Throws  exception when error occurs while executing the query.
      */
-    public function delete(string $table, string $id): void
+    public function delete(string $table, int $id): void
     {
         // Initialize Database connection
         $this->connect();
@@ -136,12 +191,52 @@ class Database
 
         // Execute query
         if (!$sth->execute()) {
-            throw new Exception("Error bij uitvoeren query... ", 0);
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
         // Close Database connection
         unset($sth);
         $this->close();
+    }
+
+
+    // Helper Functions
+
+    /**
+     * Function to prepare an array of values for the SQL INSERT INTO statement.
+     * @param   array   $values     Values to be formatted/prepared.
+     * @return  string              String formatted as follows: 'value1', 'value2', 'value3'
+     */
+    private function formatInsertValues(array $values): string
+    {
+        foreach ($values as &$value) {
+            $value = "'$value'";
+        }
+
+        return implode(', ', $values);
+    }
+
+    /**
+     * Function to prepare an array of values for the SQL UPDATE statement.
+     * @param   array   $array      Array with key (columns) and value (to update) pairs.
+     * @return  string              String formatted as follows: 'column1' = 'value1', 'column2' = 'value2'
+     */
+    private function formatUpdateValues(array $array): string
+    {
+        $output = "";
+
+        foreach ($array as $key => $value) {
+            if (is_numeric($value)) {
+                $output .= "$key = $value, ";
+            } else {
+                $output .= "$key = '$value', ";
+            }
+        }
+
+        $output = trim($output, ' '); // Trim last space
+        $output = trim($output, ','); // Trim trailing comma
+
+        return $output;
     }
 
     // Test Functie
@@ -151,16 +246,13 @@ class Database
         $this->connect();
 
         // Query
-        $table = 'test';
-        $id = 3;
-
-        $query = "SELECT * FROM $table WHERE ID = :id";
+        $query = "DELETE FROM test WHERE 1=1";
+        
         $sth = $this->dbh->prepare($query);
-        $sth->bindParam(':id', $id);
 
         // Execute query
         if (!$sth->execute()) {
-            throw new Exception("Error bij uitvoeren query... ", 0);
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
         // Do something with the data.
