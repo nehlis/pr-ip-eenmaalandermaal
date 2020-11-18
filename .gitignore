@@ -6,3 +6,10 @@ gen
 
 # VSCode project files
 .vscode
+
+# Packages
+yarn.lock
+package.lock.json
+
+# Compiled css
+public/assets/css
