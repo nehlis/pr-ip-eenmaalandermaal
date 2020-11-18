@@ -33,10 +33,6 @@ class Router
             'view'  => 'register',
             'title' => 'Registreren',
         ],
-        '/test'          => [
-            'view'  => 'test',
-            'title' => 'test pagina',
-        ],
         '404'          => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',
