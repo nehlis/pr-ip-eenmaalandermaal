@@ -1,4 +1,6 @@
-<?php use Core\Component; ?>
+<?php
+
+use Core\Component; ?>
 <!doctype html>
 <html lang="en">
 
@@ -7,19 +9,20 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $title ?? ''; ?> | EenmaalAndermaal</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= DIST_DIR; ?>/css/app.css">
 </head>
 
 <body>
     <?php
-    
+
     Component::render('navbar');
 
     include_once VIEWS_DIR . DS . $view . '.php';
 
     Component::render('footer');
-    
+
     ?>
     <script src="<?= ASSETS_DIR; ?>/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
