@@ -33,7 +33,7 @@ class Router
             'view'  => 'register',
             'title' => 'Registreren',
         ],
-        '404'          => [
+        '/404'          => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',
         ],
@@ -61,6 +61,6 @@ class Router
             }
         }
         
-        View::render(null, $this->routes['404']);
+        View::render(null, $this->routes['/404']);
     }
 }

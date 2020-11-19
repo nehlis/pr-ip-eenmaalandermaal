@@ -1,7 +1,12 @@
-// standaard instellingen
+// Defaults
 @import "themes/__bootstrap";
-// componenten
+
+// Helpers
+@import "helpers/typography";
+
+// Components
 @import "components/footer";
 @import "components/jumbotron-image";
 @import "components/category";
 @import "components/card";
+@import "components/form";
