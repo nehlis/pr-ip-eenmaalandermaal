@@ -2,203 +2,216 @@
 
 namespace Core;
 
-use Interfaces\IModel;
-use mysqli;
+use Config\DatabaseConfig;
+use PDO;
+use PDOException;
+use RuntimeException;
 
 /**
- * Class Database
+ * Database Class
+ * 
+ * In this class you find all CRUD operations to be used in Controller classes.
+ * 
  */
 class Database
 {
     /**
-     * Database host.
+     * @var $dbh Database handler also known as database connection.
      */
-    private const DB_HOST = 'localhost';
-    
+    private $dbh;
+
     /**
-     * Database user.
-     */
-    private const DB_USER = 'root';
-    
-    /**
-     * Database password.
-     */
-    private const DB_PASS = '';
-    
-    /**
-     * Database name.
-     */
-    private const DB_NAME = 'crud';
-    
-    /**
-     * @var mysqli
-     */
-    private $connection;
-    
-    /**
-     * Create method for Controllers.
-     * @param array  $args
-     * @param IModel $model
-     * @return void
-     */
-    public function create(array $args, IModel $model): void
-    {
-        $this->insertQuery($args, $model);
-    }
-    
-    /**
-     * Insert into query method with it's functionality.
-     * @param array  $args
-     * @param IModel $model
-     * @return void
-     */
-    private function insertQuery(array $args, IModel $model): void
-    {
-        $args = $this->merge($args, $model);
-        $args = $this->formatArguments($args);
-        
-        $keys   = implode(', ', array_keys($args));
-        $values = implode(', ', array_values($args));
-        
-        $this->connect();
-        
-        $this->connection->query("INSERT INTO `{$model::$table}` ({$keys}) VALUES ({$values});");
-        
-        $this->close();
-    }
-    
-    /**
-     * Merge the basic fields from the model with the inputted data.
-     * @param array  $args
-     * @param IModel $model
-     * @return array
-     */
-    public function merge(array $args, IModel $model): array
-    {
-        $newArgs = $model::$fields;
-        
-        foreach ($model::$fields as $key => $field) {
-            if (array_key_exists($key, $args)) {
-                $newArgs[$key] = $args[$key];
-            }
-        }
-        
-        return $newArgs;
-    }
-    
-    /**
-     * Formats the arguments for SQL queries.
-     * @param array $args
-     * @return array
-     */
-    public function formatArguments(array $args): array
-    {
-        $keys = $values = [];
-        
-        foreach (array_keys($args) as $key) {
-            $newKey = "`{$key}`";
-            array_push($keys, $newKey);
-        }
-        
-        foreach (array_values($args) as $value) {
-            if ($value === 'NULL') {
-                array_push($values, $value);
-                continue;
-            }
-            
-            $newValue = "'{$value}'";
-            array_push($values, $newValue);
-        }
-        
-        return array_combine($keys, $values);
-    }
-    
-    /**
-     * Connect to the database using the credentials.
+     * Connect to the database.
      */
     private function connect(): void
     {
-        $this->connection = new mysqli(self::DB_HOST, self::DB_USER, self::DB_PASS, self::DB_NAME);
+        try {
+            $this->dbh = new PDO(
+                "sqlsrv:server=" . DatabaseConfig::HOST . "; Database=" . DatabaseConfig::DATABASE,
+                DatabaseConfig::USER,
+                DatabaseConfig::PASSWORD
+            );
+
+            // Uncomment bottom line when debugging
+            // $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $error) {
+            exit("Kan geen verbinding maken met database!");
+
+            // Uncomment bottom line when debugging
+            // echo "Error connecting to Database: {$error->getMessage()} <br>";
+        }
     }
-    
+
     /**
-     * Closes the database connection.
+     * Close the database connection.
      */
     private function close(): void
     {
-        $this->connection->close();
+        $this->dbh = null;
     }
-    
+
     /**
-     * Get method for Controllers
-     * @param string $table
-     * @param int    $id
-     * @return array
+     * Create method to be used in Controllers.
+     * @param   string      $table      Table to insert data in.
+     * @param   array       $data       Associative array of which the key represents the column name.
+     * @throws  RuntimeException        Throws  exception when error occurs while executing the query.
+     */
+    public function create(string $table, array $data): void
+    {
+        $this->connect();
+
+        $columns = implode(', ', array_keys($data));
+        $values  = $this->formatInsertValues(array_values($data));
+
+        $query = "INSERT INTO $table ($columns) VALUES ($values)";
+
+        $sth = $this->dbh->prepare($query);
+
+        if (!$sth->execute()) {
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        }
+
+        unset($sth);
+        $this->close();
+    }
+
+    /**
+     * Read method to be used in Controllers.
+     * @param   string      $table  Table to fetch data from.
+     * @param   id          $id     Row with ID.
+     * @return  array               Returns fetched row as an associative Arrays.
+     * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
      */
     public function get(string $table, int $id): array
     {
-        return $this->simpleQuery("SELECT * FROM {$table} WHERE `id` = {$id}");
-    }
-    
-    /**
-     * Basic query method (get, index, delete).
-     * @param string $query
-     * @param bool   $delete
-     * @return array|null
-     */
-    private function simpleQuery(string $query, bool $delete = false): ?array
-    {
         $this->connect();
-        
-        $result = $this->connection->query($query);
-        
-        $this->close();
-        
-        return !$delete ? mysqli_fetch_assoc($result) : null;
-    }
-    
-    /**
-     * Update method for Controllers.
-     * @param string $table
-     * @param array  $args
-     * @param int    $id
-     * @return array
-     */
-    public function update(string $table, array $args, int $id): array
-    {
-        $statments = [];
-        
-        foreach ($args as $key => $arg) {
-            array_push($updateStatements, "{$key} = {$arg}");
+
+        $query = "SELECT * FROM $table where ID = :id";
+
+        $sth = $this->dbh->prepare($query);
+        $sth->bindParam(':id', $id, PDO::PARAM_INT);
+
+        if (!$sth->execute()) {
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
-        
-        $formattedStatements = implode(',', $statments);
-        
-        $result = $this->connection->query("UPDATE `{$table}` SET {$formattedStatements} WHERE `id` = {$id}");
-        
+
+        // Do something with the data.
+        $buffer = $sth->fetch(PDO::FETCH_ASSOC);
+
+        unset($sth);
         $this->close();
-        
-        return mysqli_fetch_assoc($result);
+
+        return $buffer;
     }
-    
+
     /**
-     * Index method for Controllers.
-     * @param string $table
-     * @return array
+     * Read method to be used in Controllers.
+     * @param   string      $table  Table to fetch data from.
+     * @return  array               Returns numeric array with all rows (as an associative arrays).
+     * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
      */
     public function index(string $table): array
     {
-        return $this->simpleQuery("SELECT * FROM {$table}");
+        $this->connect();
+
+        // Query
+        $query = "SELECT * FROM $table";
+
+        $sth = $this->dbh->prepare($query);
+
+        if (!$sth->execute()) {
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        }
+
+        $buffer = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        unset($sth);
+        $this->close();
+
+        // Return data
+        return $buffer;
     }
-    
+
     /**
-     * Delete method for Controllers.
-     * @param string $table
-     * @param int    $id
-     * @return void
+     * Update method to be used in Controllers.
+     * @param   string      $table  Update row in which table?
+     * @param   int         $id     Row with ID?
+     * @param   array       $data   Associative array of which the key is the column name to be updated with its value.
+     * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
+     */
+    public function update(string $table, int $id, array $data): void
+    {
+        $this->connect();
+
+        $query = "UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id";
+
+        $sth = $this->dbh->prepare($query);
+        $sth->bindParam(':id', $id, PDO::PARAM_INT);
+
+        if (!$sth->execute()) {
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        }
+
+        unset($sth);
+        $this->close();
+    }
+
+    /**
+     * Delete method to be used in Controllers.
+     * @param   string      $table  Delete from which table?
+     * @param   int         $id     Row with ID?
+     * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
      */
     public function delete(string $table, int $id): void
     {
-        $this->simpleQuery("DELETE FROM {$table} WHERE `id` = {$id}", true);
+        $this->connect();
+
+        $query = "DELETE FROM $table WHERE ID = :id";
+
+        $sth = $this->dbh->prepare($query);
+        $sth->bindParam(':id', $id, PDO::PARAM_INT);
+
+        if (!$sth->execute()) {
+            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        }
+
+        unset($sth);
+        $this->close();
+    }
+
+
+    // Helper Functions
+
+    /**
+     * Function to prepare an array of values for the SQL INSERT INTO statement.
+     * @param   array   $values     Values to be formatted/prepared.
+     * @return  string              String formatted as follows: 'value1', 'value2', 'value3'
+     */
+    private function formatInsertValues(array $values): string
+    {
+        foreach ($values as &$value) {
+            $value = "'$value'";
+        }
+
+        return implode(', ', $values);
+    }
+
+    /**
+     * Function to prepare an array of values for the SQL UPDATE statement.
+     * @param   array   $array      Array with key (columns) and value (to update) pairs.
+     * @return  string              String formatted as follows: 'column1' = 'value1', 'column2' = 'value2'
+     */
+    private function formatUpdateValues(array $array): string
+    {
+        $buffer = "";
+
+        foreach ($array as $key => $value) {
+            $buffer .= is_numeric($value) ? "$key = $value, " :  "$key = '$value', ";
+        }
+
+        trim($buffer, ' '); // Trim last space
+        trim($buffer, ','); // Trim trailing comma
+
+        return $buffer;
     }
 }
