@@ -5,6 +5,7 @@ namespace Core;
 use Config\DatabaseConfig;
 use PDO;
 use PDOException;
+use PDOStatement;
 use RuntimeException;
 
 /**
@@ -16,12 +17,12 @@ use RuntimeException;
 class Database
 {
     /**
-     * @var $dbh Database handler also known as database connection.
+     * @var $dbh PDO PDO Handler also known as database connection.
      */
     private $dbh;
 
     /**
-     * @var $sth Statement Handler.
+     * @var $sth PDOStatement Statement handler.
      */
     private $sth;
 
