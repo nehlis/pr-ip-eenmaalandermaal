@@ -18,6 +18,7 @@ use Core\Component; ?>
     <?php
 
     Component::render('navbar');
+    Component::render('category-bar');
 
     include_once VIEWS_DIR . DS . $view . '.php';
 
