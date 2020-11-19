@@ -21,6 +21,11 @@ class Database
     private $dbh;
 
     /**
+     * @var $sth Statement Handler.
+     */
+    private $sth;
+
+    /**
      * Connect to the database.
      */
     private function connect(): void
@@ -47,6 +52,7 @@ class Database
      */
     private function close(): void
     {
+        unset($this->sth);
         $this->dbh = null;
     }
 
@@ -65,20 +71,19 @@ class Database
 
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
 
-        $sth = $this->dbh->prepare($query);
+        $this->sth = $this->dbh->prepare($query);
 
-        if (!$sth->execute()) {
+        if (!$this->sth->execute()) {
             throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
-        unset($sth);
         $this->close();
     }
 
     /**
      * Read method to be used in Controllers.
      * @param   string      $table  Table to fetch data from.
-     * @param   id          $id     Row with ID.
+     * @param   int         $id     Row with ID.
      * @return  array               Returns fetched row as an associative Arrays.
      * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
      */
@@ -88,17 +93,15 @@ class Database
 
         $query = "SELECT * FROM $table where ID = :id";
 
-        $sth = $this->dbh->prepare($query);
-        $sth->bindParam(':id', $id, PDO::PARAM_INT);
+        $this->sth = $this->dbh->prepare($query);
+        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        if (!$sth->execute()) {
+        if (!$this->sth->execute()) {
             throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
-        // Do something with the data.
-        $buffer = $sth->fetch(PDO::FETCH_ASSOC);
+        $buffer = $this->sth->fetch(PDO::FETCH_ASSOC);
 
-        unset($sth);
         $this->close();
 
         return $buffer;
@@ -117,15 +120,14 @@ class Database
         // Query
         $query = "SELECT * FROM $table";
 
-        $sth = $this->dbh->prepare($query);
+        $this->sth = $this->dbh->prepare($query);
 
-        if (!$sth->execute()) {
+        if (!$this->sth->execute()) {
             throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
-        $buffer = $sth->fetchAll(PDO::FETCH_ASSOC);
+        $buffer = $this->sth->fetchAll(PDO::FETCH_ASSOC);
 
-        unset($sth);
         $this->close();
 
         // Return data
@@ -145,14 +147,13 @@ class Database
 
         $query = "UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id";
 
-        $sth = $this->dbh->prepare($query);
-        $sth->bindParam(':id', $id, PDO::PARAM_INT);
-
-        if (!$sth->execute()) {
+        
+        $this->sth = $this->dbh->prepare($query);
+        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
+        if (!$this->sth->execute()) {
             throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
-        unset($sth);
         $this->close();
     }
 
@@ -168,14 +169,13 @@ class Database
 
         $query = "DELETE FROM $table WHERE ID = :id";
 
-        $sth = $this->dbh->prepare($query);
-        $sth->bindParam(':id', $id, PDO::PARAM_INT);
+        $this->sth = $this->dbh->prepare($query);
+        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        if (!$sth->execute()) {
+        if (!$this->sth->execute()) {
             throw new RuntimeException("Error bij uitvoeren query... ", 0);
         }
 
-        unset($sth);
         $this->close();
     }
 
@@ -209,8 +209,8 @@ class Database
             $buffer .= is_numeric($value) ? "$key = $value, " :  "$key = '$value', ";
         }
 
-        trim($buffer, ' '); // Trim last space
-        trim($buffer, ','); // Trim trailing comma
+        $buffer = trim($buffer, " "); // Trim last space
+        $buffer = trim($buffer, ","); // Trim trailing comma        
 
         return $buffer;
     }
