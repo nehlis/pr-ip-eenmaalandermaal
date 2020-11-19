@@ -1,4 +1,4 @@
-.signin-wrapper {
+.signin-wrapper, .signup-wrapper {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -10,7 +10,7 @@
 
 .form-signin {
   width: 100%;
-  max-width: 330px;
+  max-width: 400px;
   padding: 15px;
   margin: auto;
 }
@@ -41,4 +41,15 @@
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.form-signup {
+  width: 100%;
+  max-width: 700px;
+  padding: 15px;
+  margin: auto;
+}
+
+.has-signup-devider {
+  border-right: solid 1px lightgrey;
 }
