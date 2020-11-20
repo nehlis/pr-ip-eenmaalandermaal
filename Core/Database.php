@@ -14,7 +14,6 @@ use Error;
  * In this class you find all generic CRUD operations to be used in Controller classes.
  * 
  * TODO: Dubbele code eruit halen!
- * TODO: Errors zij niet concreet. Alles wordt onder een enkele 'Error' gethrowd. Fix als nodig is!
  * 
  */
 class Database
@@ -40,8 +39,11 @@ class Database
                 DatabaseConfig::USER,
                 DatabaseConfig::PASSWORD
             );
-        } catch (PDOException $error) {
-            exit("Kan geen verbinding maken met database!");
+
+            // Uncomment bottom line when debugging
+            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
         }
     }
 
@@ -72,7 +74,11 @@ class Database
 
         $this->sth = $this->dbh->prepare($query);
 
-        $result = $this->sth->execute();
+        try {
+            $result = $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
+        }
 
         $this->close();
 
@@ -97,7 +103,11 @@ class Database
         $this->sth = $this->dbh->prepare($query);
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        $this->sth->execute();
+        try {
+            $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
+        }
 
         $result = $this->sth->fetch(PDO::FETCH_ASSOC);
 
@@ -127,7 +137,11 @@ class Database
         $this->sth = $this->dbh->prepare($query);
         $this->sth->bindParam(':value', $value, PDO::PARAM_STR);
 
-        $this->sth->execute();
+        try {
+            $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
+        }
 
         $result = $this->sth->fetch(PDO::FETCH_ASSOC);
 
@@ -155,16 +169,22 @@ class Database
 
         $this->sth = $this->dbh->prepare($query);
 
-        $this->sth->execute();
+        try {
+            $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
+        }
 
         $result = $this->sth->fetchAll(PDO::FETCH_ASSOC);
 
         $this->close();
 
+        // exit ($result);
+
         if ($result && sizeof($result) > 0) {
             return $result;
         } else {
-            return new Error("[Database] No rows found!");
+            throw new Error("[Database] No rows found!");
         }
     }
 
@@ -184,7 +204,12 @@ class Database
         $this->sth = $this->dbh->prepare($query);
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        $result = $this->sth->execute();
+        try {
+            $result = $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
+        }
+
 
         $this->close();
 
@@ -209,7 +234,12 @@ class Database
         $this->sth = $this->dbh->prepare($query);
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        $result = $this->sth->execute();
+        try {
+            $result = $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
+        }
+
 
         $this->close();
 
@@ -251,5 +281,10 @@ class Database
         $buffer = trim($buffer, ","); // Trim trailing comma        
 
         return $buffer;
+    }
+
+    private function handlePDOException(string $message): void
+    {
+        echo '<div class="alert alert-danger" role="alert">' . $message . ' </div>';
     }
 }
