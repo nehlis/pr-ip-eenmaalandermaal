@@ -88,7 +88,7 @@ class Database
      * @return  array           Returns fetched row as an associative array.
      * @throws  Error           Throws error when nothing was found or when execution fails (SQL related).
      */
-    public function get(string $table, int $id): array
+    public function get(string $table, int $id): ?array
     {
         $this->connect();
 
@@ -118,7 +118,7 @@ class Database
      * @return  array               Returns fetched row as an associative Arrays.
      * @throws  Error               Throws error when nothing was found or when execution fails (SQL related).
      */
-    public function getByColumn(string $table, string $column, string $value): array
+    public function getByColumn(string $table, string $column, string $value): ?array
     {
         $this->connect();
 
@@ -146,7 +146,7 @@ class Database
      * @return  array           Returns numeric array with all rows (as an associative arrays).
      * @throws  Error           Throws error when nothing was found or when execution fails (SQL related).
      */
-    public function index(string $table): array
+    public function index(string $table): ?array
     {
         $this->connect();
 
