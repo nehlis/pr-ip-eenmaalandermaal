@@ -2,6 +2,10 @@
 
 namespace Core;
 
+/**
+ * Class Formatter
+ * @package Core
+ */
 class Formatter
 {
     /**

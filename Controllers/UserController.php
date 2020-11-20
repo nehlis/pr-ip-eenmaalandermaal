@@ -4,7 +4,6 @@ namespace Controllers;
 
 use Interfaces\IController;
 use Core\Database;
-use Error;
 
 /**
  * User Controller
