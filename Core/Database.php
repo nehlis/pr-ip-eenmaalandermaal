@@ -74,15 +74,11 @@ class Database
 
         $this->sth = $this->dbh->prepare($query);
 
-        try {
-            $result = $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
+        $this->execute();
 
         $this->close();
 
-        if ($result === false) {
+        if (!isset($result) || !$result) {
             throw new Error("[Database] Error executing create query!");
         }
     }
@@ -98,22 +94,16 @@ class Database
     {
         $this->connect();
 
-        $query = "SELECT * FROM $table where ID = :id";
-
-        $this->sth = $this->dbh->prepare($query);
+        $this->sth = $this->dbh->prepare("SELECT * FROM $table where ID = :id");
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        try {
-            $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
+        $this->execute();
 
         $result = $this->sth->fetch(PDO::FETCH_ASSOC);
 
         $this->close();
 
-        if ($result && sizeof($result) > 0) {
+        if (!empty($result)) {
             return $result;
         } else {
             throw new Error("[Database] Row where ID = $id not found!");
@@ -131,17 +121,11 @@ class Database
     public function getByColumn(string $table, string $column, string $value): ?array
     {
         $this->connect();
-
-        $query = "SELECT * FROM $table where $column = :value";
-
-        $this->sth = $this->dbh->prepare($query);
+        
+        $this->sth = $this->dbh->prepare("SELECT * FROM $table where $column = :value");
         $this->sth->bindParam(':value', $value, PDO::PARAM_STR);
 
-        try {
-            $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
+        $this->execute();
 
         $result = $this->sth->fetch(PDO::FETCH_ASSOC);
 
@@ -163,17 +147,10 @@ class Database
     public function index(string $table): ?array
     {
         $this->connect();
+        
+        $this->sth = $this->dbh->prepare("SELECT * FROM $table");
 
-        // Query
-        $query = "SELECT * FROM $table";
-
-        $this->sth = $this->dbh->prepare($query);
-
-        try {
-            $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
+        $this->execute();
 
         $result = $this->sth->fetchAll(PDO::FETCH_ASSOC);
 
@@ -195,18 +172,11 @@ class Database
     public function update(string $table, int $id, array $data): void
     {
         $this->connect();
-
-        $query = "UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id";
-
-        $this->sth = $this->dbh->prepare($query);
+        
+        $this->sth = $this->dbh->prepare("UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id");
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        try {
-            $result = $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
-
+        $result = $this->execute();
 
         $this->close();
 
@@ -225,18 +195,11 @@ class Database
     public function delete(string $table, int $id): void
     {
         $this->connect();
-
-        $query = "DELETE FROM $table WHERE ID = :id";
-
-        $this->sth = $this->dbh->prepare($query);
+        
+        $this->sth = $this->dbh->prepare("DELETE FROM $table WHERE ID = :id");
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
-
-        try {
-            $result = $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
-
+    
+        $result = $this->execute();
 
         $this->close();
 
@@ -244,9 +207,7 @@ class Database
             throw new Error("[Database] Error executing delete query!");
         }
     }
-
-
-    // Helper Functions
+    
     /**
      * Function to prepare an array of values for the SQL INSERT INTO statement.
      * @param   array   $values     Values to be formatted/prepared.
@@ -287,5 +248,20 @@ class Database
     private function handlePDOException(string $message): void
     {
         echo '<div class="alert alert-danger" role="alert">' . $message . ' </div>';
+    }
+    
+    /**
+     * Execute Statement handler preparation and return it's value.
+     * @return bool
+     */
+    private function execute(): bool
+    {
+        try {
+            $result = $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
+        }
+        
+        return $result ?? false;
     }
 }
