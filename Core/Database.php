@@ -30,6 +30,7 @@ class Database
 
     /**
      * Connect to the database.
+     * @return void
      */
     private function connect(): void
     {
@@ -48,20 +49,20 @@ class Database
     }
 
     /**
-     * Close the database connection.
+     * Close the database connection and un-initializes the statement handler.
+     * @return void
      */
     private function close(): void
     {
-        unset($this->sth);
-        $this->dbh = null;
+        unset($this->sth, $this->dbh);
     }
 
     /**
      * Create method to be used in Controllers.
-     * @param   string  $table  Table to insert data in.
-     * @param   array   $data   Associative array of which the key represents the column name.
-     * @return  void            Returns nothing.
-     * @throws  Error           Throws error when execution fails. Possible cause: SQL conflicts
+     * @param  string $table Table to insert data in.
+     * @param  array  $data  Associative array of which the key represents the column name.
+     * @return void
+     * @throws Error         Throws error when execution fails. Possible cause: SQL conflicts
      */
     public function create(string $table, array $data): void
     {
@@ -78,10 +79,10 @@ class Database
 
     /**
      * Read method to be used in Controllers.
-     * @param   string  $table  Table to fetch data from.
-     * @param   int     $id     Row with ID.
-     * @return  array           Returns fetched row as an associative array.
-     * @throws  Error           Throws error when nothing was found or when execution fails (SQL related).
+     * @param  string $table Table to fetch data from.
+     * @param  int    $id    Row with ID.
+     * @return array         Returns fetched row as an associative array.
+     * @throws Error         Throws error when nothing was found or when execution fails (SQL related).
      */
     public function get(string $table, int $id): ?array
     {
@@ -91,9 +92,9 @@ class Database
             ->prepare("SELECT * FROM $table where ID = :id")
             ->bindParam(':id', $id, PDO::PARAM_INT);
 
-        $this->execute();
-
-        $result = $this->sth->fetch(PDO::FETCH_ASSOC);
+        $result = $this
+            ->execute()
+            ->fetch(PDO::FETCH_ASSOC);
 
         $this->close();
 
@@ -102,11 +103,11 @@ class Database
 
     /**
      * Read method to be used in Controllers.
-     * @param   string  $table      Table to fetch data from.
-     * @param   string  $column     Row where column = 'value'.
-     * @param   string  $value      Value to check for in table.
-     * @return  array               Returns fetched row as an associative Arrays.
-     * @throws  Error               Throws error when nothing was found or when execution fails (SQL related).
+     * @param  string $table  Table to fetch data from.
+     * @param  string $column Row where column = 'value'.
+     * @param  string $value  Value to check for in table.
+     * @return array          Returns fetched row as an associative Arrays.
+     * @throws Error          Throws error when nothing was found or when execution fails (SQL related).
      */
     public function getByColumn(string $table, string $column, string $value): ?array
     {
@@ -116,9 +117,9 @@ class Database
             ->prepare("SELECT * FROM $table where $column = :value")
             ->bindParam(':value', $value, PDO::PARAM_STR);
 
-        $this->execute();
-
-        $result = $this->sth->fetch(PDO::FETCH_ASSOC);
+        $result = $this
+            ->execute()
+            ->fetch(PDO::FETCH_ASSOC);
 
         $this->close();
 
@@ -127,9 +128,9 @@ class Database
 
     /**
      * Read method to be used in Controllers.
-     * @param   string  $table  Table to fetch data from.
-     * @return  array           Returns numeric array with all rows (as an associative arrays).
-     * @throws  Error           Throws error when nothing was found or when execution fails (SQL related).
+     * @param  string $table Table to fetch data from.
+     * @return array         Returns numeric array with all rows (as an associative arrays).
+     * @throws Error         Throws error when nothing was found or when execution fails (SQL related).
      */
     public function index(string $table): ?array
     {
@@ -137,9 +138,9 @@ class Database
         
         $this->sth = $this->dbh->prepare("SELECT * FROM $table");
 
-        $this->execute();
-
-        $result = $this->sth->fetchAll(PDO::FETCH_ASSOC);
+        $result = $this
+            ->execute()
+            ->fetchAll(PDO::FETCH_ASSOC);
 
         $this->close();
 
@@ -166,10 +167,10 @@ class Database
 
     /**
      * Delete method to be used in Controllers.
-     * @param   string  $table  Table to delete a row
-     * @param   int     $id     Delete row where ID = ?
-     * @return  void            Returns nothing.
-     * @throws  Error           Throws error when execution fails. Possible cause: SQL conflicts
+     * @param  string $table Table to delete a row
+     * @param  int    $id    Delete row where ID = ?
+     * @return void          Returns nothing.
+     * @throws Error         Throws error when execution fails. Possible cause: SQL conflicts
      */
     public function delete(string $table, int $id): void
     {
@@ -185,8 +186,8 @@ class Database
     
     /**
      * Function to prepare an array of values for the SQL INSERT INTO statement.
-     * @param   array   $values     Values to be formatted/prepared.
-     * @return  string              String formatted as follows: 'value1', 'value2', 'value3'
+     * @param   array  $values Values to be formatted/prepared.
+     * @return  string         String formatted as follows: 'value1', 'value2', 'value3'
      */
     private function formatInsertValues(array $values): string
     {
@@ -199,8 +200,8 @@ class Database
 
     /**
      * Function to prepare an array of values for the SQL UPDATE statement.
-     * @param   array   $array  Array with key (columns) and value (to update) pairs.
-     * @return  string          String formatted as follows: 'column1' = 'value1', 'column2' = 'value2'
+     * @param   array  $array Array with key (columns) and value (to update) pairs.
+     * @return  string        String formatted as follows: 'column1' = 'value1', 'column2' = 'value2'
      */
     private function formatUpdateValues(array $array): string
     {
@@ -223,17 +224,17 @@ class Database
     }
     
     /**
-     * Execute Statement handler preparation and return it's value.
-     * @return bool
+     * Execute Statement handler.
+     * @return PDOStatement The statement handler for chaining.
      */
-    private function execute(): bool
+    private function execute(): PDOStatement
     {
         try {
-            $result = $this->sth->execute();
+            $this->sth->execute();
         } catch (PDOException $ex) {
             $this->handlePDOException($ex->getMessage());
         }
         
-        return $result ?? false;
+        return $this->sth;
     }
 }
