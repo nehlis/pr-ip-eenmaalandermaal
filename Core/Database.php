@@ -61,16 +61,17 @@ class Database
      */
     public function create(string $table, array $data): void
     {
-        $this->withConnection(function() use ($table, $data)
-        {
-            $columns = Formatter::formatInsertColumns($data);
-            $values  = Formatter::formatInsertValues($data);
-    
-            $this->statement = $this->pdo
-                ->prepare("INSERT INTO $table ($columns) VALUES ($values)");
-    
-            $this->execute();
-        });
+        $this->connect();
+        
+        $columns = Formatter::formatInsertColumns($data);
+        $values  = Formatter::formatInsertValues($data);
+
+        $this->statement = $this->pdo
+            ->prepare("INSERT INTO $table ($columns) VALUES ($values)");
+
+        $this->execute();
+        
+        $this->close();
     }
 
     /**
@@ -81,16 +82,17 @@ class Database
      */
     public function get(string $table, int $id): ?array
     {
-        $result = $this->withConnection(function() use ($table, $id)
-        {
-            $this->statement = $this->pdo
-                ->prepare("SELECT * FROM $table where ID = :id")
-                ->bindParam(':id', $id, PDO::PARAM_INT);
-    
-            return $this
-                ->execute()
-                ->fetch(PDO::FETCH_ASSOC);
-        });
+        $this->connect();
+        
+        $this->statement = $this->pdo
+            ->prepare("SELECT * FROM $table where ID = :id")
+            ->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $result = $this
+            ->execute()
+            ->fetch(PDO::FETCH_ASSOC);
+            
+        $this->close();
 
         return !empty($result) ? $result : null;
     }
@@ -104,16 +106,18 @@ class Database
      */
     public function getByColumn(string $table, string $column, string $value): ?array
     {
-        $result = $this->withConnection(function() use ($column, $table, $value)
-        {
-            $this->statement = $this->pdo
-                ->prepare("SELECT * FROM $table where $column = :value")
-                ->bindParam(':value', $value, PDO::PARAM_STR);
-    
-            return $this
-                ->execute()
-                ->fetch(PDO::FETCH_ASSOC);
-        });
+        $this->connect();
+        
+        $this->statement = $this->pdo
+            ->prepare("SELECT * FROM $table where $column = :value")
+            ->bindParam(':value', $value, PDO::PARAM_STR);
+
+        $result = $this
+            ->execute()
+            ->fetch(PDO::FETCH_ASSOC);
+        
+        $this->close();
+      
 
         return !empty($result) ? $result : null;
     }
@@ -125,14 +129,15 @@ class Database
      */
     public function index(string $table): ?array
     {
-        $result = $this->withConnection(function() use ($table)
-        {
-            $this->statement = $this->pdo->prepare("SELECT * FROM $table");
-    
-            return $this
-                ->execute()
-                ->fetchAll(PDO::FETCH_ASSOC);
-        });
+        $this->connect();
+        
+        $this->statement = $this->pdo->prepare("SELECT * FROM $table");
+
+        $result = $this
+            ->execute()
+            ->fetchAll(PDO::FETCH_ASSOC);
+            
+        $this->close();
 
         return !empty($result) ? $result : null;
     }
@@ -145,14 +150,14 @@ class Database
      */
     public function update(string $table, int $id, array $data): void
     {
-        $this->withConnection(function() use ($table, $id, $data)
-        {
-            $this->statement = $this->pdo
-                ->prepare("UPDATE $table SET " . Formatter::formatUpdateValues($data) . " WHERE ID = :id")
-                ->bindParam(':id', $id, PDO::PARAM_INT);
-    
-            $this->execute();
-        });
+        $this->connect();
+        
+        $this->statement = $this->pdo
+            ->prepare("UPDATE $table SET " . Formatter::formatUpdateValues($data) . " WHERE ID = :id")
+            ->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $this->execute();
+        $this->close();
     }
 
     /**
@@ -163,14 +168,14 @@ class Database
      */
     public function delete(string $table, int $id): void
     {
-        $this->withConnection(function() use ($table, $id)
-        {
-            $this->statement = $this->pdo
-                ->prepare("DELETE FROM $table WHERE ID = :id")
-                ->bindParam(':id', $id, PDO::PARAM_INT);
-    
-            $this->execute();
-        });
+        $this->connect();
+        
+        $this->statement = $this->pdo
+            ->prepare("DELETE FROM $table WHERE ID = :id")
+            ->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $this->execute();
+        $this->close();
     }
     
     /**
@@ -195,19 +200,5 @@ class Database
         }
         
         return $this->statement;
-    }
-    
-    /**
-     * withConnections an auto connect and auto close simplified.
-     * @param  $function Closure The function that you want to be called in between connections
-     * @return           mixed
-     */
-    private function withConnection(Closure $function)
-    {
-        $this->connect();
-        $result = $function();
-        $this->close();
-        
-        return $result;
     }
 }
