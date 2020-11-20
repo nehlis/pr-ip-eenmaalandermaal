@@ -32,7 +32,7 @@ interface IController
     public function index(): array;
 
     /**
-     * Update 
+     * update 
      * @param   int     $id     Row with ID?
      * @param   array   $data   Associative array of which the key is the column name to be updated with its value.
      * @throws  Error           Throws error when execution failed.
@@ -40,7 +40,7 @@ interface IController
     public function update(int $id, array $data): array;
 
     /**
-     * Delete 
+     * delete 
      * @param   int     $id     Row with ID?
      * @throws  Error           Throws error when execution failed.
      */
