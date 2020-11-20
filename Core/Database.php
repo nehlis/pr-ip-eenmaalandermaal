@@ -21,12 +21,12 @@ use Error;
 class Database
 {
     /**
-     * @var $dbh PDO PDO Handler also known as database connection.
+     * @var PDO $dbh PDO Handler also known as the database handler aka the database connection.
      */
     private $dbh;
 
     /**
-     * @var $sth PDOStatement Statement handler.
+     * @var PDOStatement $sth Statement handler.
      */
     private $sth;
 
