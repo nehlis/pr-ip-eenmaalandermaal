@@ -5,7 +5,6 @@ namespace Controllers;
 use Interfaces\IController;
 use Core\Database;
 use Error;
-use PDOException;
 
 /**
  * User Controller

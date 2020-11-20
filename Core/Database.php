@@ -10,11 +10,11 @@ use Error;
 
 /**
  * Database Class
- * 
+ *
  * In this class you find all generic CRUD operations to be used in Controller classes.
- * 
+ *
  * TODO: Dubbele code eruit halen!
- * 
+ *
  */
 class Database
 {
@@ -124,7 +124,7 @@ class Database
      * Read method to be used in Controllers.
      * @param   string  $table      Table to fetch data from.
      * @param   string  $column     Row where column = 'value'.
-     * @param   string  $value      
+     * @param   string  $value      Value to check for in table.
      * @return  array               Returns fetched row as an associative Arrays.
      * @throws  Error               Throws error when nothing was found or when execution fails (SQL related).
      */
@@ -147,7 +147,7 @@ class Database
 
         $this->close();
 
-        if ($result && sizeof($result) > 0) {
+        if (!empty($result)) {
             return $result;
         } else {
             throw new Error("[Database] No rows where $column = '$value' found!");
@@ -179,9 +179,7 @@ class Database
 
         $this->close();
 
-        // exit ($result);
-
-        if ($result && sizeof($result) > 0) {
+        if (!empty($result)) {
             return $result;
         } else {
             throw new Error("[Database] No rows found!");
@@ -190,10 +188,9 @@ class Database
 
     /**
      * Update method to be used in Controllers.
-     * @param   string  $table  Update row in which table?
-     * @param   int     $id     Row with ID?
-     * @param   void    $data   Associative array of which the key is the column name to be updated with its value.
-     * @throws  Error           Throws error when execution fails. Possible cause: SQL conflicts
+     * @param string $table Update row in which table?
+     * @param int    $id    Row with ID?
+     * @param array  $data  Associative array of which the key is the column name to be updated with its value.
      */
     public function update(string $table, int $id, array $data): void
     {
@@ -282,7 +279,11 @@ class Database
 
         return $buffer;
     }
-
+    
+    /**
+     * Handles PDO Exceptions with HTML output.
+     * @param string $message
+     */
     private function handlePDOException(string $message): void
     {
         echo '<div class="alert alert-danger" role="alert">' . $message . ' </div>';
