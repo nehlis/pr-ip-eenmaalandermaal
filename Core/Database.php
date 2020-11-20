@@ -30,9 +30,11 @@ class Database
      */
     private function connect(): void
     {
+        $mssql = stripos(PHP_OS, 'WIN') === 0 ? 'sqlsrv:server=' : 'mssql:host=';
+        
         try {
             $this->dbh = new PDO(
-                "sqlsrv:server=" . DatabaseConfig::HOST . "; Database=" . DatabaseConfig::DATABASE,
+                $mssql . DatabaseConfig::HOST . "; Database=" . DatabaseConfig::DATABASE,
                 DatabaseConfig::USER,
                 DatabaseConfig::PASSWORD
             );
