@@ -69,18 +69,11 @@ class Database
 
         $columns = implode(', ', array_keys($data));
         $values  = $this->formatInsertValues(array_values($data));
-
-        $query = "INSERT INTO $table ($columns) VALUES ($values)";
-
-        $this->sth = $this->dbh->prepare($query);
+        
+        $this->sth = $this->dbh->prepare("INSERT INTO $table ($columns) VALUES ($values)");
 
         $this->execute();
-
         $this->close();
-
-        if (!isset($result) || !$result) {
-            throw new Error("[Database] Error executing create query!");
-        }
     }
 
     /**
@@ -94,8 +87,9 @@ class Database
     {
         $this->connect();
 
-        $this->sth = $this->dbh->prepare("SELECT * FROM $table where ID = :id");
-        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
+        $this->sth = $this->dbh
+            ->prepare("SELECT * FROM $table where ID = :id")
+            ->bindParam(':id', $id, PDO::PARAM_INT);
 
         $this->execute();
 
@@ -103,11 +97,7 @@ class Database
 
         $this->close();
 
-        if (!empty($result)) {
-            return $result;
-        } else {
-            throw new Error("[Database] Row where ID = $id not found!");
-        }
+        return !empty($result) ? $result : null;
     }
 
     /**
@@ -122,8 +112,9 @@ class Database
     {
         $this->connect();
         
-        $this->sth = $this->dbh->prepare("SELECT * FROM $table where $column = :value");
-        $this->sth->bindParam(':value', $value, PDO::PARAM_STR);
+        $this->sth = $this->dbh
+            ->prepare("SELECT * FROM $table where $column = :value")
+            ->bindParam(':value', $value, PDO::PARAM_STR);
 
         $this->execute();
 
@@ -131,11 +122,7 @@ class Database
 
         $this->close();
 
-        if (!empty($result)) {
-            return $result;
-        } else {
-            throw new Error("[Database] No rows where $column = '$value' found!");
-        }
+        return !empty($result) ? $result : null;
     }
 
     /**
@@ -156,11 +143,7 @@ class Database
 
         $this->close();
 
-        if (!empty($result)) {
-            return $result;
-        } else {
-            throw new Error("[Database] No rows found!");
-        }
+        return !empty($result) ? $result : null;
     }
 
     /**
@@ -173,16 +156,12 @@ class Database
     {
         $this->connect();
         
-        $this->sth = $this->dbh->prepare("UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id");
-        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
+        $this->sth = $this->dbh
+            ->prepare("UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id")
+            ->bindParam(':id', $id, PDO::PARAM_INT);
 
-        $result = $this->execute();
-
+        $this->execute();
         $this->close();
-
-        if (!$result) {
-            throw new Error("[Database] Error executing update query!");
-        }
     }
 
     /**
@@ -196,16 +175,12 @@ class Database
     {
         $this->connect();
         
-        $this->sth = $this->dbh->prepare("DELETE FROM $table WHERE ID = :id");
-        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
+        $this->sth = $this->dbh
+            ->prepare("DELETE FROM $table WHERE ID = :id")
+            ->bindParam(':id', $id, PDO::PARAM_INT);
     
-        $result = $this->execute();
-
+        $this->execute();
         $this->close();
-
-        if (!$result) {
-            throw new Error("[Database] Error executing delete query!");
-        }
     }
     
     /**
@@ -235,10 +210,7 @@ class Database
             $buffer .= is_numeric($value) ? "$key = $value, " :  "$key = '$value', ";
         }
 
-        $buffer = trim($buffer, " "); // Trim last space
-        $buffer = trim($buffer, ","); // Trim trailing comma        
-
-        return $buffer;
+        return trim($buffer, ", ");
     }
     
     /**
