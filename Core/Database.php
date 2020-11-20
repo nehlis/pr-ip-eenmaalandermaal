@@ -4,9 +4,8 @@ namespace Core;
 
 use Config\DatabaseConfig;
 use PDO;
-use PDOException;
 use PDOStatement;
-use RuntimeException;
+use PDOException;
 use Error;
 
 /**

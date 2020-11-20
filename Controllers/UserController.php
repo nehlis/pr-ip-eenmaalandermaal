@@ -4,7 +4,6 @@ namespace Controllers;
 
 use Interfaces\IController;
 use Core\Database;
-
 use Error;
 
 /**
@@ -28,7 +27,7 @@ class UserController implements IController
     public function __construct()
     {
         $this->database = new Database();
-        $this->table = 'test';
+        $this->table = 'Account';
     }
 
     public function create(array $data): array
