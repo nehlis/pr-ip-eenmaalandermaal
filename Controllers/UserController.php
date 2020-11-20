@@ -36,7 +36,7 @@ class UserController implements IController
             $this->database->create($this->table, $data);
             return $this->database->getByColumn($this->table, 'email', $data['email']);
         } catch (Error $error) {
-            throw new Error("Gebruiker kon niet aangemaakt worden! Bestaat al!");
+            throw new Error("Gebruiker kon niet aangemaakt worden!");
         }
     }
 
