@@ -18,19 +18,19 @@ class UserController implements IController
      * @var Database $database Database class which contains all generic CRUD functions.
      */
     private $database;
-    
+
     /**
      * @var string $table Table name on which the CRUD operations should apply.
      */
-    private $table;
+    private static $table = 'Account';
+    
 
     public function __construct()
     {
         $this->database = new Database();
-        $this->table = 'Account';
     }
 
-    public function create(array $data): array
+    public function create(array $data): ?array
     {
         try {
             $this->database->create($this->table, $data);
@@ -40,7 +40,7 @@ class UserController implements IController
         }
     }
 
-    public function get(int $id): array
+    public function get(int $id): ?array
     {
         try {
             return $this->database->get($this->table, $id);
@@ -49,7 +49,7 @@ class UserController implements IController
         }
     }
 
-    public function index(): array
+    public function index(): ?array
     {
         try {
             return $this->database->index($this->table);
@@ -58,7 +58,7 @@ class UserController implements IController
         }
     }
 
-    public function update(int $id, array $data): array
+    public function update(int $id, array $data): ?array
     {
         // First check if item exists.
         $this->get($id);
@@ -71,7 +71,7 @@ class UserController implements IController
         }
     }
 
-    public function delete(int $id): array
+    public function delete(int $id): ?array
     {
         // First check if item exists.
         $user = $this->get($id);

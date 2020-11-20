@@ -40,9 +40,8 @@ class Database
                 DatabaseConfig::USER,
                 DatabaseConfig::PASSWORD
             );
-
         } catch (PDOException $error) {
-            exit("Kan geen verbinding maken met database!");            
+            exit("Kan geen verbinding maken met database!");
         }
     }
 
@@ -77,7 +76,7 @@ class Database
 
         $this->close();
 
-        if ($result === FALSE) {
+        if ($result === false) {
             throw new Error("[Database] Error executing create query!");
         }
     }
@@ -104,10 +103,10 @@ class Database
 
         $this->close();
 
-        if ($result === FALSE || sizeof($result) < 1) {
-            throw new Error("[Database] Row where ID = $id not found!");
-        } else {
+        if ($result && sizeof($result) > 0) {
             return $result;
+        } else {
+            throw new Error("[Database] Row where ID = $id not found!");
         }
     }
 
@@ -134,10 +133,10 @@ class Database
 
         $this->close();
 
-        if ($result === FALSE || sizeof($result) < 1) {
-            throw new Error("[Database] No rows where $column = '$value' found!");
-        } else {
+        if ($result && sizeof($result) > 0) {
             return $result;
+        } else {
+            throw new Error("[Database] No rows where $column = '$value' found!");
         }
     }
 
@@ -162,10 +161,10 @@ class Database
 
         $this->close();
 
-        if ($result === FALSE || sizeof($result) < 1) {
-            return new Error("[Database] No rows found!");
-        } else {
+        if ($result && sizeof($result) > 0) {
             return $result;
+        } else {
+            return new Error("[Database] No rows found!");
         }
     }
 
@@ -189,7 +188,7 @@ class Database
 
         $this->close();
 
-        if ($result === FALSE) {
+        if (!$result) {
             throw new Error("[Database] Error executing update query!");
         }
     }
@@ -214,7 +213,7 @@ class Database
 
         $this->close();
 
-        if ($result === FALSE) {
+        if (!$result) {
             throw new Error("[Database] Error executing delete query!");
         }
     }

@@ -2,6 +2,8 @@
 
 namespace Interfaces;
 
+use Error;
+
 /**
  * Interface IController
  * @package Interfaces
@@ -14,7 +16,7 @@ interface IController
      * @return  array           Returns row when creation was successful.
      * @throws  Error           Throws error when execution failed.
      */
-    public function create(array $data): array;
+    public function create(array $data): ?array;
 
     /**
      * get
@@ -22,14 +24,14 @@ interface IController
      * @return  array           Returns row when fetch was successful.
      * @throws  Error           Throws error when execution failed.
      */
-    public function get(int $id): array;
+    public function get(int $id): ?array;
 
     /**
      * index
      * @return  array   Returns all rows when fetch was successful.
      * @throws  Error   Throws error when execution failed.
      */
-    public function index(): array;
+    public function index(): ?array;
 
     /**
      * update 
@@ -37,12 +39,12 @@ interface IController
      * @param   array   $data   Associative array of which the key is the column name to be updated with its value.
      * @throws  Error           Throws error when execution failed.
      */
-    public function update(int $id, array $data): array;
+    public function update(int $id, array $data): ?array;
 
     /**
      * delete 
      * @param   int     $id     Row with ID?
      * @throws  Error           Throws error when execution failed.
      */
-    public function delete(int $id): array;
+    public function delete(int $id): ?array;
 }
