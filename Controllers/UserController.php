@@ -5,46 +5,83 @@ namespace Controllers;
 use Interfaces\IController;
 use Core\Database;
 
+use Error;
+
 /**
  * User Controller
  * All CRUD operations
  * 
- * TODO: Add feedback for every function.
+ * TODO: Errors die nu gethrowd worden zijn niet concreet (Alle errors worden opnieuw gethrowd onder 1 error). Misschien concreet maken?
  */
 class UserController implements IController
 {
+    /**
+     * @var Database $database Database class which contains all generic CRUD functions.
+     */
     private $database;
+    
+    /**
+     * @var string $table Table name on which the CRUD operations should apply.
+     */
+    private $table;
 
     public function __construct()
     {
         $this->database = new Database();
+        $this->table = 'test';
     }
 
-    public function create(array $data): void
+    public function create(array $data): array
     {
-        $this->database->create('test', $data);
+        try {
+            $this->database->create($this->table, $data);
+            return $this->database->getByColumn($this->table, 'email', $data['email']);
+        } catch (Error $error) {
+            throw new Error("Gebruiker kon niet aangemaakt worden! Bestaat al!");
+        }
     }
-
 
     public function get(int $id): array
     {
-        return $this->database->get('test', $id);
+        try {
+            return $this->database->get($this->table, $id);
+        } catch (Error $error) {
+            throw new Error("Gebruiker, waarvan ID = $id, niet gevonden!");
+        }
     }
-
 
     public function index(): array
     {
-        return $this->database->index('test');
+        try {
+            return $this->database->index($this->table);
+        } catch (Error $error) {
+            throw new Error("Geen gebruikers gevonden!");
+        }
     }
 
-
-    public function update(int $id, array $data): void
+    public function update(int $id, array $data): array
     {
-        $this->database->update('test', $id, $data);
+        // First check if item exists.
+        $this->get($id);
+
+        try {
+            $this->database->update($this->table, $id, $data);
+            return $this->get($id);
+        } catch (Error $error) {
+            throw new Error("Gebruiker, waarvan ID = $id, niet geupdate!");
+        }
     }
 
+    public function delete(int $id): array
+    {
+        // First check if item exists.
+        $user = $this->get($id);
 
-    public function delete(int $id): void {
-        $this->database->delete('test', $id);
+        try {
+            $this->database->delete($this->table, $id);
+            return $user;   // Return deleted user when success.
+        } catch (Error $error) {
+            throw new Error("Gebruiker, waarvan ID = $id, niet verwijderd!");
+        }
     }
 }
