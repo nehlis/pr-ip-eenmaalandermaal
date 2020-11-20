@@ -6,7 +6,6 @@ use Config\DatabaseConfig;
 use PDO;
 use PDOStatement;
 use PDOException;
-use Error;
 
 /**
  * Database Class
