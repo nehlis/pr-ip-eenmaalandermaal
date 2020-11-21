@@ -19,28 +19,30 @@ use Error;
 class Database
 {
     /**
-     * @var PDO $dbh PDO Handler also known as the database handler aka the database connection.
+     * @var PDO $database PDO Handler also known as the database handler aka the database connection.
      */
-    private $dbh;
+    private $database;
 
     /**
-     * @var PDOStatement $sth Statement handler.
+     * @var PDOStatement $statement Statement handler.
      */
-    private $sth;
+    private $statement;
 
     /**
      * Connect to the database.
      */
-    private function connect(): void
+    private function connect(): Database
     {
         try {
-            $this->dbh = new PDO(DatabaseConfig::getDSN(), DatabaseConfig::USER, DatabaseConfig::PASSWORD);
+            $this->database = new PDO(DatabaseConfig::getDSN(), DatabaseConfig::USER, DatabaseConfig::PASSWORD);
 
             // Uncomment bottom line when debugging
-            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $ex) {
             $this->handlePDOException($ex->getMessage());
         }
+        
+        return $this;
     }
 
     /**
@@ -48,8 +50,8 @@ class Database
      */
     private function close(): void
     {
-        unset($this->sth);
-        $this->dbh = null;
+        unset($this->statement);
+        $this->database = null;
     }
 
     /**
@@ -61,26 +63,15 @@ class Database
      */
     public function create(string $table, array $data): void
     {
-        $this->connect();
-
-        $columns = implode(', ', array_keys($data));
-        $values  = $this->formatInsertValues(array_values($data));
-
-        $query = "INSERT INTO $table ($columns) VALUES ($values)";
-
-        $this->sth = $this->dbh->prepare($query);
-
-        try {
-            $result = $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
+        $columns = Format::insertColumns($data);
+        $values  = Format::insertValues($data);
+        
+        $this
+            ->connect()
+            ->prepare("INSERT INTO $table ($columns) VALUES ($values)")
+            ->execute();
 
         $this->close();
-
-        if ($result === false) {
-            throw new Error("[Database] Error executing create query!");
-        }
     }
 
     /**
@@ -92,28 +83,17 @@ class Database
      */
     public function get(string $table, int $id): ?array
     {
-        $this->connect();
+        $this
+            ->connect()
+            ->prepare("SELECT * FROM $table where ID = :id")
+            ->bind(':id', $id, PDO::PARAM_INT)
+            ->execute();
 
-        $query = "SELECT * FROM $table where ID = :id";
-
-        $this->sth = $this->dbh->prepare($query);
-        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
-
-        try {
-            $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
-
-        $result = $this->sth->fetch(PDO::FETCH_ASSOC);
+        $result = $this->statement->fetch(PDO::FETCH_ASSOC);
 
         $this->close();
 
-        if ($result && sizeof($result) > 0) {
-            return $result;
-        } else {
-            throw new Error("[Database] Row where ID = $id not found!");
-        }
+        return $result ?? null;
     }
 
     /**
@@ -126,28 +106,17 @@ class Database
      */
     public function getByColumn(string $table, string $column, string $value): ?array
     {
-        $this->connect();
+        $this
+            ->connect()
+            ->prepare("SELECT * FROM $table where $column = :value")
+            ->bind(':value', $value, PDO::PARAM_STR)
+            ->execute();
 
-        $query = "SELECT * FROM $table where $column = :value";
-
-        $this->sth = $this->dbh->prepare($query);
-        $this->sth->bindParam(':value', $value, PDO::PARAM_STR);
-
-        try {
-            $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
-
-        $result = $this->sth->fetch(PDO::FETCH_ASSOC);
+        $result = $this->statement->fetch(PDO::FETCH_ASSOC);
 
         $this->close();
 
-        if (!empty($result)) {
-            return $result;
-        } else {
-            throw new Error("[Database] No rows where $column = '$value' found!");
-        }
+        return $result ?? null;
     }
 
     /**
@@ -158,28 +127,16 @@ class Database
      */
     public function index(string $table): ?array
     {
-        $this->connect();
+        $this
+            ->connect()
+            ->prepare("SELECT * FROM $table")
+            ->execute();
 
-        // Query
-        $query = "SELECT * FROM $table";
-
-        $this->sth = $this->dbh->prepare($query);
-
-        try {
-            $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
-
-        $result = $this->sth->fetchAll(PDO::FETCH_ASSOC);
+        $result = $this->statement->fetchAll(PDO::FETCH_ASSOC);
 
         $this->close();
 
-        if (!empty($result)) {
-            return $result;
-        } else {
-            throw new Error("[Database] No rows found!");
-        }
+        return $result ?? null;
     }
 
     /**
@@ -190,25 +147,13 @@ class Database
      */
     public function update(string $table, int $id, array $data): void
     {
-        $this->connect();
-
-        $query = "UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id";
-
-        $this->sth = $this->dbh->prepare($query);
-        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
-
-        try {
-            $result = $this->sth->execute();
-        } catch (PDOException $ex) {
-            $this->handlePDOException($ex->getMessage());
-        }
-
+        $this
+            ->connect()
+            ->prepare("UPDATE $table SET " . Format::updateValues($data) . " WHERE ID = :id")
+            ->bind(':id', $id, PDO::PARAM_INT)
+            ->execute();
 
         $this->close();
-
-        if (!$result) {
-            throw new Error("[Database] Error executing update query!");
-        }
     }
 
     /**
@@ -220,60 +165,54 @@ class Database
      */
     public function delete(string $table, int $id): void
     {
-        $this->connect();
+        $this
+            ->connect()
+            ->prepare("DELETE FROM $table WHERE ID = :id")
+            ->bind(':id', $id, PDO::PARAM_INT)
+            ->execute();
 
-        $query = "DELETE FROM $table WHERE ID = :id";
-
-        $this->sth = $this->dbh->prepare($query);
-        $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
-
+        $this->close();
+    }
+    
+    /**
+     * Executes the statement and returns the result of it.
+     * @return bool
+     */
+    private function execute(): bool
+    {
         try {
-            $result = $this->sth->execute();
+            $result = $this->statement->execute();
         } catch (PDOException $ex) {
             $this->handlePDOException($ex->getMessage());
         }
-
-
-        $this->close();
-
-        if (!$result) {
-            throw new Error("[Database] Error executing delete query!");
-        }
+        
+        return $result ?? false;
     }
-
-
-    // Helper Functions
+    
     /**
-     * Function to prepare an array of values for the SQL INSERT INTO statement.
-     * @param   array   $values     Values to be formatted/prepared.
-     * @return  string              String formatted as follows: 'value1', 'value2', 'value3'
+     * Prepares the database and set's the statement's value to it.
+     * @param string $query
+     * @return $this
      */
-    private function formatInsertValues(array $values): string
+    private function prepare(string $query): Database
     {
-        foreach ($values as &$value) {
-            $value = "'$value'";
-        }
-
-        return implode(', ', $values);
+        $this->statement = $this->database->prepare($query);
+        
+        return $this;
     }
-
+    
     /**
-     * Function to prepare an array of values for the SQL UPDATE statement.
-     * @param   array   $array  Array with key (columns) and value (to update) pairs.
-     * @return  string          String formatted as follows: 'column1' = 'value1', 'column2' = 'value2'
+     * Binds the parameter and returns self for chaining.
+     * @param $variable
+     * @param $value
+     * @param $type
+     * @return $this
      */
-    private function formatUpdateValues(array $array): string
+    private function bind($variable, $value, $type): Database
     {
-        $buffer = "";
-
-        foreach ($array as $key => $value) {
-            $buffer .= is_numeric($value) ? "$key = $value, " :  "$key = '$value', ";
-        }
-
-        $buffer = trim($buffer, " "); // Trim last space
-        $buffer = trim($buffer, ","); // Trim trailing comma        
-
-        return $buffer;
+        $this->statement->bindParam($variable, $value, $type);
+        
+        return $this;
     }
     
     /**
