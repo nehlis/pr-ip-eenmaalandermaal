@@ -8,4 +8,4 @@ define('VIEWS_DIR', ROOT_DIR . DS . 'views');
 define('COMPONENTS_DIR', ROOT_DIR . DS . 'components');
 define('LAYOUTS_DIR', ROOT_DIR . DS . 'layouts');
 
-define('IS_WINDOWS', stripos(PHP_OS, 'WIN'));
+define('IS_WINDOWS', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
