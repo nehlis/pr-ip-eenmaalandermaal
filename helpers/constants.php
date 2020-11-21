@@ -7,3 +7,5 @@ define('ASSETS_DIR', DS . 'public' . DS . 'assets');
 define('VIEWS_DIR', ROOT_DIR . DS . 'views');
 define('COMPONENTS_DIR', ROOT_DIR . DS . 'components');
 define('LAYOUTS_DIR', ROOT_DIR . DS . 'layouts');
+
+define('IS_WINDOWS', stripos(PHP_OS, 'WIN'));

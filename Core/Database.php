@@ -34,11 +34,7 @@ class Database
     private function connect(): void
     {
         try {
-            $this->dbh = new PDO(
-                "sqlsrv:server=" . DatabaseConfig::HOST . "; Database=" . DatabaseConfig::DATABASE,
-                DatabaseConfig::USER,
-                DatabaseConfig::PASSWORD
-            );
+            $this->dbh = new PDO(DatabaseConfig::getDSN(), DatabaseConfig::USER, DatabaseConfig::PASSWORD);
 
             // Uncomment bottom line when debugging
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
