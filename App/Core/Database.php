@@ -83,13 +83,12 @@ class Database
      */
     public function get(string $table, int $id): ?array
     {
-        $this
+        $result = $this
             ->connect()
-            ->prepare("SELECT * FROM $table where ID = :id")
+            ->prepare("SELECT * FROM $table WHERE ID = :id")
             ->bind(':id', $id, PDO::PARAM_INT)
-            ->execute();
-
-        $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            ->execute()
+            ->fetch(PDO::FETCH_ASSOC);
 
         $this->close();
 
@@ -106,13 +105,12 @@ class Database
      */
     public function getByColumn(string $table, string $column, string $value): ?array
     {
-        $this
+        $result = $this
             ->connect()
-            ->prepare("SELECT * FROM $table where $column = :value")
+            ->prepare("SELECT * FROM $table WHERE $column = :value")
             ->bind(':value', $value, PDO::PARAM_STR)
-            ->execute();
-
-        $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+            ->execute()
+            ->fetch(PDO::FETCH_ASSOC);
 
         $this->close();
 
@@ -127,12 +125,11 @@ class Database
      */
     public function index(string $table): ?array
     {
-        $this
+        $result = $this
             ->connect()
             ->prepare("SELECT * FROM $table")
-            ->execute();
-
-        $result = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+            ->execute()
+            ->fetchAll(PDO::FETCH_ASSOC);
 
         $this->close();
 
@@ -176,17 +173,17 @@ class Database
     
     /**
      * Executes the statement and returns the result of it.
-     * @return bool
+     * @return PDOStatement
      */
-    private function execute(): bool
+    private function execute(): PDOStatement
     {
         try {
-            $result = $this->statement->execute();
+            $this->statement->execute();
         } catch (PDOException $ex) {
             $this->handlePDOException($ex->getMessage());
         }
         
-        return $result ?? false;
+        return $this->statement;
     }
     
     /**
