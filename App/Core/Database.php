@@ -1,8 +1,8 @@
 <?php
 
-namespace Core;
+namespace App\Core;
 
-use Config\DatabaseConfig;
+use App\Config\DatabaseConfig;
 use PDO;
 use PDOStatement;
 use PDOException;
