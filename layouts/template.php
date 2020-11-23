@@ -1,4 +1,4 @@
-<?php use Core\Component; ?>
+<?php use App\Core\Component; ?>
 <!doctype html>
 <html lang="en">
 
