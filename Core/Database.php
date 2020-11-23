@@ -4,24 +4,27 @@ namespace Core;
 
 use Config\DatabaseConfig;
 use PDO;
+use PDOStatement;
 use PDOException;
-use RuntimeException;
+use Error;
 
 /**
  * Database Class
- * 
- * In this class you find all CRUD operations to be used in Controller classes.
- * 
+ *
+ * In this class you find all generic CRUD operations to be used in Controller classes.
+ *
+ * TODO: Dubbele code eruit halen!
+ *
  */
 class Database
 {
     /**
-     * @var $dbh Database handler also known as database connection.
+     * @var PDO $dbh PDO Handler also known as the database handler aka the database connection.
      */
     private $dbh;
 
     /**
-     * @var $sth Statement Handler.
+     * @var PDOStatement $sth Statement handler.
      */
     private $sth;
 
@@ -31,19 +34,12 @@ class Database
     private function connect(): void
     {
         try {
-            $this->dbh = new PDO(
-                "sqlsrv:server=" . DatabaseConfig::HOST . "; Database=" . DatabaseConfig::DATABASE,
-                DatabaseConfig::USER,
-                DatabaseConfig::PASSWORD
-            );
+            $this->dbh = new PDO(DatabaseConfig::getDSN(), DatabaseConfig::USER, DatabaseConfig::PASSWORD);
 
             // Uncomment bottom line when debugging
-            // $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $error) {
-            exit("Kan geen verbinding maken met database!");
-
-            // Uncomment bottom line when debugging
-            // echo "Error connecting to Database: {$error->getMessage()} <br>";
+            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
         }
     }
 
@@ -58,9 +54,10 @@ class Database
 
     /**
      * Create method to be used in Controllers.
-     * @param   string      $table      Table to insert data in.
-     * @param   array       $data       Associative array of which the key represents the column name.
-     * @throws  RuntimeException        Throws  exception when error occurs while executing the query.
+     * @param   string  $table  Table to insert data in.
+     * @param   array   $data   Associative array of which the key represents the column name.
+     * @return  void            Returns nothing.
+     * @throws  Error           Throws error when execution fails. Possible cause: SQL conflicts
      */
     public function create(string $table, array $data): void
     {
@@ -73,21 +70,27 @@ class Database
 
         $this->sth = $this->dbh->prepare($query);
 
-        if (!$this->sth->execute()) {
-            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        try {
+            $result = $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
         }
 
         $this->close();
+
+        if ($result === false) {
+            throw new Error("[Database] Error executing create query!");
+        }
     }
 
     /**
      * Read method to be used in Controllers.
-     * @param   string      $table  Table to fetch data from.
-     * @param   int         $id     Row with ID.
-     * @return  array               Returns fetched row as an associative Arrays.
-     * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
+     * @param   string  $table  Table to fetch data from.
+     * @param   int     $id     Row with ID.
+     * @return  array           Returns fetched row as an associative array.
+     * @throws  Error           Throws error when nothing was found or when execution fails (SQL related).
      */
-    public function get(string $table, int $id): array
+    public function get(string $table, int $id): ?array
     {
         $this->connect();
 
@@ -96,24 +99,64 @@ class Database
         $this->sth = $this->dbh->prepare($query);
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        if (!$this->sth->execute()) {
-            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        try {
+            $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
         }
 
-        $buffer = $this->sth->fetch(PDO::FETCH_ASSOC);
+        $result = $this->sth->fetch(PDO::FETCH_ASSOC);
 
         $this->close();
 
-        return $buffer;
+        if ($result && sizeof($result) > 0) {
+            return $result;
+        } else {
+            throw new Error("[Database] Row where ID = $id not found!");
+        }
     }
 
     /**
      * Read method to be used in Controllers.
-     * @param   string      $table  Table to fetch data from.
-     * @return  array               Returns numeric array with all rows (as an associative arrays).
-     * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
+     * @param   string  $table      Table to fetch data from.
+     * @param   string  $column     Row where column = 'value'.
+     * @param   string  $value      Value to check for in table.
+     * @return  array               Returns fetched row as an associative Arrays.
+     * @throws  Error               Throws error when nothing was found or when execution fails (SQL related).
      */
-    public function index(string $table): array
+    public function getByColumn(string $table, string $column, string $value): ?array
+    {
+        $this->connect();
+
+        $query = "SELECT * FROM $table where $column = :value";
+
+        $this->sth = $this->dbh->prepare($query);
+        $this->sth->bindParam(':value', $value, PDO::PARAM_STR);
+
+        try {
+            $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
+        }
+
+        $result = $this->sth->fetch(PDO::FETCH_ASSOC);
+
+        $this->close();
+
+        if (!empty($result)) {
+            return $result;
+        } else {
+            throw new Error("[Database] No rows where $column = '$value' found!");
+        }
+    }
+
+    /**
+     * Read method to be used in Controllers.
+     * @param   string  $table  Table to fetch data from.
+     * @return  array           Returns numeric array with all rows (as an associative arrays).
+     * @throws  Error           Throws error when nothing was found or when execution fails (SQL related).
+     */
+    public function index(string $table): ?array
     {
         $this->connect();
 
@@ -122,24 +165,28 @@ class Database
 
         $this->sth = $this->dbh->prepare($query);
 
-        if (!$this->sth->execute()) {
-            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        try {
+            $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
         }
 
-        $buffer = $this->sth->fetchAll(PDO::FETCH_ASSOC);
+        $result = $this->sth->fetchAll(PDO::FETCH_ASSOC);
 
         $this->close();
 
-        // Return data
-        return $buffer;
+        if (!empty($result)) {
+            return $result;
+        } else {
+            throw new Error("[Database] No rows found!");
+        }
     }
 
     /**
      * Update method to be used in Controllers.
-     * @param   string      $table  Update row in which table?
-     * @param   int         $id     Row with ID?
-     * @param   array       $data   Associative array of which the key is the column name to be updated with its value.
-     * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
+     * @param string $table Update row in which table?
+     * @param int    $id    Row with ID?
+     * @param array  $data  Associative array of which the key is the column name to be updated with its value.
      */
     public function update(string $table, int $id, array $data): void
     {
@@ -147,21 +194,29 @@ class Database
 
         $query = "UPDATE $table SET " . $this->formatUpdateValues($data) . " WHERE ID = :id";
 
-        
         $this->sth = $this->dbh->prepare($query);
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
-        if (!$this->sth->execute()) {
-            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+
+        try {
+            $result = $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
         }
 
+
         $this->close();
+
+        if (!$result) {
+            throw new Error("[Database] Error executing update query!");
+        }
     }
 
     /**
      * Delete method to be used in Controllers.
-     * @param   string      $table  Delete from which table?
-     * @param   int         $id     Row with ID?
-     * @throws  RuntimeException    Throws  exception when error occurs while executing the query.
+     * @param   string  $table  Table to delete a row
+     * @param   int     $id     Delete row where ID = ?
+     * @return  void            Returns nothing.
+     * @throws  Error           Throws error when execution fails. Possible cause: SQL conflicts
      */
     public function delete(string $table, int $id): void
     {
@@ -172,16 +227,22 @@ class Database
         $this->sth = $this->dbh->prepare($query);
         $this->sth->bindParam(':id', $id, PDO::PARAM_INT);
 
-        if (!$this->sth->execute()) {
-            throw new RuntimeException("Error bij uitvoeren query... ", 0);
+        try {
+            $result = $this->sth->execute();
+        } catch (PDOException $ex) {
+            $this->handlePDOException($ex->getMessage());
         }
 
+
         $this->close();
+
+        if (!$result) {
+            throw new Error("[Database] Error executing delete query!");
+        }
     }
 
 
     // Helper Functions
-
     /**
      * Function to prepare an array of values for the SQL INSERT INTO statement.
      * @param   array   $values     Values to be formatted/prepared.
@@ -198,8 +259,8 @@ class Database
 
     /**
      * Function to prepare an array of values for the SQL UPDATE statement.
-     * @param   array   $array      Array with key (columns) and value (to update) pairs.
-     * @return  string              String formatted as follows: 'column1' = 'value1', 'column2' = 'value2'
+     * @param   array   $array  Array with key (columns) and value (to update) pairs.
+     * @return  string          String formatted as follows: 'column1' = 'value1', 'column2' = 'value2'
      */
     private function formatUpdateValues(array $array): string
     {
@@ -213,5 +274,14 @@ class Database
         $buffer = trim($buffer, ","); // Trim trailing comma        
 
         return $buffer;
+    }
+    
+    /**
+     * Handles PDO Exceptions with HTML output.
+     * @param string $message
+     */
+    private function handlePDOException(string $message): void
+    {
+        echo '<div class="alert alert-danger" role="alert">' . $message . ' </div>';
     }
 }
