@@ -2,6 +2,6 @@
 
 include_once 'helpers/autoload.php';
 
-use Core\Router;
+use App\Core\Router;
 
-new Router();
+new Router;

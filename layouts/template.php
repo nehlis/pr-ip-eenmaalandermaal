@@ -1,5 +1,4 @@
 <?php use Core\Component; ?>
-
 <!doctype html>
 <html lang="en">
 
@@ -22,7 +21,7 @@
     include_once VIEWS_DIR . DS . $view . '.php';
 
     Component::render('footer');
-
+    
     ?>
     <script src="<?= ASSETS_DIR; ?>/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

@@ -2,7 +2,7 @@
 
 ## Hoe te gebruiken:
 #### Routes
-Routes kunnen worden toegevoegd in Core\Route.php. Als je hier de array met routes aanpast kan je routes verwijderen of aanpassen.
+Routes kunnen worden toegevoegd in App\Core\Route.php. Als je hier de array met routes aanpast kan je routes verwijderen of aanpassen.
 ```php
 private $routes = [
     '/inloggen' => [
