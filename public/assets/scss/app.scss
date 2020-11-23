@@ -1,2 +1,12 @@
-@import "components/bootstrap";
+// Defaults
+@import "themes/__bootstrap";
+
+// Helpers
+@import "helpers/typography";
+
+// Components
 @import "components/footer";
+@import "components/jumbotron-image";
+@import "components/category";
+@import "components/card";
+@import "components/form";
