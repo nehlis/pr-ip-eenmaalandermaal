@@ -1,6 +1,5 @@
-<?php
+<?php use Core\Component; ?>
 
-use Core\Component; ?>
 <!doctype html>
 <html lang="en">
 

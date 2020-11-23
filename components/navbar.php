@@ -14,8 +14,8 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <h6 class="dropdown-header">Account</h6>
-                    <a class="dropdown-item" href="#">Inloggen</a>
-                    <a class="dropdown-item" href="#">Registreren</a>
+                    <a class="dropdown-item" href="/inloggen">Inloggen</a>
+                    <a class="dropdown-item" href="/registreren">Registreren</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Uitloggen</a>
                 </div>
