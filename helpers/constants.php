@@ -1,5 +1,6 @@
 <?php
 
+// Directories.
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT_DIR', realpath(__DIR__ . DS . '..'));
 define('DIST_DIR', DS . 'public' . DS . 'dist');
@@ -8,4 +9,6 @@ define('VIEWS_DIR', ROOT_DIR . DS . 'views');
 define('COMPONENTS_DIR', ROOT_DIR . DS . 'components');
 define('LAYOUTS_DIR', ROOT_DIR . DS . 'layouts');
 
+// Helpers.
+define('PLACEHOLDER', 'https://sovschoice.com/wp-content/uploads/2020/08/placeholder.png');
 define('IS_WINDOWS', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
