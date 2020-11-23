@@ -28,3 +28,6 @@ Component::render('card', [
 
 ## Projectstructuur
 Als je database acties wilt voldoen dien je gebruik te maken van een controller. Een controller hoort qua naamgeving altijd dit formaat aan te nemen `[Model]Controller.php` en hoort in de map Controllers te staan. Deze dient `IController` te implementeren en als namespace `Controllers;` te hebben. Om Controllers gemakkelijk te gebruiken dient `Database.php` geoptimaliseerd te zijn om je te helpen met basis queries. (CRUD).
+
+## Test Pagina's
+Onder de branch feature/testpages staan test pagina's om verschillende functies te testen. De code van deze pagina's dienen ook als voorbeeld hoe je dergelijke functies gebruikt. Tot nu toe is er een test pagina: User Controller test pagina.
