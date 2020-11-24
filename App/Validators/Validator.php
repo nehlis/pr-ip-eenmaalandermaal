@@ -31,7 +31,7 @@ class Validator
      * @param $data
      * @param $rules
      */
-    public function __construct($rules, $data)
+    protected function __construct($rules, $data)
     {
         $this->setRules($rules);
         $this->setData($data);
