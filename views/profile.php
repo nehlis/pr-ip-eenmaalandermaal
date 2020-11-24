@@ -1,11 +1,13 @@
 <?php
 
 use App\Controllers\AccountController;
+use App\Controllers\CountryController;
 use App\Controllers\QuestionController;
 use App\Validators\AccountValidator;
 
 $accountController  = new AccountController;
 $questionController = new QuestionController;
+$countryController  = new CountryController;
 $edited             = false;
 
 // TODO: Change user for current logged in user.
@@ -20,7 +22,7 @@ if (isset($_POST) && count($_POST) > 0) {
         'Housenumber'    => $_POST['Housenumber'] ?? '',
         'Zipcode'        => $_POST['Zipcode'] ?? '',
         'City'           => $_POST['City'] ?? '',
-        'CountryID'      => $_POST['Country'] ?? '',
+        'CountryID'      => $_POST['CountryID'] ?? '',
         'QuestionAnswer' => $_POST['QuestionAnswer'] ?? '',
         'Birthdate'      => $_POST['Birthdate'] ?? '',
     ];
@@ -38,7 +40,7 @@ $user = $accountController->get($userId);
 
 <div class="signup-wrapper py-5">
   <form class="form-signup py-5" action="/profiel" method="post">
-    <div class="alert py-3 alert-success <?= $edited ? 'd-block': 'd-none'; ?>" role="alert">
+    <div class="alert py-3 alert-success <?= $edited ? 'd-block' : 'd-none'; ?>" role="alert">
       Aanpassing succesvol
     </div>
     <h1 class="h3 mb-3 font-weight-normal">Account wijzigen</h1>
@@ -201,11 +203,13 @@ $user = $accountController->get($userId);
         </div>
         <div class="form-group">
           <label for="country">Land</label>
-          <select class="form-control" id="country" name="Country">
-            <!-- TODO: Maak met query in Countries ipv dummy data. -->
-              <?php foreach ([159 => 'Nederland'] as $id => $value): ?>
-                <option value="<?= $id; ?>">
-                    <?= $value; ?>
+          <select class="form-control" id="country" name="CountryID">
+              <?php foreach ($countryController->index() as $value): ?>
+                <option
+                  value="<?= $value['ID']; ?>"
+                  <?= $value['ID'] === $user['CountryID'] ? 'selected' : null; ?>
+                >
+                    <?= $value['Name']; ?>
                 </option>
               <?php endforeach; ?>
           </select>
