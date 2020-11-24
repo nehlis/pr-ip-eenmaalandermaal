@@ -10,15 +10,28 @@ $qc = new QuestionController;
 // TODO: Change user for current logged in user.
 $userId = 978;
 
-$user = $ac->get($userId);
-
 if (isset($_POST) && count($_POST) > 0) {
-  $av = new AccountValidator($_POST);
-  
-  if ($av->validateThis()) {
-    // Data validated
-  }
+    $data = [
+        'Email'          => $_POST['Email'],
+        'Username'       => $_POST['Username'],
+        'Firstname'      => $_POST['Firstname'],
+        'Lastname'       => $_POST['Lastname'],
+        'Password'       => hash('sha256', $_POST['Password']),
+        'Street'         => $_POST['Street'],
+        'Housenumber'    => $_POST['Housenumber'],
+        'Zipcode'        => $_POST['Zipcode'],
+        'City'           => $_POST['City'],
+        'CountryID'      => $_POST['Country'],
+        'QuestionAnswer' => $_POST['QuestionAnswer'],
+        'Birthdate'      => $_POST['Birthdate'],
+    ];
+    
+    $av = new AccountValidator($data);
+    
+    $av->check() && $ac->update($userId, $data);
 }
+
+$user = $ac->get($userId);
 
 ?>
 
@@ -67,7 +80,7 @@ if (isset($_POST) && count($_POST) > 0) {
                 type="text"
                 class="form-control"
                 value="<?= $user['Firstname'] ?? ''; ?>"
-                name="FirstName"
+                name="Firstname"
                 id="firstName"
                 required
               >
@@ -93,7 +106,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Lastname'] ?? ''; ?>"
-            name="LastName"
+            name="Lastname"
             id="lastName"
             required
           >
@@ -117,7 +130,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['QuestionAnswer'] ?? ''; ?>"
-            name="Answer"
+            name="QuestionAnswer"
             id="answer"
             required
           >
@@ -129,8 +142,11 @@ if (isset($_POST) && count($_POST) > 0) {
           <input
             type="datetime-local"
             class="form-control"
-            value="<?= date("Y-m-d\TH:i:s", DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()); ?>"
-            name="BirthDate"
+            value="<?= date(
+                "Y-m-d\TH:i:s",
+                DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()
+            ); ?>"
+            name="Birthdate"
             id="birthDate"
             required
           >
@@ -163,7 +179,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Zipcode'] ?? ''; ?>"
-            name="zipCode"
+            name="Zipcode"
             id="zipCode"
             required
           >
@@ -174,16 +190,16 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['City'] ?? ''; ?>"
-            name="city"
+            name="City"
             id="city"
             required
           >
         </div>
         <div class="form-group">
           <label for="country">Land</label>
-          <select class="form-control" id="country">
-              <!-- TODO: Maak met query in Countries ipv dummy data. -->
-              <?php foreach ([1 => 'Nederland'] as $id => $value): ?>
+          <select class="form-control" id="country" name="Country">
+            <!-- TODO: Maak met query in Countries ipv dummy data. -->
+              <?php foreach ([159 => 'Nederland'] as $id => $value): ?>
                 <option value="<?= $id; ?>">
                     <?= $value; ?>
                 </option>

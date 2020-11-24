@@ -8,33 +8,59 @@ namespace App\Validators;
 class AccountValidator extends Validator
 {
     /**
-     * Data to be checked
-     * @var
-     */
-    private $data;
-    
-    /**
      * Rules to check for
      * @var string[]
      */
     private static $rules = [
-        'Email' => 'required',
+        'Email'          => 'required|email',
+        'Username'       => 'required',
+        'Firstname'      => 'required',
+        'Lastname'       => 'required',
+        'Password'       => 'required',
+        'Street'         => 'required',
+        'Housenumber'    => 'required',
+        'Zipcode'        => 'required',
+        'City'           => 'required',
+        'Country'        => 'required',
+        'QuestionAnswer' => 'required',
+        'Birthdate'      => 'required',
+    ];
+    
+    /**
+     * Fields to validate and send to backend.
+     * @var string[]
+     */
+    private static $fields = [
+        'Email',
+        'Username',
+        'Firstname',
+        'Lastname',
+        'Password',
+        'Street',
+        'Housenumber',
+        'Zipcode',
+        'City',
+        'Country',
+        'QuestionAnswer',
+        'Birthdate',
+        'Blocked',
     ];
     
     /**
      * AccountValidator constructor.
      * @param $data
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
-        $this->data = $data;
+        parent::__construct(self::$rules, self::$fields, $data);
     }
     
-    public function validateThis(): bool
+    /**
+     * Checks if it's validated.
+     * @return bool
+     */
+    public function check(): bool
     {
-        if (isset($this->data) && isset(self::$rules))
-            return parent::validate($this->data, self::$rules);
-        else
-            return false;
+        return parent::validate() ?? false;
     }
 }
