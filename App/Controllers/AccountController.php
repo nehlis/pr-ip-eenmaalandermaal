@@ -137,8 +137,11 @@ class AccountController implements IController
      */
     public function getPhoneNumbers(int $id): ?array
     {
-        $phoneNumbers = $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
-        
-        return $phoneNumbers ?? null;
+        return $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
+    }
+    
+    public function updatePhoneNumber(int $id, array $data)
+    {
+        $this->database->update('AccountPhonenumber', $id, $data);
     }
 }

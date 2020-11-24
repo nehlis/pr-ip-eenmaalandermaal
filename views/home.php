@@ -1,7 +1,7 @@
 <?php use App\Core\Component; ?>
 
 <main role="main" class="container">
-    <div class="row">
+    <div class="row py-5">
         <div class="col-12">
             <?php Component::render('jumbotron-image', [
                 'background' => PLACEHOLDER,
@@ -13,9 +13,9 @@
 
     <div class="dropdown-divider my-4"></div>
 
-    <div class="row">
+    <div class="row py-5">
         <div class="col-12">
-            <h2>Uitgelichte veilingen</h2>
+            <h2 class="mb-4 font-weight-bold">Uitgelichte veilingen</h2>
         </div>
         <div class="col-12">
             <div class="row">
@@ -28,9 +28,9 @@
         </div>
     </div>
 
-    <div class="row mt-5">
+    <div class="row py-5">
         <div class="col-12">
-            <h2>Populaire categorieën</h2>
+            <h2 class="mb-4 font-weight-bold">Populaire categorieën</h2>
         </div>
         <div class="col-12">
             <div class="row">

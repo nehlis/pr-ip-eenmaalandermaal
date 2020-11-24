@@ -6,10 +6,10 @@ use App\Core\Database;
 use App\Interfaces\IController;
 
 /**
- * Class QuestionController
+ * Class CountryController
  * @package App\Controllers
  */
-class QuestionController implements IController
+class CountryController implements IController
 {
     /**
      * @var Database $database Database class which contains all generic CRUD functions.
@@ -19,7 +19,7 @@ class QuestionController implements IController
     /**
      * @var string $table Table name on which the CRUD operations should apply.
      */
-    private static $table = 'Question';
+    private static $table = 'Country';
     
     /**
      * AccountController constructor.

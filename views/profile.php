@@ -1,30 +1,54 @@
 <?php
 
 use App\Controllers\AccountController;
+use App\Controllers\CountryController;
 use App\Controllers\QuestionController;
+use App\Validators\AccountValidator;
 
-$ac = new AccountController;
-$qc = new QuestionController;
+$accountController  = new AccountController;
+$questionController = new QuestionController;
+$countryController  = new CountryController;
 
 // TODO: Change user for current logged in user.
 $userId = 978;
 
-$user            = $ac->get($userId);
-$phoneNumbers    = $ac->getPhoneNumbers($userId);
-$accountQuestion = $ac->getQuestion($userId);
-
-$allQuestions = $qc->index();
-
-$formattedDate = DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate']);
+$phoneNumbers = [$accountController->getPhoneNumbers($userId)];
 
 if (isset($_POST) && count($_POST) > 0) {
-    // TODO: Pass through data to certain controllers.
+    $_POST['Password'] = hash('sha256', $_POST['Password']);
+    
+    $accountValidator = new AccountValidator($_POST);
+    
+    // Validate and update all account values.
+    if ($accountValidator->validate()) {
+        $accountController->update($userId, $accountValidator->getData());
+        $edited = true;
+    }
+    
+    // Edit each phone if post is set.
+    for ($i = 1; $i <= count($phoneNumbers); $i++) {
+        // Skip if not set.
+        if (!isset($_POST["phone-$i"])) break;
+      
+        $accountController->updatePhoneNumber($phoneNumbers[$i-1]['ID'], [
+            'Phonenumber' => $_POST["phone-$i"],
+        ]);
+    }
 }
+
+$phoneNumbers = [$accountController->getPhoneNumbers($userId)];
+$user         = $accountController->get($userId);
 
 ?>
 
 <div class="signup-wrapper py-5">
   <form class="form-signup py-5" action="/profiel" method="post">
+    <div class="alert py-3 alert-success <?= isset($edited) ? 'd-block' : 'd-none'; ?>" role="alert">
+      Aanpassing succesvol
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
     <h1 class="h3 mb-3 font-weight-normal">Account wijzigen</h1>
     <div class="row">
       <div class="col-md-6 has-signup-devider">
@@ -34,9 +58,9 @@ if (isset($_POST) && count($_POST) > 0) {
             type="email"
             class="form-control"
             value="<?= $user['Email'] ?? ''; ?>"
-            name="email"
+            name="Email"
             id="email"
-            required
+            disabled
           >
         </div>
         <div class="form-group">
@@ -45,9 +69,9 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Username'] ?? ''; ?>"
-            name="username"
+            name="Username"
             id="username"
-            required
+            disabled
           >
         </div>
         <div class="form-group">
@@ -55,7 +79,7 @@ if (isset($_POST) && count($_POST) > 0) {
           <input
             type="password"
             class="form-control"
-            name="password"
+            name="Password"
             id="password"
             required
           >
@@ -68,7 +92,7 @@ if (isset($_POST) && count($_POST) > 0) {
                 type="text"
                 class="form-control"
                 value="<?= $user['Firstname'] ?? ''; ?>"
-                name="firstName"
+                name="Firstname"
                 id="firstName"
                 required
               >
@@ -81,7 +105,7 @@ if (isset($_POST) && count($_POST) > 0) {
               <input
                 type="text"
                 class="form-control"
-                name="inserts"
+                name="Inserts"
                 id="inserts"
                 required
               >
@@ -94,18 +118,18 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Lastname'] ?? ''; ?>"
-            name="lastName"
+            name="Lastname"
             id="lastName"
             required
           >
         </div>
         <div class="form-group">
           <label for="question">Geheime vraag</label>
-          <select class="form-control" id="question">
-              <?php foreach ($allQuestions as $availableQuestion): ?>
+          <select class="form-control" id="question" name="QuestionID">
+              <?php foreach ($questionController->index() as $availableQuestion): ?>
                 <option
                   value="<?= $availableQuestion['ID']; ?>"
-                    <?= $availableQuestion === $accountQuestion ? 'selected' : null; ?>
+                    <?= $availableQuestion === $accountController->getQuestion($userId) ? 'selected' : null; ?>
                 >
                     <?= $availableQuestion['Description']; ?>
                 </option>
@@ -118,7 +142,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['QuestionAnswer'] ?? ''; ?>"
-            name="answer"
+            name="QuestionAnswer"
             id="answer"
             required
           >
@@ -130,8 +154,11 @@ if (isset($_POST) && count($_POST) > 0) {
           <input
             type="datetime-local"
             class="form-control"
-            value="<?= date("Y-m-d\TH:i:s", $formattedDate->getTimestamp()); ?>"
-            name="birthDate"
+            value="<?= date(
+                "Y-m-d\TH:i:s",
+                DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()
+            ); ?>"
+            name="Birthdate"
             id="birthDate"
             required
           >
@@ -142,7 +169,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Street'] ?? ''; ?>"
-            name="street"
+            name="Street"
             id="street"
             required
           >
@@ -153,7 +180,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Housenumber'] ?? ''; ?>"
-            name="housenumber"
+            name="Housenumber"
             id="housenumber"
             required
           >
@@ -164,7 +191,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Zipcode'] ?? ''; ?>"
-            name="zipCode"
+            name="Zipcode"
             id="zipCode"
             required
           >
@@ -175,17 +202,21 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['City'] ?? ''; ?>"
-            name="city"
+            name="City"
             id="city"
             required
           >
         </div>
         <div class="form-group">
           <label for="country">Land</label>
-          <select class="form-control" id="country">
-              <!-- TODO: Maak met query in Countries ipv dummy data. -->
-              <?php foreach ([1 => 'Nederland'] as $id => $value): ?>
-                <option value="<?= $id; ?>"><?= $value; ?></option>
+          <select class="form-control" id="country" name="CountryID">
+              <?php foreach ($countryController->index() as $value): ?>
+                <option
+                  value="<?= $value['ID']; ?>"
+                    <?= $value['ID'] === $user['CountryID'] ? 'selected' : null; ?>
+                >
+                    <?= $value['Name']; ?>
+                </option>
               <?php endforeach; ?>
           </select>
         </div>
@@ -204,7 +235,7 @@ if (isset($_POST) && count($_POST) > 0) {
                   class="form-control"
                   name="phone-<?= $index; ?>"
                   id="phone-<?= $index; ?>"
-                  value="<?= $phoneNumber ?? ''; ?>"
+                  value="<?= $phoneNumber['Phonenumber'] ?? ''; ?>"
                   required
                 >
               </div>
