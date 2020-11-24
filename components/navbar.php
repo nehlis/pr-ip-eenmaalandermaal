@@ -10,14 +10,24 @@
         <ul class="navbar-nav w-100">
             <li class="nav-item dropdown ml-auto">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-user fa-lg text-dark"></i>
+                    <i class="far fa-user"></i> <?= $_SESSION['Name'] ?? 'Account' ?>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <h6 class="dropdown-header">Account</h6>
-                    <a class="dropdown-item" href="/inloggen">Inloggen</a>
-                    <a class="dropdown-item" href="/registreren">Registreren</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Uitloggen</a>
+                    <?php
+
+                    use App\Services\AuthService;
+
+                    if (AuthService::isloggedIn()) :
+                    ?>
+
+                        <a class="dropdown-item" href="/profiel">Profiel</a>
+                        <a class="dropdown-item" href="/uitloggen">Uitloggen</a>
+                    <?php else : ?>
+                        <a class="dropdown-item" href="/inloggen">Inloggen</a>
+                        <a class="dropdown-item" href="/registreren">Registreren</a>
+                    <?php endif; ?>
                 </div>
             </li>
         </ul>

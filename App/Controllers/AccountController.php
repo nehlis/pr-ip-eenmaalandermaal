@@ -141,4 +141,16 @@ class AccountController implements IController
         
         return $phoneNumbers ?? null;
     }
+
+    // TODO: Docs schrijven
+    public function getByEmail(string $email): ?array
+    {
+        $result = $this->database->getByColumn(self::$table, 'Email', $email);
+
+        if ($result) {
+            return $result;
+        } else {
+            throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="#registreren" class="alert-link">hier</a> om je te registreren.');
+        }
+    }
 }
