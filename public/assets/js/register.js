@@ -38,7 +38,7 @@ function makePhoneNumberElement(phoneNum, index) {
                 index + 1
             }</div>
         </div>
-        <input type="text" class="form-control" id="phone${index}" placeholder="+31 6 12345678" value="${
+        <input type="number" name="phoneNumbers[]" class="form-control" id="phone${index}" placeholder="+31 6 12345678" value="${
         phoneNum.number
     }" onblur="changePhoneNumber(event, \'${phoneNum._id}\')">
     ${
