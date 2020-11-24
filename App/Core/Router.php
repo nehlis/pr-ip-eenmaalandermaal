@@ -41,8 +41,8 @@ class Router
             'view'  => '404',
             'title' => 'Pagina niet gevonden',
         ],
-        '/uctest'      => [
-            'view'  => 'uctest',
+        '/actest'      => [
+            'view'  => 'actest',
             'title' => '[TEST] User Controller',
         ],
     ];

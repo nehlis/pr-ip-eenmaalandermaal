@@ -172,7 +172,7 @@ class Database
      * @param   string  $table      Table to fetch data from.
      * @param   string  $column     Row where column = 'value'.
      * @param   string  $value      Value to check for in table.
-     * @return  array               Returns fetched row as an associative Arrays.
+     * @return  array               Returns fetched row as an associative Arrays or null;
      */
     public function getByColumn(string $table, string $column, string $value): ?array
     {
@@ -185,7 +185,7 @@ class Database
 
         $this->close();
 
-        return (bool) $result ? $result : null;
+        return $result && count($result) > 0 ? $result : null;
     }
 
     /**
