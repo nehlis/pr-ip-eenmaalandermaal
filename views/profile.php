@@ -4,8 +4,8 @@ use App\Controllers\AccountController;
 use App\Controllers\QuestionController;
 use App\Validators\AccountValidator;
 
-$ac = new AccountController;
-$qc = new QuestionController;
+$accountController  = new AccountController;
+$questionController = new QuestionController;
 
 // TODO: Change user for current logged in user.
 $userId = 978;
@@ -26,12 +26,12 @@ if (isset($_POST) && count($_POST) > 0) {
         'Birthdate'      => $_POST['Birthdate'],
     ];
     
-    $av = new AccountValidator($data);
+    $accountValidator = new AccountValidator($data);
     
-    $av->check() && $ac->update($userId, $data);
+    $accountValidator->check() && $accountController->update($userId, $data);
 }
 
-$user = $ac->get($userId);
+$user = $accountController->get($userId);
 
 ?>
 
@@ -114,10 +114,10 @@ $user = $ac->get($userId);
         <div class="form-group">
           <label for="question">Geheime vraag</label>
           <select class="form-control" id="question">
-              <?php foreach ($qc->index() as $availableQuestion): ?>
+              <?php foreach ($questionController->index() as $availableQuestion): ?>
                 <option
                   value="<?= $availableQuestion['ID']; ?>"
-                    <?= $availableQuestion === $ac->getQuestion($userId) ? 'selected' : null; ?>
+                    <?= $availableQuestion === $accountController->getQuestion($userId) ? 'selected' : null; ?>
                 >
                     <?= $availableQuestion['Description']; ?>
                 </option>
@@ -207,7 +207,7 @@ $user = $ac->get($userId);
           </select>
         </div>
           <?php $index = 0; ?>
-          <?php foreach ($ac->getPhoneNumbers($userId) as $phoneNumber): $index++; ?>
+          <?php foreach ($accountController->getPhoneNumbers($userId) as $phoneNumber): $index++; ?>
             <div class="form-group">
               <label for="phone-<?= $index; ?>">
                 Telefoonnummer <?= $index; ?>

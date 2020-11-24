@@ -82,11 +82,15 @@ abstract class Validator
     {
         foreach (self::$data as $key => $item) {
             // Skip iteration if field is not in rules.
-            if (!isset(self::$rules[$key])) break;
+            if (!isset(self::$rules[$key])) {
+                break;
+            }
             
             foreach (self::getFieldRules($key) as $rule) {
                 // Return false if validation failed.
-                if (!self::validateWithRules($item, $rule)) return false;
+                if (!self::validateWithRules($item, $rule)) {
+                    return false;
+                }
             }
         }
         
@@ -119,10 +123,14 @@ abstract class Validator
     {
         switch ($rule):
             case 'required':
-                if (!isset($item) || empty($item)) return false;
+                if (!isset($item) || empty($item)) {
+                    return false;
+                }
                 break;
             case 'email':
-                if (!filter_var($item, FILTER_VALIDATE_EMAIL)) return false;
+                if (!filter_var($item, FILTER_VALIDATE_EMAIL)) {
+                    return false;
+                }
                 break;
         endswitch;
         
