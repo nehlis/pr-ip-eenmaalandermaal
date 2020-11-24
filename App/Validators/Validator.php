@@ -16,9 +16,15 @@ abstract class Validator
     
     /**
      * Rules that apply to the validator.
-     * @var
+     * @var array
      */
     private $rules;
+    
+    /**
+     * Seperator for the rules.
+     * @var string
+     */
+    private $seperator = '|';
     
     /**
      * Validator constructor.
@@ -35,10 +41,10 @@ abstract class Validator
      * Set the data based on the if they are in the rules property.
      * @param array $data
      */
-    protected function setData(array $data)
+    protected function setData(array $data): void
     {
         $newData = [];
-
+        
         foreach ($data as $key => $field) {
             if (in_array($key, array_keys($this->rules))) {
                 $newData[$key] = $field;
@@ -52,7 +58,7 @@ abstract class Validator
      * Set the rules to be matched.
      * @param mixed $rules
      */
-    public  function setRules($rules): void
+    public function setRules($rules): void
     {
         $this->rules = $rules;
     }
@@ -87,8 +93,8 @@ abstract class Validator
      */
     public function getFieldRules($field): array
     {
-        if (strpos($this->rules[$field], '|')) {
-            $validators = explode('|', $this->rules[$field]);
+        if (strpos($this->rules[$field], $this->seperator)) {
+            $validators = explode($this->seperator, $this->rules[$field]);
         } else {
             $validators = [$this->rules[$field]];
         }
