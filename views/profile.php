@@ -2,6 +2,7 @@
 
 use App\Controllers\AccountController;
 use App\Controllers\QuestionController;
+use App\Validators\AccountValidator;
 
 $ac = new AccountController;
 $qc = new QuestionController;
@@ -9,16 +10,14 @@ $qc = new QuestionController;
 // TODO: Change user for current logged in user.
 $userId = 978;
 
-$user            = $ac->get($userId);
-$phoneNumbers    = $ac->getPhoneNumbers($userId);
-$accountQuestion = $ac->getQuestion($userId);
-
-$allQuestions = $qc->index();
-
-$formattedDate = DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate']);
+$user = $ac->get($userId);
 
 if (isset($_POST) && count($_POST) > 0) {
-    // TODO: Pass through data to certain controllers.
+  $av = new AccountValidator($_POST);
+  
+  if ($av->validateThis()) {
+    // Data validated
+  }
 }
 
 ?>
@@ -34,7 +33,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="email"
             class="form-control"
             value="<?= $user['Email'] ?? ''; ?>"
-            name="email"
+            name="Email"
             id="email"
             required
           >
@@ -45,7 +44,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Username'] ?? ''; ?>"
-            name="username"
+            name="Username"
             id="username"
             required
           >
@@ -55,7 +54,7 @@ if (isset($_POST) && count($_POST) > 0) {
           <input
             type="password"
             class="form-control"
-            name="password"
+            name="Password"
             id="password"
             required
           >
@@ -68,7 +67,7 @@ if (isset($_POST) && count($_POST) > 0) {
                 type="text"
                 class="form-control"
                 value="<?= $user['Firstname'] ?? ''; ?>"
-                name="firstName"
+                name="FirstName"
                 id="firstName"
                 required
               >
@@ -81,7 +80,7 @@ if (isset($_POST) && count($_POST) > 0) {
               <input
                 type="text"
                 class="form-control"
-                name="inserts"
+                name="Inserts"
                 id="inserts"
                 required
               >
@@ -94,7 +93,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Lastname'] ?? ''; ?>"
-            name="lastName"
+            name="LastName"
             id="lastName"
             required
           >
@@ -102,10 +101,10 @@ if (isset($_POST) && count($_POST) > 0) {
         <div class="form-group">
           <label for="question">Geheime vraag</label>
           <select class="form-control" id="question">
-              <?php foreach ($allQuestions as $availableQuestion): ?>
+              <?php foreach ($qc->index() as $availableQuestion): ?>
                 <option
                   value="<?= $availableQuestion['ID']; ?>"
-                    <?= $availableQuestion === $accountQuestion ? 'selected' : null; ?>
+                    <?= $availableQuestion === $ac->getQuestion($userId) ? 'selected' : null; ?>
                 >
                     <?= $availableQuestion['Description']; ?>
                 </option>
@@ -118,7 +117,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['QuestionAnswer'] ?? ''; ?>"
-            name="answer"
+            name="Answer"
             id="answer"
             required
           >
@@ -130,8 +129,8 @@ if (isset($_POST) && count($_POST) > 0) {
           <input
             type="datetime-local"
             class="form-control"
-            value="<?= date("Y-m-d\TH:i:s", $formattedDate->getTimestamp()); ?>"
-            name="birthDate"
+            value="<?= date("Y-m-d\TH:i:s", DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()); ?>"
+            name="BirthDate"
             id="birthDate"
             required
           >
@@ -142,7 +141,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Street'] ?? ''; ?>"
-            name="street"
+            name="Street"
             id="street"
             required
           >
@@ -153,7 +152,7 @@ if (isset($_POST) && count($_POST) > 0) {
             type="text"
             class="form-control"
             value="<?= $user['Housenumber'] ?? ''; ?>"
-            name="housenumber"
+            name="Housenumber"
             id="housenumber"
             required
           >
@@ -192,7 +191,7 @@ if (isset($_POST) && count($_POST) > 0) {
           </select>
         </div>
           <?php $index = 0; ?>
-          <?php foreach ($phoneNumbers as $phoneNumber): $index++; ?>
+          <?php foreach ($ac->getPhoneNumbers($userId) as $phoneNumber): $index++; ?>
             <div class="form-group">
               <label for="phone-<?= $index; ?>">
                 Telefoonnummer <?= $index; ?>
