@@ -19,7 +19,7 @@ class AccountValidator extends Validator
         'Housenumber'    => 'required',
         'Zipcode'        => 'required',
         'City'           => 'required',
-        'Country'        => 'required',
+        'CountryID'      => 'required',
         'QuestionAnswer' => 'required',
         'Birthdate'      => 'required',
     ];
@@ -36,7 +36,7 @@ class AccountValidator extends Validator
         'Housenumber',
         'Zipcode',
         'City',
-        'Country',
+        'CountryID',
         'QuestionAnswer',
         'Birthdate',
         'Blocked',
