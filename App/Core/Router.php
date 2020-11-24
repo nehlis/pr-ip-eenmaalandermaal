@@ -33,11 +33,15 @@ class Router
             'view'  => 'register',
             'title' => 'Registreren',
         ],
-        '/404'          => [
+        '/profiel'     => [
+            'view'  => 'profile',
+            'title' => 'Profielpagina',
+        ],
+        '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',
         ],
-        '/uctest'          => [
+        '/uctest'      => [
             'view'  => 'uctest',
             'title' => '[TEST] User Controller',
         ],
