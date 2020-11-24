@@ -19,14 +19,19 @@ if (isset($_POST) && count($_POST) > 0) {
     
     $accountValidator = new AccountValidator($_POST);
     
+    // Validate and update all account values.
     if ($accountValidator->validate()) {
         $accountController->update($userId, $accountValidator->getData());
         $edited = true;
     }
     
-    for ($i = 0; $i < count($phoneNumbers); $i++) {
-        $accountController->updatePhoneNumber($phoneNumbers[$i]['ID'], [
-            'Phonenumber' => $_POST['phone-' . ($i + 1)],
+    // Edit each phone if post is set.
+    for ($i = 1; $i <= count($phoneNumbers); $i++) {
+        // Skip if not set.
+        if (!isset($_POST["phone-$i"])) break;
+      
+        $accountController->updatePhoneNumber($phoneNumbers[$i-1]['ID'], [
+            'Phonenumber' => $_POST["phone-$i"],
         ]);
     }
 }
@@ -40,6 +45,9 @@ $user         = $accountController->get($userId);
   <form class="form-signup py-5" action="/profiel" method="post">
     <div class="alert py-3 alert-success <?= isset($edited) ? 'd-block' : 'd-none'; ?>" role="alert">
       Aanpassing succesvol
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
     <h1 class="h3 mb-3 font-weight-normal">Account wijzigen</h1>
     <div class="row">
