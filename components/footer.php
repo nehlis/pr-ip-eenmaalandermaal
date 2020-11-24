@@ -7,7 +7,7 @@
                 </a>
                 <small class="d-block mb-3 text-muted">&copy; <?= date('Y'); ?></small>
             </div>
-            <div class="col-6 col-md">
+            <div class="col-6 col-sm">
                 <h5>Contact</h5>
                 <ul class="list-unstyled text-small">
                     <li><a class="text-muted" href="#">Contactgegevens</a></li>
@@ -34,10 +34,10 @@
 <footer class="bg-primary text-white copyright">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-12 col-md-6 col-lg">
                 <span>Copyright &copy; <?= date('Y'); ?>, All Right Reserved EenmaalAndermaal</span>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-12 col-md-6 col-lg">
                 <div class="copyright-menu">
                     <ul>
                         <li>
