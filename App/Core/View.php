@@ -1,8 +1,8 @@
 <?php
 
-namespace Core;
+namespace App\Core;
 
-use Interfaces\IRenderable;
+use App\Interfaces\IRenderable;
 
 /**
  * Class View

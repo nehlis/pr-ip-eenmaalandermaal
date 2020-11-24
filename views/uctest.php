@@ -3,9 +3,17 @@
         <div class="col">
             <?php
 
-            use Controllers\UserController;
+            use App\Controllers\AccountController;
+            use App\Core\Database;
 
-            $uc = new UserController();
+            $uc = new AccountController();
+            $db = new Database();
+
+            try {
+                $testres = $db->test();
+            } catch(Error $error) {
+                $testresError = $error->getMessage();
+            }
 
             try {
                 $create = $uc->create(['email' => 'asd', 'password' => 'asd']);
@@ -26,7 +34,7 @@
             }
 
             try {
-                $update = $uc->update(200, ['Email' => 'admin']);
+                $update = $uc->update(974, ['Lastname' => 'Rijnbende']);
             } catch (Error $error) {
                 $updateError = $error->getMessage();
             }
@@ -72,6 +80,16 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col">
+                    <h2>Update:</h2>
+                    <div class="alert alert-danger <?= $testresError ? 'd-block' : 'd-none'; ?>" role="alert">
+                        <?= $testresError ?? ''; ?>
+                    </div>
+
+                    <?php $testres ? print_r($testres) : "" ?>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col">

@@ -11,3 +11,4 @@ define('LAYOUTS_DIR', ROOT_DIR . DS . 'layouts');
 
 // Helpers.
 define('PLACEHOLDER', 'https://sovschoice.com/wp-content/uploads/2020/08/placeholder.png');
+define('IS_WINDOWS', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');

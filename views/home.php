@@ -1,4 +1,4 @@
-<?php use Core\Component; ?>
+<?php use App\Core\Component; ?>
 
 <main role="main" class="container">
     <div class="row">
