@@ -18,7 +18,7 @@ class Component implements IRenderable
      */
     public static function render($renderable, $variables = [])
     {
-        extract($variables);
+        extract($variables, EXTR_OVERWRITE);
         require COMPONENTS_DIR . DS . $renderable . '.php';
     }
 }

@@ -17,7 +17,7 @@ class View implements IRenderable
      */
     public static function render($renderable = null, $variables = []): void
     {
-        extract($variables);
+        extract($variables, EXTR_OVERWRITE);
         include_once LAYOUTS_DIR . DS . 'template.php';
     }
 }
