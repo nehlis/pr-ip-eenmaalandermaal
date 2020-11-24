@@ -10,31 +10,25 @@
             $db = new Database();
 
             try {
-                $testres = $db->test();
-            } catch(Error $error) {
-                $testresError = $error->getMessage();
-            }
-
-            try {
-                $create = $uc->create(['email' => 'asd', 'password' => 'asd']);
+                $create = $uc->create(['Email' => 'asdsadasd', 'Password' => 'asd']);
             } catch (Error $error) {
                 $createError = $error->getMessage();
             }
 
             try {
-                $delete = $uc->delete(974);
+                $delete = $uc->delete(19);
             } catch (Error $error) {
                 $deleteError = $error->getMessage();
             }
 
             try {
-                $get = $uc->get(974);
+                $get = $uc->get(12);
             } catch (Error $error) {
                 $getError = $error->getMessage();
             }
 
             try {
-                $update = $uc->update(974, ['Lastname' => 'Rijnbende']);
+                $update = $uc->update(12, ['Email' => 'tesadsad']);
             } catch (Error $error) {
                 $updateError = $error->getMessage();
             }
@@ -47,6 +41,17 @@
 
             ?>
             <h1>User Controller CRUD Operations Test</h1>
+            <div class="row">
+                <div class="col">
+                    <h2>Test:</h2>
+                    <div class="alert alert-danger <?= $testErr ? 'd-block' : 'd-none'; ?>" role="alert">
+                        <?= $testErr ?? ''; ?>
+                    </div>
+
+                    <?php $test ? print_r($test) : "" ?>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col">
                     <h2>Create:</h2>
@@ -83,17 +88,6 @@
             <div class="row">
                 <div class="col">
                     <h2>Update:</h2>
-                    <div class="alert alert-danger <?= $testresError ? 'd-block' : 'd-none'; ?>" role="alert">
-                        <?= $testresError ?? ''; ?>
-                    </div>
-
-                    <?php $testres ? print_r($testres) : "" ?>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <h2>Update:</h2>
                     <div class="alert alert-danger <?= $updateError ? 'd-block' : 'd-none'; ?>" role="alert">
                         <?= $updateError ?? ''; ?>
                     </div>
@@ -124,8 +118,8 @@
                             <?php foreach ($users as $user) : ?>
                                 <tr>
                                     <th scope="row"><?php echo $user['ID'] ?></th>
-                                    <td><?php echo $user['Email'] ?></td>
-                                    <td><?php echo $user['Password'] ?></td>
+                                    <td><?php echo $user['email'] ?></td>
+                                    <td><?php echo $user['password'] ?></td>
                                     <td><?php echo $user['Firstname'] . ' ' . $user['Lastname'] ?></td>
                                     <td><button type="button" class="btn btn-primary btn-sm">Action</button></td>
                                 </tr>

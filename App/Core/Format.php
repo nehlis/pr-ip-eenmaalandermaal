@@ -34,7 +34,7 @@ class Format
      */
     public static function insertValues(array $data): string
     {
-        foreach (array_keys($data) as &$value) {
+        foreach ($data as &$value) {
             $value = "'$value'";
         }
         
