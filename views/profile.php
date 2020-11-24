@@ -26,9 +26,10 @@ if (isset($_POST) && count($_POST) > 0) {
     }
     
     // Edit each phone if post is set.
-    for ($i = 1; $i <= count($phoneNumbers); $i++) {
-        // Skip if not set.
-        if (!isset($_POST["phone-$i"])) break;
+    for ($i = 1, $max = count($phoneNumbers); $i <= $max; $i++) {
+        if (!isset($_POST["phone-$i"])) {
+            break;
+        }
       
         $accountController->updatePhoneNumber($phoneNumbers[$i-1]['ID'], [
             'Phonenumber' => $_POST["phone-$i"],

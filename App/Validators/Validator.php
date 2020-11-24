@@ -46,7 +46,7 @@ class Validator
         $newData = [];
         
         foreach ($data as $key => $field) {
-            if (in_array($key, array_keys($this->rules))) {
+            if (array_key_exists($key, $this->rules)) {
                 $newData[$key] = $field;
             }
         }
