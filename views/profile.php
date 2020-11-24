@@ -36,6 +36,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= $user['Email'] ?? ''; ?>"
             name="email"
             id="email"
+            required
           >
         </div>
         <div class="form-group">
@@ -46,6 +47,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= $user['Username'] ?? ''; ?>"
             name="username"
             id="username"
+            required
           >
         </div>
         <div class="form-group">
@@ -55,6 +57,7 @@ if (isset($_POST) && count($_POST) > 0) {
             class="form-control"
             name="password"
             id="password"
+            required
           >
         </div>
         <div class="row">
@@ -67,6 +70,7 @@ if (isset($_POST) && count($_POST) > 0) {
                 value="<?= $user['Firstname'] ?? ''; ?>"
                 name="firstName"
                 id="firstName"
+                required
               >
             </div>
           </div>
@@ -79,6 +83,7 @@ if (isset($_POST) && count($_POST) > 0) {
                 class="form-control"
                 name="inserts"
                 id="inserts"
+                required
               >
             </div>
           </div>
@@ -91,6 +96,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= $user['Lastname'] ?? ''; ?>"
             name="lastName"
             id="lastName"
+            required
           >
         </div>
         <div class="form-group">
@@ -114,6 +120,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= $user['QuestionAnswer'] ?? ''; ?>"
             name="answer"
             id="answer"
+            required
           >
         </div>
       </div>
@@ -126,6 +133,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= date("Y-m-d\TH:i:s", $formattedDate->getTimestamp()); ?>"
             name="birthDate"
             id="birthDate"
+            required
           >
         </div>
         <div class="form-group">
@@ -136,6 +144,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= $user['Street'] ?? ''; ?>"
             name="street"
             id="street"
+            required
           >
         </div>
         <div class="form-group">
@@ -146,6 +155,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= $user['Housenumber'] ?? ''; ?>"
             name="housenumber"
             id="housenumber"
+            required
           >
         </div>
         <div class="form-group">
@@ -156,6 +166,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= $user['Zipcode'] ?? ''; ?>"
             name="zipCode"
             id="zipCode"
+            required
           >
         </div>
         <div class="form-group">
@@ -166,6 +177,7 @@ if (isset($_POST) && count($_POST) > 0) {
             value="<?= $user['City'] ?? ''; ?>"
             name="city"
             id="city"
+            required
           >
         </div>
         <div class="form-group">
@@ -193,6 +205,7 @@ if (isset($_POST) && count($_POST) > 0) {
                   name="phone-<?= $index; ?>"
                   id="phone-<?= $index; ?>"
                   value="<?= $phoneNumber ?? ''; ?>"
+                  required
                 >
               </div>
             </div>
