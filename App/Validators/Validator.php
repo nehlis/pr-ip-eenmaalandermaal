@@ -24,7 +24,7 @@ class Validator
      * Seperator for the rules.
      * @var string
      */
-    private $seperator = '|';
+    private const SEPERATOR = '|';
     
     /**
      * Validator constructor.
@@ -109,8 +109,8 @@ class Validator
      */
     public function getRules($field): array
     {
-        if (strpos($this->rules[$field], $this->seperator)) {
-            $validators = explode($this->seperator, $this->rules[$field]);
+        if (strpos($this->rules[$field], self::SEPERATOR)) {
+            $validators = explode(self::SEPERATOR, $this->rules[$field]);
         } else {
             $validators = [$this->rules[$field]];
         }
