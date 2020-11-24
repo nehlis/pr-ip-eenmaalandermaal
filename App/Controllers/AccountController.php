@@ -84,4 +84,26 @@ class AccountController implements IController
     
         return $user;
     }
+    
+    /**
+     * Gets the question that belongs to the account.
+     * @param int $id
+     * @return array|null
+     */
+    public function getQuestion(int $id): ?array
+    {
+        $questionId = $this->database->get(self::$table, $id)['QuestionID'];
+        $question   = $this->database->get('Question', $questionId);
+        
+        if (!$questionId || !$question) return null;
+        
+        return $question;
+    }
+    
+    public function getPhoneNumbers(int $id): ?array
+    {
+        $phoneNumbers = $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
+        
+        return $phoneNumbers ?? null;
+    }
 }
