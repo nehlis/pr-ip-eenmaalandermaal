@@ -10,14 +10,15 @@ $qc = new QuestionController;
 $userId = 978;
 
 $user            = $ac->get($userId);
-$allQuestions    = $qc->index();
 $phoneNumbers    = $ac->getPhoneNumbers($userId);
 $accountQuestion = $ac->getQuestion($userId);
+
+$allQuestions = $qc->index();
 
 $formattedDate = DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate']);
 
 if (isset($_POST) && count($_POST) > 0) {
-  // TODO: Pass through data to certain controllers.
+    // TODO: Pass through data to certain controllers.
 }
 
 ?>
@@ -170,7 +171,7 @@ if (isset($_POST) && count($_POST) > 0) {
         <div class="form-group">
           <label for="country">Land</label>
           <select class="form-control" id="country">
-            <!-- TODO: Maak met query in Countries ipv dummy data. -->
+              <!-- TODO: Maak met query in Countries ipv dummy data. -->
               <?php foreach ([1 => 'Nederland'] as $id => $value): ?>
                 <option value="<?= $id; ?>"><?= $value; ?></option>
               <?php endforeach; ?>
