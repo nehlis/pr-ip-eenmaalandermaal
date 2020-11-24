@@ -6,6 +6,7 @@ use App\Validators\AccountValidator;
 
 $accountController  = new AccountController;
 $questionController = new QuestionController;
+$edited             = false;
 
 // TODO: Change user for current logged in user.
 $userId = 978;
@@ -26,7 +27,9 @@ if (isset($_POST) && count($_POST) > 0) {
     
     $accountValidator = new AccountValidator($data);
     
-    $accountValidator->check() && $accountController->update($userId, $data);
+    if ($accountValidator->check() && $accountController->update($userId, $data)) {
+        $edited = true;
+    }
 }
 
 $user = $accountController->get($userId);
@@ -35,6 +38,9 @@ $user = $accountController->get($userId);
 
 <div class="signup-wrapper py-5">
   <form class="form-signup py-5" action="/profiel" method="post">
+    <div class="alert py-3 alert-success <?= $edited ? 'd-block': 'd-none'; ?>" role="alert">
+      Aanpassing succesvol
+    </div>
     <h1 class="h3 mb-3 font-weight-normal">Account wijzigen</h1>
     <div class="row">
       <div class="col-md-6 has-signup-devider">
