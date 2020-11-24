@@ -70,14 +70,12 @@ class Validator
     public function validate(): bool
     {
         foreach ($this->data as $key => $item) {
-            // Skip iteration if field is not in rules.
             if (!isset($this->rules[$key])) {
                 break;
             }
             
-            foreach ($this->getFieldRules($key) as $rule) {
-                // Return false if validation failed.
-                if (!$this->validateWithRules($item, $rule)) {
+            foreach ($this->getRules($key) as $rule) {
+                if (!$this->validates($item, $rule)) {
                     return false;
                 }
             }
@@ -87,11 +85,29 @@ class Validator
     }
     
     /**
+     * Validate the item with the given rule.
+     * @param $item
+     * @param $rule
+     * @return bool
+     */
+    public function validates($item, $rule): bool
+    {
+        switch ($rule) {
+            case 'required':
+                return isset($item) && !empty($item);
+            case 'email':
+                return filter_var($item, FILTER_VALIDATE_EMAIL);
+            default:
+                return true;
+        }
+    }
+    
+    /**
      * Gets the rules per field, in array format.
      * @param $field
      * @return array
      */
-    public function getFieldRules($field): array
+    public function getRules($field): array
     {
         if (strpos($this->rules[$field], $this->seperator)) {
             $validators = explode($this->seperator, $this->rules[$field]);
@@ -100,24 +116,6 @@ class Validator
         }
         
         return $validators;
-    }
-    
-    /**
-     * Validate the item with the given rule.
-     * @param $item
-     * @param $rule
-     * @return bool
-     */
-    public function validateWithRules($item, $rule): bool
-    {
-        switch ($rule):
-            case 'required':
-                return isset($item) && !empty($item);
-            case 'email':
-                return filter_var($item, FILTER_VALIDATE_EMAIL);
-        endswitch;
-        
-        return true;
     }
     
     /**
