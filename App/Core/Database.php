@@ -76,6 +76,7 @@ class Database
             ->prepare("INSERT INTO $table ($columns) VALUES ($values)")
             ->execute(false);
 
+        // HIERNAAR KIJKEN EXECUTE RETURNT GEEN BOOLEAN!!
         $id = $result ? $this->database->lastInsertId() : null;
 
         $this->close();
@@ -111,10 +112,10 @@ class Database
     public function index(string $table): ?array
     {
         $result = $this
-                    ->connect()
-                    ->prepare("SELECT * FROM $table")
-                    ->execute()
-                    ->fetchAll(PDO::FETCH_ASSOC);
+            ->connect()
+            ->prepare("SELECT * FROM $table")
+            ->execute()
+            ->fetchAll(PDO::FETCH_ASSOC);
 
         $this->close();
 
@@ -131,14 +132,15 @@ class Database
     public function update(string $table, int $id, array $data): bool
     {
         $result = $this
-                    ->connect()
-                    ->prepare("UPDATE $table SET " . Format::updateValues($data) . " WHERE ID = :id")
-                    ->bind(':id', $id, PDO::PARAM_INT)
-                    ->execute(false);
+            ->connect()
+            ->prepare("UPDATE $table SET " . Format::updateValues($data) . " WHERE ID = :id")
+            ->bind(':id', $id, PDO::PARAM_INT)
+            ->execute(false);
 
         $this->close();
 
-        return $result;
+        // HIERNAAR KIJKEN EXECUTE RETURNT GEEN BOOLEAN!!
+        return isset($result) && $result === TRUE ? true : false;
     }
 
     /**
@@ -150,21 +152,22 @@ class Database
     public function delete(string $table, int $id): bool
     {
         $result = $this
-                    ->connect()
-                    ->prepare("DELETE FROM $table WHERE ID = :id")
-                    ->bind(':id', $id, PDO::PARAM_INT)
-                    ->execute(false);
+            ->connect()
+            ->prepare("DELETE FROM $table WHERE ID = :id")
+            ->bind(':id', $id, PDO::PARAM_INT)
+            ->execute(false);
 
         $this->close();
 
-        return $result;
+        // HIERNAAR KIJKEN EXECUTE RETURNT GEEN BOOLEAN!!
+        return isset($result) && $result === TRUE ? true : false;
     }
 
     /**
      * EXTRA CRUD FUNCTIONS
      */
-    
-     /**
+
+    /**
      * Read by Column method to be used in Controllers.
      * @param   string  $table      Table to fetch data from.
      * @param   string  $column     Row where column = 'value'.

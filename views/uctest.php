@@ -10,25 +10,40 @@
             $db = new Database();
 
             try {
-                $create = $uc->create(['Email' => 'asdsadasd', 'Password' => 'asd']);
+                $create = $uc->create([
+                    'Email'             => 'emailadres',
+                    'Username'          => 'gebruikersnaam',
+                    'Password'          => 'wachtwoord',
+                    'Firstname'         => 'voornaam',
+                    'Lastname'          => 'achternaam',
+                    'Password'          => 'wachtwoord',
+                    'Birthdate'         => '1990-01-01',
+                    'Street'            => 'straat',
+                    'Housenumber'       => 1,
+                    'Zipcode'           => '9999XX',
+                    'City'              => 'stad',
+                    'Country'           => 'land',
+                    'QuestionID'        => 11,
+                    'QuestionAnswer'    => 'antwoord'
+                ]);
             } catch (Error $error) {
                 $createError = $error->getMessage();
             }
 
             try {
-                $delete = $uc->delete(19);
+                $delete = $uc->delete(976);
             } catch (Error $error) {
                 $deleteError = $error->getMessage();
             }
 
             try {
-                $get = $uc->get(12);
+                $get = $uc->get(974);
             } catch (Error $error) {
                 $getError = $error->getMessage();
             }
 
             try {
-                $update = $uc->update(12, ['Email' => 'tesadsad']);
+                $update = $uc->update(975, ['Email' => 'mad']);
             } catch (Error $error) {
                 $updateError = $error->getMessage();
             }
@@ -118,8 +133,8 @@
                             <?php foreach ($users as $user) : ?>
                                 <tr>
                                     <th scope="row"><?php echo $user['ID'] ?></th>
-                                    <td><?php echo $user['email'] ?></td>
-                                    <td><?php echo $user['password'] ?></td>
+                                    <td><?php echo $user['Email'] ?></td>
+                                    <td><?php echo $user['Password'] ?></td>
                                     <td><?php echo $user['Firstname'] . ' ' . $user['Lastname'] ?></td>
                                     <td><button type="button" class="btn btn-primary btn-sm">Action</button></td>
                                 </tr>

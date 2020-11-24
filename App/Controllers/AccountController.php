@@ -21,7 +21,7 @@ class AccountController implements IController
     /**
      * @var string $table Table name on which the CRUD operations should apply.
      */
-    private static $table = 'test';
+    private static $table = 'Account';
 
     /**
      * AccountController constructor.
@@ -32,7 +32,7 @@ class AccountController implements IController
     }
 
     /**
-     * @param   array       $data   Associative array with all account data (Firstname, Password, Street, Housenumber, Zipcode, City,   Country, QuestionID, QuestionAnswer, Birthday).
+     * @param   array       $data   Associative array with all account data (Firstname, Lastname, Password, Street, Housenumber, Zipcode, City,   Country, QuestionID, QuestionAnswer, Birthday).
      * @return  array|null          Returns created account as array or null.
      * @throws  Error               Throws error when account could not be created.
      */
@@ -93,7 +93,7 @@ class AccountController implements IController
         if ($result) {
             return $this->get($id);
         } else {
-            throw new Error("Account niet geupdate!");
+            throw new Error("Account waarvan ID = $id niet geupdate!");
         }
     }
 
@@ -106,8 +106,12 @@ class AccountController implements IController
     {
         if (!$user = $this->get($id)) return null;
 
-        $this->database->delete(self::$table, $id);
+        $result = $this->database->delete(self::$table, $id);
 
-        return $user;
+        if ($result) {
+            return $user;
+        } else {
+            throw new Error("Account waarvan ID = $id niet verwijderd!");
+        }
     }
 }
