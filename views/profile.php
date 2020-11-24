@@ -12,8 +12,6 @@ $userId = 978;
 
 if (isset($_POST) && count($_POST) > 0) {
     $data = [
-        'Email'          => $_POST['Email'] ?? '',
-        'Username'       => $_POST['Username'] ?? '',
         'Firstname'      => $_POST['Firstname'] ?? '',
         'Lastname'       => $_POST['Lastname'] ?? '',
         'Password'       => hash('sha256', $_POST['Password']) ?? '',
@@ -48,7 +46,7 @@ $user = $accountController->get($userId);
             value="<?= $user['Email'] ?? ''; ?>"
             name="Email"
             id="email"
-            required
+            disabled
           >
         </div>
         <div class="form-group">
@@ -59,7 +57,7 @@ $user = $accountController->get($userId);
             value="<?= $user['Username'] ?? ''; ?>"
             name="Username"
             id="username"
-            required
+            disabled
           >
         </div>
         <div class="form-group">

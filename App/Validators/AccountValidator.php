@@ -12,8 +12,6 @@ class AccountValidator extends Validator
      * @var string[]
      */
     private static $rules = [
-        'Email'          => 'required|email',
-        'Username'       => 'required',
         'Firstname'      => 'required',
         'Lastname'       => 'required',
         'Password'       => 'required',
@@ -31,8 +29,6 @@ class AccountValidator extends Validator
      * @var string[]
      */
     private static $fields = [
-        'Email',
-        'Username',
         'Firstname',
         'Lastname',
         'Password',
