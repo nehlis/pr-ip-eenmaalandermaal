@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Core\Database;
 use App\Interfaces\IController;
-use Error;
 
 /**
  * Class CountryController

@@ -8,39 +8,37 @@ use App\Validators\AccountValidator;
 $accountController  = new AccountController;
 $questionController = new QuestionController;
 $countryController  = new CountryController;
-$edited             = false;
 
 // TODO: Change user for current logged in user.
 $userId = 978;
 
+$phoneNumbers = [$accountController->getPhoneNumbers($userId)];
+
 if (isset($_POST) && count($_POST) > 0) {
-    $data = [
-        'Firstname'      => $_POST['Firstname'] ?? '',
-        'Lastname'       => $_POST['Lastname'] ?? '',
-        'Password'       => hash('sha256', $_POST['Password']) ?? '',
-        'Street'         => $_POST['Street'] ?? '',
-        'Housenumber'    => $_POST['Housenumber'] ?? '',
-        'Zipcode'        => $_POST['Zipcode'] ?? '',
-        'City'           => $_POST['City'] ?? '',
-        'CountryID'      => $_POST['CountryID'] ?? '',
-        'QuestionAnswer' => $_POST['QuestionAnswer'] ?? '',
-        'Birthdate'      => $_POST['Birthdate'] ?? '',
-    ];
+    $_POST['Password'] = hash('sha256', $_POST['Password']);
     
-    $accountValidator = new AccountValidator($data);
+    $accountValidator = new AccountValidator($_POST);
     
-    if ($accountValidator->check() && $accountController->update($userId, $data)) {
+    if ($accountValidator->validate()) {
+        $accountController->update($userId, $accountValidator->getData());
         $edited = true;
+    }
+    
+    for ($i = 0; $i < count($phoneNumbers); $i++) {
+        $accountController->updatePhoneNumber($phoneNumbers[$i]['ID'], [
+            'Phonenumber' => $_POST['phone-' . ($i + 1)],
+        ]);
     }
 }
 
-$user = $accountController->get($userId);
+$phoneNumbers = [$accountController->getPhoneNumbers($userId)];
+$user         = $accountController->get($userId);
 
 ?>
 
 <div class="signup-wrapper py-5">
   <form class="form-signup py-5" action="/profiel" method="post">
-    <div class="alert py-3 alert-success <?= $edited ? 'd-block' : 'd-none'; ?>" role="alert">
+    <div class="alert py-3 alert-success <?= isset($edited) ? 'd-block' : 'd-none'; ?>" role="alert">
       Aanpassing succesvol
     </div>
     <h1 class="h3 mb-3 font-weight-normal">Account wijzigen</h1>
@@ -119,7 +117,7 @@ $user = $accountController->get($userId);
         </div>
         <div class="form-group">
           <label for="question">Geheime vraag</label>
-          <select class="form-control" id="question">
+          <select class="form-control" id="question" name="QuestionID">
               <?php foreach ($questionController->index() as $availableQuestion): ?>
                 <option
                   value="<?= $availableQuestion['ID']; ?>"
@@ -207,7 +205,7 @@ $user = $accountController->get($userId);
               <?php foreach ($countryController->index() as $value): ?>
                 <option
                   value="<?= $value['ID']; ?>"
-                  <?= $value['ID'] === $user['CountryID'] ? 'selected' : null; ?>
+                    <?= $value['ID'] === $user['CountryID'] ? 'selected' : null; ?>
                 >
                     <?= $value['Name']; ?>
                 </option>
@@ -215,7 +213,7 @@ $user = $accountController->get($userId);
           </select>
         </div>
           <?php $index = 0; ?>
-          <?php foreach ($accountController->getPhoneNumbers($userId) as $phoneNumber): $index++; ?>
+          <?php foreach ($phoneNumbers as $phoneNumber): $index++; ?>
             <div class="form-group">
               <label for="phone-<?= $index; ?>">
                 Telefoonnummer <?= $index; ?>
@@ -229,7 +227,7 @@ $user = $accountController->get($userId);
                   class="form-control"
                   name="phone-<?= $index; ?>"
                   id="phone-<?= $index; ?>"
-                  value="<?= $phoneNumber ?? ''; ?>"
+                  value="<?= $phoneNumber['Phonenumber'] ?? ''; ?>"
                   required
                 >
               </div>

@@ -11,7 +11,7 @@ class AccountValidator extends Validator
      * Rules to check for
      * @var string[]
      */
-    private static $rules = [
+    private $rules = [
         'Firstname'      => 'required',
         'Lastname'       => 'required',
         'Password'       => 'required',
@@ -20,6 +20,7 @@ class AccountValidator extends Validator
         'Zipcode'        => 'required',
         'City'           => 'required',
         'CountryID'      => 'required',
+        'QuestionID'     => 'required',
         'QuestionAnswer' => 'required',
         'Birthdate'      => 'required',
     ];
@@ -30,15 +31,6 @@ class AccountValidator extends Validator
      */
     public function __construct(array $data)
     {
-        parent::__construct(self::$rules, $data);
-    }
-    
-    /**
-     * Checks if it's validated.
-     * @return bool
-     */
-    public function check(): bool
-    {
-        return parent::validate() ?? false;
+        parent::__construct($this->rules, $data);
     }
 }

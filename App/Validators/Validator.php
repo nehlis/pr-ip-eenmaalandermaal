@@ -12,13 +12,13 @@ abstract class Validator
      * Data that should be validated.
      * @var array
      */
-    private static $data;
+    private $data;
     
     /**
      * Rules that apply to the validator.
      * @var
      */
-    private static $rules;
+    private $rules;
     
     /**
      * Validator constructor.
@@ -27,51 +27,51 @@ abstract class Validator
      */
     public function __construct($rules, $data)
     {
-        self::setRules($rules);
-        self::setData($data);
+        $this->setRules($rules);
+        $this->setData($data);
     }
     
     /**
      * Set the data based on the if they are in the rules property.
      * @param array $data
      */
-    protected static function setData(array $data)
+    protected function setData(array $data)
     {
         $newData = [];
-        
+
         foreach ($data as $key => $field) {
-            if (in_array($key, self::$rules)) {
+            if (in_array($key, array_keys($this->rules))) {
                 $newData[$key] = $field;
             }
         }
         
-        self::$data = $newData;
+        $this->data = $newData;
     }
     
     /**
      * Set the rules to be matched.
      * @param mixed $rules
      */
-    public static function setRules($rules): void
+    public  function setRules($rules): void
     {
-        self::$rules = $rules;
+        $this->rules = $rules;
     }
     
     /**
      * Validates the input fields and returns true if succesful.
      * @return bool
      */
-    protected static function validate(): bool
+    public function validate(): bool
     {
-        foreach (self::$data as $key => $item) {
+        foreach ($this->data as $key => $item) {
             // Skip iteration if field is not in rules.
-            if (!isset(self::$rules[$key])) {
+            if (!isset($this->rules[$key])) {
                 break;
             }
             
-            foreach (self::getFieldRules($key) as $rule) {
+            foreach ($this->getFieldRules($key) as $rule) {
                 // Return false if validation failed.
-                if (!self::validateWithRules($item, $rule)) {
+                if (!$this->validateWithRules($item, $rule)) {
                     return false;
                 }
             }
@@ -85,12 +85,12 @@ abstract class Validator
      * @param $field
      * @return array
      */
-    public static function getFieldRules($field): array
+    public function getFieldRules($field): array
     {
-        if (strpos(self::$rules[$field], '|')) {
-            $validators = explode('|', self::$rules[$field]);
+        if (strpos($this->rules[$field], '|')) {
+            $validators = explode('|', $this->rules[$field]);
         } else {
-            $validators = [self::$rules[$field]];
+            $validators = [$this->rules[$field]];
         }
         
         return $validators;
@@ -102,27 +102,24 @@ abstract class Validator
      * @param $rule
      * @return bool
      */
-    public static function validateWithRules($item, $rule): bool
+    public function validateWithRules($item, $rule): bool
     {
         switch ($rule):
             case 'required':
-                if (!isset($item) || empty($item)) {
-                    return false;
-                }
-                break;
+                return isset($item) && !empty($item);
             case 'email':
-                if (!filter_var($item, FILTER_VALIDATE_EMAIL)) {
-                    return false;
-                }
-                break;
+                return filter_var($item, FILTER_VALIDATE_EMAIL);
         endswitch;
         
         return true;
     }
     
     /**
-     * Checks the validator from the validation instance.
-     * @return bool
+     * Get's the valid data.
+     * @return array
      */
-    protected abstract function check(): bool;
+    public function getData(): array
+    {
+        return $this->data;
+    }
 }
