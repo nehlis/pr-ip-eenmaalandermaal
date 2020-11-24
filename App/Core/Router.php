@@ -35,7 +35,7 @@ class Router
         ],
         '/profiel'     => [
             'view'  => 'profile',
-            'title' => 'Profielpagina',
+            'title' => 'Profiel',
         ],
         '/404'         => [
             'view'  => '404',
