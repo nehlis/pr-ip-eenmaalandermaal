@@ -15,7 +15,7 @@
 
     <div class="row py-5">
         <div class="col-12">
-            <h2 class="mb-4">Uitgelichte veilingen</h2>
+            <h2 class="mb-4 font-weight-bold">Uitgelichte veilingen</h2>
         </div>
         <div class="col-12">
             <div class="row">
@@ -30,7 +30,7 @@
 
     <div class="row py-5">
         <div class="col-12">
-            <h2 class="mb-4">Populaire categorieën</h2>
+            <h2 class="mb-4 font-weight-bold">Populaire categorieën</h2>
         </div>
         <div class="col-12">
             <div class="row">
