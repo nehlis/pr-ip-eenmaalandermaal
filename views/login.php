@@ -1,4 +1,4 @@
-<?php if (!empty($_POST)) : ?>
+<?php if (isset($_POST["email"]) || isset($_POST["password"])) : ?>
   Email: <?php echo htmlspecialchars($_POST["email"]); ?>!<br>
   Password: <?php echo htmlspecialchars($_POST["password"]); ?>.<br>
 <?php else : ?>
@@ -19,8 +19,8 @@
           <a href="/registreren">Nog geen account?</a>
         </div>
       </div>
-      
-      <input class="btn btn-lg btn-primary btn-block" type="submit" value="Inloggen" name='submit'/>
+
+      <input class="btn btn-lg btn-primary btn-block" type="submit" value="Inloggen" name='submit' />
       <p class="mt-5 mb-3 text-muted">&copy; <?= date('Y'); ?></p>
     </form>
   </div>
