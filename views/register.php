@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label for="question">Geheime vraag</label>
-                    <select class="form-control" id="question">
+                    <select class="form-control" id="question-secret">
                         <!-- TODO: Maak met query in QuestionController ipv dummy data. -->
                         <?php foreach ([1 => 'Wat is je moeders meisjesnaam'] as $id => $value) : ?>
                             <option value="<?= $id; ?>"><?= $value; ?></option>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <label for="country">Land</label>
-                    <select class="form-control" id="question">
+                    <select class="form-control" id="question-country">
                         <!-- TODO: Maak met query in Countries ipv dummy data. -->
                         <?php foreach ([1 => 'Nederland'] as $id => $value) : ?>
                             <option value="<?= $id; ?>"><?= $value; ?></option>
