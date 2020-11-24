@@ -41,7 +41,7 @@ class Database
         } catch (PDOException $ex) {
             $this->handlePDOException($ex->getMessage());
         }
-        
+
         return $this;
     }
 
@@ -65,7 +65,7 @@ class Database
     {
         $columns = Format::insertColumns($data);
         $values  = Format::insertValues($data);
-        
+
         $this
             ->connect()
             ->prepare("INSERT INTO $table ($columns) VALUES ($values)")
@@ -114,7 +114,7 @@ class Database
 
         $this->close();
 
-        return $result ?? null;
+        return (bool) $result ? $result : null;
     }
 
     /**
@@ -170,7 +170,7 @@ class Database
 
         $this->close();
     }
-    
+
     /**
      * Executes the statement and returns the result of it.
      * @return PDOStatement
@@ -182,10 +182,10 @@ class Database
         } catch (PDOException $ex) {
             $this->handlePDOException($ex->getMessage());
         }
-        
+
         return $this->statement;
     }
-    
+
     /**
      * Prepares the database and set's the statement's value to it.
      * @param string $query
@@ -194,10 +194,10 @@ class Database
     private function prepare(string $query): Database
     {
         $this->statement = $this->database->prepare($query);
-        
+
         return $this;
     }
-    
+
     /**
      * Binds the parameter and returns self for chaining.
      * @param $variable
@@ -208,10 +208,10 @@ class Database
     private function bind($variable, $value, $type): Database
     {
         $this->statement->bindParam($variable, $value, $type);
-        
+
         return $this;
     }
-    
+
     /**
      * Handles PDO Exceptions with HTML output.
      * @param string $message

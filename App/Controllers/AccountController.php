@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Interfaces\IController;
 use App\Core\Database;
+use Error;
 
 /**
  * User Controller
@@ -37,8 +38,14 @@ class AccountController implements IController
     public function create(array $data): ?array
     {
         $this->database->create(self::$table, $data);
-        
-        return $this->database->getByColumn(self::$table, 'email', $data['email']);
+
+        $result = $this->database->getByColumn(self::$table, 'email', $data['email']);
+
+        if ((bool) $result) {
+            return $result;
+        } else {
+            throw new Error ('test');
+        }
     }
     
     /**
