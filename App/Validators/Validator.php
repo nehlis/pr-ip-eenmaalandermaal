@@ -6,7 +6,7 @@ namespace App\Validators;
  * Class Validator
  * @package App\Validators
  */
-abstract class Validator
+class Validator
 {
     /**
      * Data that should be validated.
