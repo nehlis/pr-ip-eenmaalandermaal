@@ -44,7 +44,7 @@ $user         = $accountController->get($userId);
 
 <div class="signup-wrapper py-5">
   <form class="form-signup py-5" action="/profiel" method="post">
-    <div class="alert py-3 alert-success <?= isset($edited) ? 'd-block' : 'd-none'; ?>" role="alert">
+    <div class="alert py-3 alert-success <?= isset($edited) ? 'd-block' : 'd-none' ?>" role="alert">
       Aanpassing succesvol
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -58,7 +58,7 @@ $user         = $accountController->get($userId);
           <input
             type="email"
             class="form-control"
-            value="<?= $user['Email'] ?? ''; ?>"
+            value="<?= $user['Email'] ?? '' ?>"
             name="Email"
             id="email"
             disabled
@@ -69,7 +69,7 @@ $user         = $accountController->get($userId);
           <input
             type="text"
             class="form-control"
-            value="<?= $user['Username'] ?? ''; ?>"
+            value="<?= $user['Username'] ?? '' ?>"
             name="Username"
             id="username"
             disabled
@@ -92,7 +92,7 @@ $user         = $accountController->get($userId);
               <input
                 type="text"
                 class="form-control"
-                value="<?= $user['Firstname'] ?? ''; ?>"
+                value="<?= $user['Firstname'] ?? '' ?>"
                 name="Firstname"
                 id="firstName"
                 required
@@ -118,7 +118,7 @@ $user         = $accountController->get($userId);
           <input
             type="text"
             class="form-control"
-            value="<?= $user['Lastname'] ?? ''; ?>"
+            value="<?= $user['Lastname'] ?? '' ?>"
             name="Lastname"
             id="lastName"
             required
@@ -129,10 +129,10 @@ $user         = $accountController->get($userId);
           <select class="form-control" id="question" name="QuestionID">
               <?php foreach ($questionController->index() as $availableQuestion): ?>
                 <option
-                  value="<?= $availableQuestion['ID']; ?>"
-                    <?= $availableQuestion === $accountController->getQuestion($userId) ? 'selected' : null; ?>
+                  value="<?= $availableQuestion['ID'] ?>"
+                    <?= $availableQuestion === $accountController->getQuestion($userId) ? 'selected' : null ?>
                 >
-                    <?= $availableQuestion['Description']; ?>
+                    <?= $availableQuestion['Description'] ?>
                 </option>
               <?php endforeach; ?>
           </select>
@@ -142,7 +142,7 @@ $user         = $accountController->get($userId);
           <input
             type="text"
             class="form-control"
-            value="<?= $user['QuestionAnswer'] ?? ''; ?>"
+            value="<?= $user['QuestionAnswer'] ?? '' ?>"
             name="QuestionAnswer"
             id="answer"
             required
@@ -158,7 +158,7 @@ $user         = $accountController->get($userId);
             value="<?= date(
                 "Y-m-d\TH:i:s",
                 DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()
-            ); ?>"
+            ) ?>"
             name="Birthdate"
             id="birthDate"
             required
@@ -169,7 +169,7 @@ $user         = $accountController->get($userId);
           <input
             type="text"
             class="form-control"
-            value="<?= $user['Street'] ?? ''; ?>"
+            value="<?= $user['Street'] ?? '' ?>"
             name="Street"
             id="street"
             required
@@ -180,7 +180,7 @@ $user         = $accountController->get($userId);
           <input
             type="text"
             class="form-control"
-            value="<?= $user['Housenumber'] ?? ''; ?>"
+            value="<?= $user['Housenumber'] ?? '' ?>"
             name="Housenumber"
             id="housenumber"
             required
@@ -191,7 +191,7 @@ $user         = $accountController->get($userId);
           <input
             type="text"
             class="form-control"
-            value="<?= $user['Zipcode'] ?? ''; ?>"
+            value="<?= $user['Zipcode'] ?? '' ?>"
             name="Zipcode"
             id="zipCode"
             required
@@ -202,7 +202,7 @@ $user         = $accountController->get($userId);
           <input
             type="text"
             class="form-control"
-            value="<?= $user['City'] ?? ''; ?>"
+            value="<?= $user['City'] ?? '' ?>"
             name="City"
             id="city"
             required
@@ -213,10 +213,10 @@ $user         = $accountController->get($userId);
           <select class="form-control" id="country" name="CountryID">
               <?php foreach ($countryController->index() as $value): ?>
                 <option
-                  value="<?= $value['ID']; ?>"
-                    <?= $value['ID'] === $user['CountryID'] ? 'selected' : null; ?>
+                  value="<?= $value['ID'] ?>"
+                    <?= $value['ID'] === $user['CountryID'] ? 'selected' : null ?>
                 >
-                    <?= $value['Name']; ?>
+                    <?= $value['Name'] ?>
                 </option>
               <?php endforeach; ?>
           </select>
@@ -224,19 +224,19 @@ $user         = $accountController->get($userId);
           <?php $index = 0; ?>
           <?php foreach ($phoneNumbers as $phoneNumber): $index++; ?>
             <div class="form-group">
-              <label for="phone-<?= $index; ?>">
-                Telefoonnummer <?= $index; ?>
+              <label for="phone-<?= $index ?>">
+                Telefoonnummer <?= $index ?>
               </label>
               <div class="input-group mb-2">
                 <div class="input-group-prepend">
-                  <div class="input-group-text"><?= $index; ?></div>
+                  <div class="input-group-text"><?= $index ?></div>
                 </div>
                 <input
                   type="text"
                   class="form-control"
-                  name="phone-<?= $index; ?>"
-                  id="phone-<?= $index; ?>"
-                  value="<?= $phoneNumber['Phonenumber'] ?? ''; ?>"
+                  name="phone-<?= $index ?>"
+                  id="phone-<?= $index ?>"
+                  value="<?= $phoneNumber['Phonenumber'] ?? '' ?>"
                   required
                 >
               </div>
