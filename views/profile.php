@@ -185,7 +185,9 @@ if (isset($_POST) && count($_POST) > 0) {
           <select class="form-control" id="country">
               <!-- TODO: Maak met query in Countries ipv dummy data. -->
               <?php foreach ([1 => 'Nederland'] as $id => $value): ?>
-                <option value="<?= $id; ?>"><?= $value; ?></option>
+                <option value="<?= $id; ?>">
+                    <?= $value; ?>
+                </option>
               <?php endforeach; ?>
           </select>
         </div>
