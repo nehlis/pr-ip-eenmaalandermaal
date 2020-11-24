@@ -7,6 +7,7 @@ gen
 # VSCode project files
 .vscode
 
-# Compiled css
-dist
+# ignored folders
+dist/
 node_modules/
+public/assets/css/
