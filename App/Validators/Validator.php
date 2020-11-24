@@ -15,12 +15,6 @@ abstract class Validator
     private static $data;
     
     /**
-     * Fields that should be validated
-     * @var
-     */
-    private static $fields;
-    
-    /**
      * Rules that apply to the validator.
      * @var
      */
@@ -29,18 +23,16 @@ abstract class Validator
     /**
      * Validator constructor.
      * @param $data
-     * @param $fields
      * @param $rules
      */
-    public function __construct($rules, $fields, $data)
+    public function __construct($rules, $data)
     {
-        self::setFields($fields);
-        self::setData($data);
         self::setRules($rules);
+        self::setData($data);
     }
     
     /**
-     * Set the data based on the fields prop.
+     * Set the data based on the if they are in the rules property.
      * @param array $data
      */
     protected static function setData(array $data)
@@ -48,21 +40,12 @@ abstract class Validator
         $newData = [];
         
         foreach ($data as $key => $field) {
-            if (in_array($key, self::$fields)) {
+            if (in_array($key, self::$rules)) {
                 $newData[$key] = $field;
             }
         }
         
         self::$data = $newData;
-    }
-    
-    /**
-     * Set the fields to be checked.
-     * @param mixed $fields
-     */
-    public static function setFields($fields): void
-    {
-        self::$fields = $fields;
     }
     
     /**

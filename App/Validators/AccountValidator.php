@@ -25,30 +25,12 @@ class AccountValidator extends Validator
     ];
     
     /**
-     * Fields to validate and send to backend.
-     * @var string[]
-     */
-    private static $fields = [
-        'Firstname',
-        'Lastname',
-        'Password',
-        'Street',
-        'Housenumber',
-        'Zipcode',
-        'City',
-        'CountryID',
-        'QuestionAnswer',
-        'Birthdate',
-        'Blocked',
-    ];
-    
-    /**
      * AccountValidator constructor.
      * @param $data
      */
     public function __construct(array $data)
     {
-        parent::__construct(self::$rules, self::$fields, $data);
+        parent::__construct(self::$rules, $data);
     }
     
     /**
