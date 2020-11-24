@@ -55,31 +55,40 @@ class Database
     }
 
     /**
+     * BASIC CRUD OPERATIONS
+     */
+
+    /**
      * Create method to be used in Controllers.
      * @param   string  $table  Table to insert data in.
      * @param   array   $data   Associative array of which the key represents the column name.
-     * @return  void            Returns nothing.
-     * @throws  Error           Throws error when execution fails. Possible cause: SQL conflicts
+     * @return  int|null        Returns ID of the last inserted record or null.
      */
-    public function create(string $table, array $data): void
+    public function create(string $table, array $data): ?int
     {
         $columns = Format::insertColumns($data);
         $values  = Format::insertValues($data);
 
-        $this
+        // exit("INSERT INTO $table ($columns) VALUES ($values)");
+
+        $result = $this
             ->connect()
             ->prepare("INSERT INTO $table ($columns) VALUES ($values)")
-            ->execute();
+            ->execute(false);
+
+        // HIERNAAR KIJKEN EXECUTE RETURNT GEEN BOOLEAN!!
+        $id = $result ? $this->database->lastInsertId() : null;
 
         $this->close();
+
+        return $id;
     }
 
     /**
      * Read method to be used in Controllers.
-     * @param   string  $table  Table to fetch data from.
-     * @param   int     $id     Row with ID.
-     * @return  array           Returns fetched row as an associative array.
-     * @throws  Error           Throws error when nothing was found or when execution fails (SQL related).
+     * @param   string      $table  Table to fetch data from.
+     * @param   int         $id     Row with ID.
+     * @return  array|null          Returns fetched row as an associative array or null when nothing was found.
      */
     public function get(string $table, int $id): ?array
     {
@@ -92,16 +101,78 @@ class Database
 
         $this->close();
 
-        return $result ?? null;
+        return $result ? $result : null;
     }
 
     /**
      * Read method to be used in Controllers.
+     * @param   string  $table  Table to fetch data from.
+     * @return  array           Returns numeric array with all rows (as an associative arrays).
+     */
+    public function index(string $table): ?array
+    {
+        $result = $this
+            ->connect()
+            ->prepare("SELECT * FROM $table")
+            ->execute()
+            ->fetchAll(PDO::FETCH_ASSOC);
+
+        $this->close();
+
+        return $result ? $result : null;
+    }
+
+    /**
+     * Update method to be used in Controllers.
+     * @param   string $table   Update row in which table?
+     * @param   int    $id      Row with ID?
+     * @param   array  $data    Associative array of which the key is the column name to be updated with its value.
+     * @return  bool            true if update was successful and false otherwise.
+     */
+    public function update(string $table, int $id, array $data): bool
+    {
+        $result = $this
+            ->connect()
+            ->prepare("UPDATE $table SET " . Format::updateValues($data) . " WHERE ID = :id")
+            ->bind(':id', $id, PDO::PARAM_INT)
+            ->execute(false);
+
+        $this->close();
+
+        // HIERNAAR KIJKEN EXECUTE RETURNT GEEN BOOLEAN!!
+        return isset($result) && $result === TRUE ? true : false;
+    }
+
+    /**
+     * Delete method to be used in Controllers.
+     * @param   string  $table  Table to delete a row
+     * @param   int     $id     Delete row where ID = ?
+     * @return  bool            True if deletion was successful and false otherwise.
+     */
+    public function delete(string $table, int $id): bool
+    {
+        $result = $this
+            ->connect()
+            ->prepare("DELETE FROM $table WHERE ID = :id")
+            ->bind(':id', $id, PDO::PARAM_INT)
+            ->execute(false);
+
+        $this->close();
+
+        // HIERNAAR KIJKEN EXECUTE RETURNT GEEN BOOLEAN!!
+        return isset($result) && $result === TRUE ? true : false;
+    }
+
+    /**
+     * EXTRA CRUD FUNCTIONS
+     */
+
+    /**
+     * Read by Column method to be used in Controllers.
      * @param   string  $table      Table to fetch data from.
      * @param   string  $column     Row where column = 'value'.
      * @param   string  $value      Value to check for in table.
      * @return  array               Returns fetched row as an associative Arrays.
-     * @throws  Error               Throws error when nothing was found or when execution fails (SQL related).
      */
     public function getByColumn(string $table, string $column, string $value): ?array
     {
@@ -118,72 +189,23 @@ class Database
     }
 
     /**
-     * Read method to be used in Controllers.
-     * @param   string  $table  Table to fetch data from.
-     * @return  array           Returns numeric array with all rows (as an associative arrays).
-     * @throws  Error           Throws error when nothing was found or when execution fails (SQL related).
+     * HELPER FUNCTIONS
      */
-    public function index(string $table): ?array
-    {
-        $result = $this
-            ->connect()
-            ->prepare("SELECT * FROM $table")
-            ->execute()
-            ->fetchAll(PDO::FETCH_ASSOC);
-
-        $this->close();
-
-        return $result ?? null;
-    }
-
-    /**
-     * Update method to be used in Controllers.
-     * @param string $table Update row in which table?
-     * @param int    $id    Row with ID?
-     * @param array  $data  Associative array of which the key is the column name to be updated with its value.
-     */
-    public function update(string $table, int $id, array $data): void
-    {
-        $this
-            ->connect()
-            ->prepare("UPDATE $table SET " . Format::updateValues($data) . " WHERE ID = :id")
-            ->bind(':id', $id, PDO::PARAM_INT)
-            ->execute();
-
-        $this->close();
-    }
-
-    /**
-     * Delete method to be used in Controllers.
-     * @param   string  $table  Table to delete a row
-     * @param   int     $id     Delete row where ID = ?
-     * @return  void            Returns nothing.
-     * @throws  Error           Throws error when execution fails. Possible cause: SQL conflicts
-     */
-    public function delete(string $table, int $id): void
-    {
-        $this
-            ->connect()
-            ->prepare("DELETE FROM $table WHERE ID = :id")
-            ->bind(':id', $id, PDO::PARAM_INT)
-            ->execute();
-
-        $this->close();
-    }
 
     /**
      * Executes the statement and returns the result of it.
-     * @return PDOStatement
+     * @param   bool                $chained    Is the function used in a chain?
+     * @return  PDOStatement|bool               Returns PDOStatement or bool depending on $chained param
      */
-    private function execute(): PDOStatement
+    private function execute(bool $chained = true)
     {
         try {
-            $this->statement->execute();
+            $result = $this->statement->execute();
         } catch (PDOException $ex) {
             $this->handlePDOException($ex->getMessage());
         }
 
-        return $this->statement;
+        return $chained ? $this->statement : $result;
     }
 
     /**

@@ -22,7 +22,7 @@ class AccountController implements IController
      * @var string $table Table name on which the CRUD operations should apply.
      */
     private static $table = 'Account';
-    
+
     /**
      * AccountController constructor.
      */
@@ -30,66 +30,89 @@ class AccountController implements IController
     {
         $this->database = new Database;
     }
-    
+
     /**
-     * @param array $data
-     * @return array|null
+     * @param   array       $data   Associative array with all account data (Firstname, Lastname, Password, Street, Housenumber, Zipcode, City,   Country, QuestionID, QuestionAnswer, Birthday).
+     * @return  array|null          Returns created account as array or null.
+     * @throws  Error               Throws error when account could not be created.
      */
     public function create(array $data): ?array
     {
-        $this->database->create(self::$table, $data);
+        $id = $this->database->create(self::$table, $data);
 
-        $result = $this->database->getByColumn(self::$table, 'email', $data['email']);
-
-        if ((bool) $result) {
-            return $result;
+        if ($id) {
+            return $this->get($id);
         } else {
-            throw new Error ('test');
+            throw new Error('Account niet aangemaakt!');
         }
     }
-    
+
     /**
-     * @param int $id
-     * @return array|null
+     * @param   int           $id   Get row where ID=$id
+     * @return  array|null          Returns fetched row or null
+     * @throws  Error               Throws error when no account is found.
      */
     public function get(int $id): ?array
     {
-        return $this->database->get(self::$table, $id);
+        $result = $this->database->get(self::$table, $id);
+
+        if ($result) {
+            return $result;
+        } else {
+            throw new Error("Account met id = $id niet gevonden!");
+        }
     }
-    
+
     /**
-     * @return array|null
+     * @return array|null   Returns array with all users
+     * @throws  Error               Throws error when no accounts were found.
      */
     public function index(): ?array
     {
-        return $this->database->index(self::$table);
+        $result = $this->database->index(self::$table);
+
+        if ($result) {
+            return $result;
+        } else {
+            throw new Error("Geen accounts gevonden!");
+        }
     }
-    
+
     /**
-     * @param int   $id
-     * @param array $data
-     * @return array|null
+     * @param   int         $id     Update user where ID=$id
+     * @param   array       $data   Associative array of which the key is the column name to be updated with its value.
+     * @return  array|null          The updated user as an associative array
+     * @throws  Error               Throws error when account is not found or when updating failed.
      */
     public function update(int $id, array $data): ?array
     {
         if (!$this->get($id)) return null;
-        
-        $this->database->update(self::$table, $id, $data);
-        
-        return $this->get($id);
+
+        $result = $this->database->update(self::$table, $id, $data);
+
+        if ($result) {
+            return $this->get($id);
+        } else {
+            throw new Error("Account waarvan ID = $id niet geupdate!");
+        }
     }
-    
+
     /**
-     * @param int $id
-     * @return array|null
+     * @param int           $id     Delete user with ID=$id
+     * @return array|null           The deleted user as an associative array
+     * @throws  Error               Throws error when account is not found or when updating failed.
      */
     public function delete(int $id): ?array
     {
         if (!$user = $this->get($id)) return null;
-    
-        $this->database->delete(self::$table, $id);
-    
-        return $user;
+
+        $result = $this->database->delete(self::$table, $id);
+
+        if ($result) {
+            return $user;
+        } else {
+            throw new Error("Account waarvan ID = $id niet verwijderd!");
+        }
     }
     
     /**
