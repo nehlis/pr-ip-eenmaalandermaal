@@ -1,6 +1,8 @@
 <div class="signup-wrapper py-5">
     <form class="form-signup py-5">
-        <h1 class="h3 mb-3 font-weight-normal">Registreer uw account</h1>
+        <div class="alert alert-primary text-center text-uppercase">
+            <h1 class="h3 m-0 font-weight-bold">Registreer uw account</h1>
+        </div>
         <div class="row">
             <div class="col-md-6 has-signup-devider">
                 <div class="form-group">
