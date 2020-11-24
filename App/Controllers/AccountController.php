@@ -100,6 +100,11 @@ class AccountController implements IController
         return $question;
     }
     
+    /**
+     * Gets the phone numbers that belong to the account.
+     * @param int $id
+     * @return array|null
+     */
     public function getPhoneNumbers(int $id): ?array
     {
         $phoneNumbers = $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
