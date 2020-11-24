@@ -11,8 +11,8 @@
 
             try {
                 $create = $uc->create([
-                    'Email'             => 'emailadres',
-                    'Username'          => 'gebruikersnaam',
+                    'Email'             => 'asd',
+                    'Username'          => 'asd',
                     'Password'          => 'wachtwoord',
                     'Firstname'         => 'voornaam',
                     'Lastname'          => 'achternaam',
