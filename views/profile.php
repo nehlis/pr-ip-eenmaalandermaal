@@ -12,18 +12,18 @@ $userId = 978;
 
 if (isset($_POST) && count($_POST) > 0) {
     $data = [
-        'Email'          => $_POST['Email'],
-        'Username'       => $_POST['Username'],
-        'Firstname'      => $_POST['Firstname'],
-        'Lastname'       => $_POST['Lastname'],
-        'Password'       => hash('sha256', $_POST['Password']),
-        'Street'         => $_POST['Street'],
-        'Housenumber'    => $_POST['Housenumber'],
-        'Zipcode'        => $_POST['Zipcode'],
-        'City'           => $_POST['City'],
-        'CountryID'      => $_POST['Country'],
-        'QuestionAnswer' => $_POST['QuestionAnswer'],
-        'Birthdate'      => $_POST['Birthdate'],
+        'Email'          => $_POST['Email'] ?? '',
+        'Username'       => $_POST['Username'] ?? '',
+        'Firstname'      => $_POST['Firstname'] ?? '',
+        'Lastname'       => $_POST['Lastname'] ?? '',
+        'Password'       => hash('sha256', $_POST['Password']) ?? '',
+        'Street'         => $_POST['Street'] ?? '',
+        'Housenumber'    => $_POST['Housenumber'] ?? '',
+        'Zipcode'        => $_POST['Zipcode'] ?? '',
+        'City'           => $_POST['City'] ?? '',
+        'CountryID'      => $_POST['Country'] ?? '',
+        'QuestionAnswer' => $_POST['QuestionAnswer'] ?? '',
+        'Birthdate'      => $_POST['Birthdate'] ?? '',
     ];
     
     $accountValidator = new AccountValidator($data);
