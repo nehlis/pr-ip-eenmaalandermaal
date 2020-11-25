@@ -49,6 +49,10 @@ class Router
             'view'  => 'actest',
             'title' => '[TEST] User Controller',
         ],
+        '/ictest'      => [
+            'view'  => 'ictest',
+            'title' => '[TEST] Item Controller',
+        ],
     ];
     
     /**
