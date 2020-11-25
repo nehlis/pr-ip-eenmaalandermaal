@@ -9,7 +9,7 @@ use Error;
 /**
  * User Controller
  * All CRUD operations
- * 
+ *
  */
 class AccountController implements IController
 {
@@ -130,7 +130,7 @@ class AccountController implements IController
         $questionId = $this->database->get(self::$table, $id)['QuestionID'];
         $question   = $this->database->get('Question', $questionId);
 
-        return !$questionId || !$question ? null : $question;
+        return $questionId && $question ? $question : null;
     }
 
     /**
