@@ -42,9 +42,9 @@ class AccountController implements IController
 
         if ($id) {
             return $this->get($id);
-        } else {
-            throw new Error('Account niet aangemaakt!');
         }
+
+        throw new Error('Account niet aangemaakt!');
     }
 
     /**
@@ -58,9 +58,9 @@ class AccountController implements IController
 
         if ($result) {
             return $result;
-        } else {
-            throw new Error("Account met id = $id niet gevonden!");
         }
+
+        throw new Error("Account met id = $id niet gevonden!");
     }
 
     /**
@@ -73,9 +73,9 @@ class AccountController implements IController
 
         if ($result) {
             return $result;
-        } else {
-            throw new Error("Geen accounts gevonden!");
         }
+
+        throw new Error("Geen accounts gevonden!");
     }
 
     /**
@@ -86,15 +86,17 @@ class AccountController implements IController
      */
     public function update(int $id, array $data): ?array
     {
-        if (!$this->get($id)) return null;
+        if (!$this->get($id)) {
+            return null;
+        }
 
         $result = $this->database->update(self::$table, $id, $data);
 
         if ($result) {
             return $this->get($id);
-        } else {
-            throw new Error("Account waarvan ID = $id niet geupdate!");
         }
+
+        throw new Error("Account waarvan ID = $id niet geupdate!");
     }
 
     /**
@@ -104,15 +106,17 @@ class AccountController implements IController
      */
     public function delete(int $id): ?array
     {
-        if (!$user = $this->get($id)) return null;
+        if (!$user = $this->get($id)) {
+            return null;
+        }
 
         $result = $this->database->delete(self::$table, $id);
 
         if ($result) {
             return $user;
-        } else {
-            throw new Error("Account waarvan ID = $id niet verwijderd!");
         }
+
+        throw new Error("Account waarvan ID = $id niet verwijderd!");
     }
 
     /**
@@ -125,7 +129,9 @@ class AccountController implements IController
         $questionId = $this->database->get(self::$table, $id)['QuestionID'];
         $question   = $this->database->get('Question', $questionId);
 
-        if (!$questionId || !$question) return null;
+        if (!$questionId || !$question) {
+            return null;
+        }
 
         return $question;
     }
@@ -149,9 +155,9 @@ class AccountController implements IController
 
         if ($result) {
             return $result;
-        } else {
-            throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="/registreren" class="alert-link">hier</a> om je te registreren.');
         }
+
+        throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="#registreren" class="alert-link">hier</a> om je te registreren.');
     }
 
     // TODO: Docs schrijven 
@@ -169,6 +175,8 @@ class AccountController implements IController
 
         $result = $this->database->update(self::$table, $id, ['Blocked' => !$user['Blocked']]);
 
-        if (!$result) throw new Error("Blokkeer status niet gewijzigd!");
+        if (!$result) {
+            throw new Error("Blokkeer status niet gewijzigd!");
+        }
     }
 }
