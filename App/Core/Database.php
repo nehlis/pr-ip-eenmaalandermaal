@@ -187,6 +187,24 @@ class Database
 
         return $result && count($result) > 0 ? $result : null;
     }
+    
+    /**
+     * Method that makes it possible to make a personal query.
+     * @param string $query
+     * @return array|null
+     */
+    public function customQuery(string $query): ?array
+    {
+        $result = $this
+            ->connect()
+            ->prepare($query)
+            ->execute()
+            ->fetchAll(PDO::FETCH_ASSOC);
+    
+        $this->close();
+    
+        return $result && count($result) > 0 ? $result : null;
+    }
 
     /**
      * HELPER FUNCTIONS
