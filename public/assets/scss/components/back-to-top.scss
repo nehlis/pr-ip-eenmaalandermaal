@@ -1,0 +1,14 @@
+.back-to-top {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: none;
+  transition: transform 0.2s;
+
+  &:hover {
+    color: $primary !important;
+    background-color: $light !important;
+    border-color: $light !important;
+    transform: scale(1.1) !important;
+  }
+}
