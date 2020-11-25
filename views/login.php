@@ -7,7 +7,7 @@ $as = new AuthService();
 
 // Redirect if already logged in
 if (AuthService::isLoggedIn()) {
-  Router::Redirect('/profiel');
+  Router::redirect('/profiel');
 }
 
 // Validation & Sanization

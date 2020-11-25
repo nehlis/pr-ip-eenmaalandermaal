@@ -51,7 +51,7 @@ class AuthService
         $_SESSION['name'] = $user['Firstname'] . ' ' . $user['Lastname'];
 
         // Redirect after successfully login
-        Router::Redirect($_GET['referrer'] ?? '/profiel');
+        Router::redirect($_GET['referrer'] ?? '/profiel');
     }
 
     /**
@@ -73,7 +73,7 @@ class AuthService
     public static function logout(): void
     {
         session_destroy();
-        Router::Redirect('/inloggen');
+        Router::redirect('/inloggen');
     }
 
     /**
@@ -95,7 +95,7 @@ class AuthService
     public static function checkAuth(): void
     {
         if (!self::isloggedIn()) {
-            Router::Redirect("/inloggen?referrer={$_SERVER['REQUEST_URI']}");
+            Router::redirect("/inloggen?referrer={$_SERVER['REQUEST_URI']}");
         }
     }
 }
