@@ -181,7 +181,7 @@ class ItemController implements IController
      */
     public function getFeaturedItems(): ?array
     {
-        $result = $this->database->custom(self::$table);
+        $result = $this->database->customQuery("SELECT TOP 3 * FROM Item WHERE AuctionClosed = 'false' ORDER BY Views DESC");
 
         if ($result) {
             return $result;

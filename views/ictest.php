@@ -62,6 +62,12 @@
             }
 
             try {
+                $featuredItems = $ic->getFeaturedItems();
+            } catch (Error $error) {
+                $customError = $error->getMessage();
+            }
+
+            try {
                 $update = $ic->update(32, ['Title' => 'Aaaanpassinnggg!']);
             } catch (Error $error) {
                 $updateError = $error->getMessage();
@@ -111,6 +117,38 @@
                     </div>
 
                     <?php $update ? print_r($update) : "" ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <h2>Custom: </h2>
+
+                    <div class="alert alert-danger <?= $customError ? 'd-block' : 'd-none'; ?>" role="alert">
+                        <?= $customError ?? ''; ?>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Views</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($featuredItems as $item) : ?>
+                                    <tr>
+                                        <th scope="row"><?php echo $item['ID'] ?></th>
+                                        <td><?php echo $item['Title'] ?></td>
+                                        <td><?php echo $item['Description'] ?></td>
+                                        <td><?php echo $item['Views'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
