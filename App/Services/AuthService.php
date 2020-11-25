@@ -36,10 +36,11 @@ class AuthService
      */
     public function login(string $email, string $password): void
     {
+
         try {
             $user = $this->ac->getByEmail($email);
         } catch (Error $error) {
-            throw new Error($error->getMessage() . ' Klik <a href="/registreren" class="alert-link">hier</a> om je te registreren');
+            throw new Error($error->getMessage() . '<hr>Klik <a href="/registreren" class="alert-link">hier</a> om je te registreren.</a>');
         }
 
         if (hash('sha256', $password) !== $user['Password']) {

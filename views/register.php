@@ -64,7 +64,6 @@ if (count($_POST) > 0) {
   // Remove uncessary elements
   unset($data['ConfirmPassword']);
 
-
   // Register Logic
   if (count($errors) == 0) {
     try {
@@ -185,7 +184,7 @@ if (count($_POST) > 0) {
             <?= $errors['Birthdate']; ?>
           </div>
 
-          <input type="date" name="Birthdate" class="form-control" id="birthDate" value="<?= $_POST['Birthdate'] ?? '2020-10-05' ?> ">
+          <input type="date" name="Birthdate" class="form-control" id="birthDate" value="<?= $_POST['Birthdate'] ?>">
         </div>
 
         <div class=" row">
@@ -197,7 +196,7 @@ if (count($_POST) > 0) {
                 <?= $errors['Street']; ?>
               </div>
 
-              <input type="text" name="Street" class="form-control" id="adress" value="<?= $_POST['Street'] ?? 'Strat' ?>">
+              <input type="text" name="Street" class="form-control" id="adress" value="<?= $_POST['Street'] ?>">
             </div>
           </div>
 
