@@ -76,7 +76,7 @@ class Router
         View::render(null, $this->routes['/404']);
     }
 
-    public static function Redirect(string $url)
+    public static function redirect(string $url): void
     {
         // TODO: Vindt oplossing hiervoor...
         echo "<script>window.location = '$url'</script>";
