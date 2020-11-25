@@ -26,7 +26,8 @@ class AuthService
     }
 
     /**
-     * Login - First checks if email exists and then matches the password. After saving 
+     * Logins user into the platform
+     * First checks if email exists and then matches the password. After saving 
      * needed data in session storage it redirects the user to either the referrer or profile page.
      * @param   string  $email      Emailaddress of the user
      * @param   string  $password   Password of the user   
@@ -46,12 +47,24 @@ class AuthService
         }
 
         // TODO: Welke data is nodig door de site?
-        $_SESSION['ID']   = $user['ID'];
-        $_SESSION['Name'] = $user['Firstname'] . ' ' . $user['Lastname'];
+        $_SESSION['id']   = $user['ID'];
+        $_SESSION['name'] = $user['Firstname'] . ' ' . $user['Lastname'];
 
         // Redirect after successfully login
         Router::Redirect($_GET['referrer'] ?? '/profiel');
     }
+
+    /**
+     * Registers user to the database
+     * First checks if email exists and then if the username exists 
+     * @param   array $data   Associative array with all required user data
+     * @return  
+     */
+    public function register($data)
+    {
+        $user = $this->ac->getByEmail($data['email']);
+    }
+
 
     /**
      * Logs the current logged in user out.
@@ -73,7 +86,7 @@ class AuthService
      */
     public static function isLoggedIn(): bool
     {
-        return isset($_SESSION['ID']);
+        return isset($_SESSION['id']);
     }
 
     /**
