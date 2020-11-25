@@ -42,9 +42,9 @@ class AccountController implements IController
 
         if ($id) {
             return $this->get($id);
-        } else {
-            throw new Error('Account niet aangemaakt!');
         }
+
+        throw new Error('Account niet aangemaakt!');
     }
 
     /**
@@ -58,9 +58,9 @@ class AccountController implements IController
 
         if ($result) {
             return $result;
-        } else {
-            throw new Error("Account met id = $id niet gevonden!");
         }
+
+        throw new Error("Account met id = $id niet gevonden!");
     }
 
     /**
@@ -73,9 +73,9 @@ class AccountController implements IController
 
         if ($result) {
             return $result;
-        } else {
-            throw new Error("Geen accounts gevonden!");
         }
+
+        throw new Error("Geen accounts gevonden!");
     }
 
     /**
@@ -86,15 +86,17 @@ class AccountController implements IController
      */
     public function update(int $id, array $data): ?array
     {
-        if (!$this->get($id)) return null;
+        if (!$this->get($id)) {
+            return null;
+        }
 
         $result = $this->database->update(self::$table, $id, $data);
 
         if ($result) {
             return $this->get($id);
-        } else {
-            throw new Error("Account waarvan ID = $id niet geupdate!");
         }
+
+        throw new Error("Account waarvan ID = $id niet geupdate!");
     }
 
     /**
@@ -104,17 +106,19 @@ class AccountController implements IController
      */
     public function delete(int $id): ?array
     {
-        if (!$user = $this->get($id)) return null;
+        if (!$user = $this->get($id)) {
+            return null;
+        }
 
         $result = $this->database->delete(self::$table, $id);
 
         if ($result) {
             return $user;
-        } else {
-            throw new Error("Account waarvan ID = $id niet verwijderd!");
         }
+
+        throw new Error("Account waarvan ID = $id niet verwijderd!");
     }
-    
+
     /**
      * Gets the question that belongs to the account.
      * @param int $id
@@ -124,12 +128,10 @@ class AccountController implements IController
     {
         $questionId = $this->database->get(self::$table, $id)['QuestionID'];
         $question   = $this->database->get('Question', $questionId);
-        
-        if (!$questionId || !$question) return null;
-        
-        return $question;
+
+        return !$questionId || !$question ? null : $question;
     }
-    
+
     /**
      * Gets the phone numbers that belong to the account.
      * @param int $id
@@ -139,9 +141,41 @@ class AccountController implements IController
     {
         return $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
     }
-    
+
     public function updatePhoneNumber(int $id, array $data)
     {
         $this->database->update('AccountPhonenumber', $id, $data);
+    }
+
+    // TODO: Docs schrijven
+    public function getByEmail(string $email): ?array
+    {
+        $result = $this->database->getByColumn(self::$table, 'Email', $email);
+
+        if ($result) {
+            return $result;
+        }
+
+        throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="#registreren" class="alert-link">hier</a> om je te registreren.');
+    }
+
+    // TODO: Docs schrijven 
+    public function isBlocked(int $id): ?bool
+    {
+        $user = $this->get($id);
+
+        return (bool) $user['Blocked'];
+    }
+
+    // TODO: Docs schrijven
+    public function toggleBlocked(int $id): void
+    {
+        $user = $this->get($id);
+
+        $result = $this->database->update(self::$table, $id, ['Blocked' => !$user['Blocked']]);
+
+        if (!$result) {
+            throw new Error("Blokkeer status niet gewijzigd!");
+        }
     }
 }

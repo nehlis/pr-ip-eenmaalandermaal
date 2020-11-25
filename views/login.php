@@ -1,35 +1,44 @@
 <?php
-// Redirect if already logged in:
-if (isset($_SESSION['username'])) {
-  header('Location: /');
+
+use App\Services\AuthService;
+use App\Core\Router;
+
+$as = new AuthService();
+
+// Redirect if already logged in
+if (AuthService::isLoggedIn()) {
+  Router::redirect('/profiel');
 }
 
-/**
- * Login logic
- */
-$email = $_POST['email'];
-$password = $_POST['password'];
-
-try {
-  // login functie
-  // Redirect
-} catch (Error $err) {
-  $error = $err;
+// Validation & Sanization
+if (isset($_POST['email']) && !empty($_POST['email'])) {
+  $email = trim($_POST['email'], ' ');
+}
+if (isset($_POST['password']) && !empty($_POST['password'])) {
+  $password = $_POST['password'];
 }
 
+// Login Logic
+if (isset($email, $password)) {
+  try {
+    $as->login($email, $password);
+  } catch (Error $err) {
+    $error = $err->getMessage();
+  }
+}
 ?>
 
 <div class="signin-wrapper py-5">
-  <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST" class="form-signin py-5">
+  <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" class="form-signin py-5">
     <h1 class="h3 mb-3 font-weight-normal text-center">Log in met uw account</h1>
 
-    <?= isset($error) ? "<div class=\"alert alert-danger\" role=\"alert\"> $error </div>" : null ?>
+    <div class="alert alert-danger <?= isset($error) ? 'd-block' : 'd-none' ?>" role="alert"> <?= $error ?> </div>
 
     <label for="inputEmail" class="sr-only">Emailadres</label>
-    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" value="<?= $email ?>" required autofocus>
+    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Emailadres" value="<?= $email ?? 'sinne.vanwalsum@example.com' ?>" required autofocus>
 
     <label for="inputPassword" class="sr-only">Wachtwoord</label>
-    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" value="<?= $password ?>" required>
+    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" value="<?= $password ?? 'PASSWORD' ?>" required>
 
     <div class="d-flex justify-content-between">
       <label>

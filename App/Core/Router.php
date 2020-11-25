@@ -33,6 +33,10 @@ class Router
             'view'  => 'register',
             'title' => 'Registreren',
         ],
+        '/uitloggen'   => [
+            'view'  => 'logout',
+            'title' => 'uitloggen',
+        ],
         '/profiel'     => [
             'view'  => 'profile',
             'title' => 'Profiel',
@@ -52,7 +56,7 @@ class Router
      */
     public function __construct()
     {
-        $this->request = $_SERVER['REQUEST_URI'];
+        $this->request = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
         $this->check();
     }
     
@@ -70,5 +74,11 @@ class Router
         }
         
         View::render(null, $this->routes['/404']);
+    }
+    
+    public static function redirect(string $url): void
+    {
+        // TODO: Vindt oplossing hiervoor...
+        echo "<script>window.location = '$url'</script>";
     }
 }
