@@ -4,19 +4,11 @@
   right: 25px;
   display: none;
   transition: transform 0.2s;
-}
 
-.btn-light:hover {
-  color: $primary !important;
-  background-color: $light;
-  border-color: $light;
-  transform: scale(1.1) !important;
-}
-
-.btn-light:not(:disabled):not(.disabled).active,
-.btn-light:not(:disabled):not(.disabled):active,
-.show > .btn-light.dropdown-toggle {
-  color: $primary !important;
-  background-color: $light;
-  border-color: $light;
+  &:hover {
+    color: $primary !important;
+    background-color: $light !important;
+    border-color: $light !important;
+    transform: scale(1.1) !important;
+  }
 }
