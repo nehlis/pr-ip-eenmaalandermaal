@@ -128,12 +128,8 @@ class AccountController implements IController
     {
         $questionId = $this->database->get(self::$table, $id)['QuestionID'];
         $question   = $this->database->get('Question', $questionId);
-
-        if (!$questionId || !$question) {
-            return null;
-        }
-
-        return $question;
+    
+        return !$questionId || !$question ? null : $question;
     }
 
     /**
