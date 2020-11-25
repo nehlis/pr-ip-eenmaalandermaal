@@ -114,7 +114,7 @@ class AccountController implements IController
             throw new Error("Account waarvan ID = $id niet verwijderd!");
         }
     }
-    
+
     /**
      * Gets the question that belongs to the account.
      * @param int $id
@@ -124,12 +124,12 @@ class AccountController implements IController
     {
         $questionId = $this->database->get(self::$table, $id)['QuestionID'];
         $question   = $this->database->get('Question', $questionId);
-        
+
         if (!$questionId || !$question) return null;
-        
+
         return $question;
     }
-    
+
     /**
      * Gets the phone numbers that belong to the account.
      * @param int $id
@@ -138,7 +138,7 @@ class AccountController implements IController
     public function getPhoneNumbers(int $id): ?array
     {
         $phoneNumbers = $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
-        
+
         return $phoneNumbers ?? null;
     }
 
@@ -152,5 +152,23 @@ class AccountController implements IController
         } else {
             throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="#registreren" class="alert-link">hier</a> om je te registreren.');
         }
+    }
+
+    // TODO: Docs schrijven 
+    public function isBlocked(int $id): ?bool
+    {
+        $user = $this->get($id);
+
+        return (bool) $user['Blocked'];
+    }
+
+    // TODO: Docs schrijven
+    public function toggleBlocked(int $id): void
+    {
+        $user = $this->get($id);
+
+        $result = $this->database->update(self::$table, $id, ['Blocked' => !$user['Blocked']]);
+
+        if (!$result) throw new Error("Blokkeer status niet gewijzigd!");
     }
 }

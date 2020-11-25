@@ -29,7 +29,7 @@ if (isset($email) && isset($password)) {
 ?>
 
 <div class="signin-wrapper py-5">
-  <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="POST" class="form-signin py-5">
+  <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" class="form-signin py-5">
     <h1 class="h3 mb-3 font-weight-normal text-center">Log in met uw account</h1>
 
     <div class="alert alert-danger <?= isset($error) ? 'd-block' : 'd-none' ?>" role="alert"> <?= $error ?> </div>

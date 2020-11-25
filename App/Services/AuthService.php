@@ -19,7 +19,8 @@ class AuthService
     }
 
     /**
-     * Login - First checks if email exists and then matches the password. After saving needed data in session storage it redirects the user to either the referrer or profile page.
+     * Login - First checks if email exists and then matches the password. After saving 
+     * needed data in session storage it redirects the user to either the referrer or profile page.
      * @param   string  $email      Emailaddress of the user
      * @param   string  $password   Password of the user   
      * @throws  Error               Throws error when password is incorrect.
@@ -30,15 +31,19 @@ class AuthService
 
         // password_verify(password_hash($password, PASSWORD_BCRYPT), $user['Password']);
         if (isset($user) && $user['Password'] === $password) {
-            // TODO: Welke data is nodig door de site?
-            $_SESSION['ID'] = $user['ID'];
-            $_SESSION['Name'] = $user['Firstname'] . ' ' . $user['Lastname'];
+            if ($user['Blocked'] == 0) {
+                // TODO: Welke data is nodig door de site?
+                $_SESSION['ID'] = $user['ID'];
+                $_SESSION['Name'] = $user['Firstname'] . ' ' . $user['Lastname'];
 
-            // Redirect after successfully login
-            if (isset($_GET['referrer'])) {
-                Router::Redirect($_GET['referrer']);
+                // Redirect after successfully login
+                if (isset($_GET['referrer'])) {
+                    Router::Redirect($_GET['referrer']);
+                } else {
+                    Router::Redirect('/profiel');
+                }
             } else {
-                Router::Redirect('/profiel');
+                throw new Error('Je bent geblokkeerd of je account is nog niet geactiveerd! Neem contact op met de <a href="#" class="alert-link">klantenservice</a>');
             }
         } else {
             throw new Error('Wachtwoord onjuist!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten?</a>');
