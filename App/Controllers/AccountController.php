@@ -38,6 +38,9 @@ class AccountController implements IController
      */
     public function create(array $data): ?array
     {
+        $phonenumbers = $data['Phonenumbers'];
+        unset($data['Phonenumbers']);
+
         $id = $this->database->create(self::$table, $data);
 
         if ($id) {
@@ -145,7 +148,7 @@ class AccountController implements IController
 
     public function updatePhoneNumber(int $id, array $data): void
     {
-        $this->database->update('Phonenumbers', $id, $data);
+        $this->database->update('Phonenumber', $id, $data);
     }
 
     // TODO: Docs schrijven
@@ -154,10 +157,17 @@ class AccountController implements IController
         $result = $this->database->getByColumn(self::$table, 'Email', $email);
 
         if ($result) {
-            return $result;
+            return $result[0];
         }
 
-        throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="#registreren" class="alert-link">hier</a> om je te registreren.');
+        throw new Error($email . ' is niet aan een account gekoppeld.');
+    }
+
+    // TODO: Docs schrijven
+    public function existsByColumn(string $column, string $value): bool
+    {
+        $result = $this->database->getByColumn(self::$table, $column, $value);
+        return $result ? true : false;
     }
 
     // TODO: Docs schrijven 

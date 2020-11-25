@@ -29,21 +29,24 @@ interface IController
     /**
      * Indexes all of specified resource.
      * @return  array|null All rows or null.
+     * @throws Error     Throws error when execution failed.
      */
     public function index(): ?array;
-    
+
     /**
      * Updates an entry in the specified resource.
      * @param int   $id   ID of the column to update.
      * @param array $data Associative array of which the key is the column name to be updated with its value.
      * @return array|null The updated resource or null on fail.
+     * @throws Error     Throws error when execution failed.
      */
     public function update(int $id, array $data): ?array;
-    
+
     /**
      * Deletes an entry in the specified resource.
      * @param int $id     ID of the column to delete.
      * @return array|null The result or null.
+     * @throws Error     Throws error when execution failed.
      */
     public function delete(int $id): ?array;
 }

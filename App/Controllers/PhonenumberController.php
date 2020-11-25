@@ -2,15 +2,16 @@
 
 namespace App\Controllers;
 
-use App\Core\Database;
 use App\Interfaces\IController;
+use App\Core\Database;
 use Error;
 
 /**
- * Class QuestionController
- * @package App\Controllers
+ * User Controller
+ * All CRUD operations
+ * 
  */
-class QuestionController implements IController
+class PhonenumberController implements IController
 {
     /**
      * @var Database $database Database class which contains all generic CRUD functions.
@@ -20,7 +21,7 @@ class QuestionController implements IController
     /**
      * @var string $table Table name on which the CRUD operations should apply.
      */
-    private static $table = 'Question';
+    private static $table = 'Phonenumber';
 
     /**
      * AccountController constructor.
@@ -33,10 +34,12 @@ class QuestionController implements IController
     /**
      * @param array $data
      * @return array|null
+     * @throws Error     Throws error when execution failed.
      */
     public function create(array $data): ?array
     {
         // TODO: Implement create() method.
+        return [];
     }
 
     /**
@@ -45,39 +48,45 @@ class QuestionController implements IController
      */
     public function get(int $id): ?array
     {
-        // TODO: Implement get() method.
-    }
-
-    /**
-     * @return array|null
-     */
-    public function index(): ?array
-    {
-        $result = $this->database->index(self::$table);
+        $result = $this->database->get(self::$table, $id);
 
         if ($result) {
             return $result;
         }
 
-        throw new Error("Geen vragen gevonden!");
+        throw new Error("Geen telefoonnummers gevonden!");
+    }
+
+    /**
+     * @return array|null
+     * @throws Error     Throws error when execution failed.
+     */
+    public function index(): ?array
+    {
+        // TODO: Implement update() method.
+        return [];
     }
 
     /**
      * @param int   $id
      * @param array $data
      * @return array|null
+     * @throws Error     Throws error when execution failed.
      */
     public function update(int $id, array $data): ?array
     {
         // TODO: Implement update() method.
+        return [];
     }
 
     /**
      * @param int $id
      * @return array|null
+     * @throws Error     Throws error when execution failed.
      */
     public function delete(int $id): ?array
     {
-        // TODO: Implement delete() method.
+        // TODO: Implement update() method.
+        return [];
     }
 }

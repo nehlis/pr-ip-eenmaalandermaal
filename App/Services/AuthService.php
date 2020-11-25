@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Controllers\AccountController;
 use App\Core\Router;
 use Error;
+use PDO;
 
 /**
  * Class AuthService
@@ -35,16 +36,21 @@ class AuthService
      */
     public function login(string $email, string $password): void
     {
-        $user = $this->ac->getByEmail($email);
 
-        // password_verify(password_hash($password, PASSWORD_BCRYPT), $user['Password']);
-        if (!isset($user) || $user['Password'] !== $password) {
+        try {
+            $user = $this->ac->getByEmail($email);
+        } catch (Error $error) {
+            throw new Error($error->getMessage() . '<hr>Klik <a href="/registreren" class="alert-link">hier</a> om je te registreren.</a>');
+        }
+
+        if (hash('sha256', $password) !== $user['Password']) {
             throw new Error('Wachtwoord onjuist!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten?</a>');
         }
 
-        if ($user['Blocked'] !== 0) {
+        if ($user['Blocked'] === 1) {
             throw new Error('Je bent geblokkeerd of je account is nog niet geactiveerd! Neem contact op met de <a href="#" class="alert-link">klantenservice</a>');
         }
+        // exit($user['Blocked'] === 1);
 
         // TODO: Welke data is nodig door de site?
         $_SESSION['id']   = $user['ID'];
@@ -62,7 +68,22 @@ class AuthService
      */
     public function register($data)
     {
-        $user = $this->ac->getByEmail($data['email']);
+        if ($this->ac->existsByColumn('Email', $data['Email'])) {
+            throw new Error("Er is al een account gekoppeld aan " . $data['Email']);
+        }
+
+        if ($this->ac->existsByColumn('Username', $data['Username'])) {
+            throw new Error("Er is al een account gekoppeld aan " . $data['Username']);
+        }
+
+        try {
+            $data['Password'] = hash('sha256', $data['Password']);
+            $user = $this->ac->create($data);
+        } catch (Error $error) {
+            throw new Error("Kon niet registreren!");
+        }
+
+        return "Account geregistreerd. Neem contact op met beheerder om je account te activeren!";
     }
 
 
