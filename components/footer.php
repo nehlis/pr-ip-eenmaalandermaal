@@ -25,7 +25,7 @@
                 <h5>Jouw profiel</h5>
                 <ul class="list-unstyled text-small">
                     <li><a class="text-muted" href="/registreren">Profiel aanmaken</a></li>
-                    <li><a class="text-muted" href="#">Mijn profiel</a></li>
+                    <li><a class="text-muted" href="/profiel">Mijn profiel</a></li>
                 </ul>
             </div>
         </div>
@@ -41,7 +41,7 @@
                 <div class="copyright-menu">
                     <ul>
                         <li>
-                            <a href="#">Home</a>
+                            <a href="/">Home</a>
                         </li>
                         <li>
                             <a href="#">Algemene voorwaarden</a>
