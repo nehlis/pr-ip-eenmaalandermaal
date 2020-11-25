@@ -3,14 +3,23 @@
   Het compileren van alle bootstrap content kan namelijk lang duren.
  */
 
+ $primary: #5F4B8B;
+ $success:#0E7F2E;
+ $danger: #C62B30;
+ $warning:#E8B604;
+ $info:#53A2BE;
+ $light:#F7F3F3;
+ $dark:#2F2F2D;
+
+
 $theme-colors: (
-    "primary": #5F4B8B,
-    "success": #0E7F2E,
-    "danger":  #C62B30,
-    "warning": #E8B604,
-    "info":    #53A2BE,
-    "light":   #F7F3F3,
-    "dark":    #2F2F2D
+    "primary": $primary,
+    "success": $success,
+    "danger":  $danger,
+    "warning": $warning,
+    "info":    $info,
+    "light":   $light,
+    "dark":    $dark
 );
 
 @import "../../../../node_modules/bootstrap/scss/bootstrap";
