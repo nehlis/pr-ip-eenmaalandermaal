@@ -38,22 +38,22 @@
       <div class="row">
         <div class="col-md-6 has-signup-devider">
           <div class="form-group">
-            <label for="email">E-mailadres<small class="required-field"></small></label>
-            <input type="email" name="email" class="form-control" id="email" required="true">
+            <label for="email">E-mailadres</label>
+            <input type="email" name="email" class="form-control" id="email">
           </div>
           <div class="form-group">
-            <label for="username">Gebruikersnaam<small class="required-field"></small></label>
-            <input type="text" name="username" class="form-control" id="username" required="true">
+            <label for="username">Gebruikersnaam</label>
+            <input type="text" name="username" class="form-control" id="username">
           </div>
           <div class="form-group">
-            <label for="password">Wachtwoord<small class="required-field"></small></label>
-            <input type="password" name="password" class="form-control" id="password" required="true">
+            <label for="password">Wachtwoord</label>
+            <input type="password" name="password" class="form-control" id="password">
           </div>
           <div class="row">
             <div class="col-md-7 pr-md-0">
               <div class="form-group">
-                <label for="firstName">Voornaam<small class="required-field"></small></label>
-                <input type="text" name="firstName" class="form-control" id="firstName" required="true">
+                <label for="firstName">Voornaam</label>
+                <input type="text" name="firstName" class="form-control" id="firstName">
               </div>
             </div>
             <div class="col-md-5">
@@ -64,12 +64,12 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="lastName">Achternaam<small class="required-field"></small></label>
-            <input type="text" name="lastName" class="form-control" id="lastName" required="true">
+            <label for="lastName">Achternaam</label>
+            <input type="text" name="lastName" class="form-control" id="lastName">
           </div>
           <div class="form-group">
-            <label for="question">Geheime vraag<small class="required-field"></small></label>
-            <select class="form-control" name="questionID" id="question-secret" required="true">
+            <label for="question">Geheime vraag</label>
+            <select class="form-control" name="questionID" id="question-secret">
               <!-- TODO: Maak met query in QuestionController ipv dummy data. -->
               <?php foreach ([1 => 'Wat is je moeders meisjesnaam'] as $id => $value) : ?>
                 <option value="<?= $id; ?>"><?= $value; ?></option>
@@ -77,30 +77,30 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="answer">Antwoord op geheime vraag<small class="required-field"></small></label>
-            <input type="text" name="questionAnswer" class="form-control" id="answer" required="true">
+            <label for="answer">Antwoord op geheime vraag</label>
+            <input type="text" name="questionAnswer" class="form-control" id="answer">
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label for="birthDate">Geboortedatum<small class="required-field"></small></label>
-            <input type="date" name="birthDate" class="form-control" id="birthDate" required="true">
+            <label for="birthDate">Geboortedatum</label>
+            <input type="date" name="birthDate" class="form-control" id="birthDate">
           </div>
           <div class="form-group">
-            <label for="adress">Adres<small class="required-field"></small></label>
-            <input type="text" name="adress" class="form-control" id="adress" required="true">
+            <label for="adress">Adres</label>
+            <input type="text" name="adress" class="form-control" id="adress">
           </div>
           <div class="form-group">
-            <label for="zipCode">Postcode<small class="required-field"></small></label>
-            <input type="text" name="zipCode" class="form-control" id="zipCode" required="true">
+            <label for="zipCode">Postcode</label>
+            <input type="text" name="zipCode" class="form-control" id="zipCode">
           </div>
           <div class="form-group">
-            <label for="city">Plaats<small class="required-field"></small></label>
-            <input type="text" name="city" class="form-control" id="city" required="true">
+            <label for="city">Plaats</label>
+            <input type="text" name="city" class="form-control" id="city">
           </div>
           <div class="form-group">
-            <label for="country">Land<small class="required-field"></small></label>
-            <select class="form-control" name="country" id="question-country" required="true">
+            <label for="country">Land</label>
+            <select class="form-control" name="country" id="question-country">
               <!-- TODO: Maak met query in Countries ipv dummy data. -->
               <?php foreach ([1 => 'Nederland'] as $id => $value) : ?>
                 <option value="<?= $id; ?>"><?= $value; ?></option>
@@ -108,7 +108,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="phone">Telefoonnummer(s)<small class="required-field"></small></label>
+            <label for="phone">Telefoonnummer</label>
             <div id="phoneNumberList"></div>
             <button type="button" class="btn btn-secondary mt-3 w-100" onclick="addPhoneNumber();">Telefoonnummer toevoegen</button>
           </div>
@@ -118,6 +118,6 @@
     </form>
   </div>
 
-  <script src="./public/assets/js/phone-number-list.js"></script>
+  <script src="./public/assets/js/register.js"></script>
 
 <?php endif; ?>
