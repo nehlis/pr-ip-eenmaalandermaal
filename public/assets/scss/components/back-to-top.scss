@@ -8,8 +8,8 @@
 
 .btn-light:hover {
   color: $primary !important;
-  background-color: $secundairy;
-  border-color: $secundairy;
+  background-color: $secondary;
+  border-color: $secondary;
   transform: scale(1.1) !important;
 }
 
@@ -17,6 +17,6 @@
 .btn-light:not(:disabled):not(.disabled):active,
 .show > .btn-light.dropdown-toggle {
   color: $primary !important;
-  background-color: $secundairy;
-  border-color: $secundairy;
+  background-color: $secondary;
+  border-color: $secondary;
 }
