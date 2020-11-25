@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Database;
 use App\Interfaces\IController;
+use Error;
 
 /**
  * Class QuestionController
@@ -15,12 +16,12 @@ class QuestionController implements IController
      * @var Database $database Database class which contains all generic CRUD functions.
      */
     private $database;
-    
+
     /**
      * @var string $table Table name on which the CRUD operations should apply.
      */
     private static $table = 'Question';
-    
+
     /**
      * AccountController constructor.
      */
@@ -28,7 +29,7 @@ class QuestionController implements IController
     {
         $this->database = new Database;
     }
-    
+
     /**
      * @param array $data
      * @return array|null
@@ -37,7 +38,7 @@ class QuestionController implements IController
     {
         // TODO: Implement create() method.
     }
-    
+
     /**
      * @param int $id
      * @return array|null
@@ -46,15 +47,21 @@ class QuestionController implements IController
     {
         // TODO: Implement get() method.
     }
-    
+
     /**
      * @return array|null
      */
     public function index(): ?array
     {
-        return $this->database->index(self::$table);
+        $result = $this->database->index(self::$table);
+
+        if ($result) {
+            return $result;
+        }
+
+        throw new Error("Geen vragen gevonden!");
     }
-    
+
     /**
      * @param int   $id
      * @param array $data
@@ -64,7 +71,7 @@ class QuestionController implements IController
     {
         // TODO: Implement update() method.
     }
-    
+
     /**
      * @param int $id
      * @return array|null
