@@ -6,16 +6,23 @@ use App\Controllers\AccountController;
 use App\Core\Router;
 use Error;
 
+/**
+ * Class AuthService
+ * @package App\Services
+ */
 class AuthService
 {
     /**
      * @var AccountController $ac Account Controller which contains all functions related to accounts
      */
     private $ac;
-
+    
+    /**
+     * AuthService constructor.
+     */
     public function __construct()
     {
-        $this->ac = new AccountController();
+        $this->ac = new AccountController;
     }
 
     /**
@@ -30,30 +37,27 @@ class AuthService
         $user = $this->ac->getByEmail($email);
 
         // password_verify(password_hash($password, PASSWORD_BCRYPT), $user['Password']);
-        if (isset($user) && $user['Password'] === $password) {
-            if ($user['Blocked'] == 0) {
-                // TODO: Welke data is nodig door de site?
-                $_SESSION['ID'] = $user['ID'];
-                $_SESSION['Name'] = $user['Firstname'] . ' ' . $user['Lastname'];
-
-                // Redirect after successfully login
-                if (isset($_GET['referrer'])) {
-                    Router::Redirect($_GET['referrer']);
-                } else {
-                    Router::Redirect('/profiel');
-                }
-            } else {
-                throw new Error('Je bent geblokkeerd of je account is nog niet geactiveerd! Neem contact op met de <a href="#" class="alert-link">klantenservice</a>');
-            }
-        } else {
+        if (!isset($user) || $user['Password'] !== $password) {
             throw new Error('Wachtwoord onjuist!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten?</a>');
         }
+        
+        if ($user['Blocked'] !== 0) {
+            throw new Error('Je bent geblokkeerd of je account is nog niet geactiveerd! Neem contact op met de <a href="#" class="alert-link">klantenservice</a>');
+        }
+    
+        // TODO: Welke data is nodig door de site?
+        $_SESSION['ID']   = $user['ID'];
+        $_SESSION['Name'] = $user['Firstname'] . ' ' . $user['Lastname'];
+    
+        // Redirect after successfully login
+        Router::Redirect($_GET['referrer'] ?? '/profiel');
     }
-
+    
     /**
-     * Logout - First destroys session then redirects the user to the login page.
+     * Logs the current logged in user out.
+     * @return void
      */
-    public static function logout()
+    public static function logout(): void
     {
         session_destroy();
         Router::Redirect('/inloggen');
@@ -77,7 +81,7 @@ class AuthService
      */
     public static function checkAuth(): void
     {
-        if (!AuthService::isloggedIn()) {
+        if (!self::isloggedIn()) {
             Router::Redirect("/inloggen?referrer={$_SERVER['REQUEST_URI']}");
         }
     }
