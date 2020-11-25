@@ -1,0 +1,22 @@
+.back-to-top {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  display: none;
+  transition: transform 0.2s;
+}
+
+.btn-light:hover {
+  color: $primary !important;
+  background-color: $secundairy;
+  border-color: $secundairy;
+  transform: scale(1.1) !important;
+}
+
+.btn-light:not(:disabled):not(.disabled).active,
+.btn-light:not(:disabled):not(.disabled):active,
+.show > .btn-light.dropdown-toggle {
+  color: $primary !important;
+  background-color: $secundairy;
+  border-color: $secundairy;
+}
