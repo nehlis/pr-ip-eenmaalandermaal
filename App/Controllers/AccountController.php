@@ -93,6 +93,7 @@ class AccountController implements IController
         $result = $this->database->update(self::$table, $id, $data);
 
         if ($result) {
+            $_SESSION['name'] = "{$data['Firstname']} {$data['Inserts']} {$data['Lastname']}";
             return $this->get($id);
         }
 
