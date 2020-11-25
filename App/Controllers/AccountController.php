@@ -150,7 +150,7 @@ class AccountController implements IController
         if ($result) {
             return $result;
         } else {
-            throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="#registreren" class="alert-link">hier</a> om je te registreren.');
+            throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="/registreren" class="alert-link">hier</a> om je te registreren.');
         }
     }
 

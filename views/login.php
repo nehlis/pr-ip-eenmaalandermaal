@@ -6,7 +6,7 @@ use App\Core\Router;
 $as = new AuthService();
 
 // Redirect if already logged in
-if (AuthService::isloggedIn()) {
+if (AuthService::isLoggedIn()) {
   Router::Redirect('/profiel');
 }
 
@@ -19,7 +19,7 @@ if (isset($_POST['password']) && !empty($_POST['password'])) {
 }
 
 // Login Logic
-if (isset($email) && isset($password)) {
+if (isset($email, $password)) {
   try {
     $as->login($email, $password);
   } catch (Error $err) {
