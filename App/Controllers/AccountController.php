@@ -142,7 +142,7 @@ class AccountController implements IController
         return $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
     }
 
-    public function updatePhoneNumber(int $id, array $data)
+    public function updatePhoneNumber(int $id, array $data): void
     {
         $this->database->update('AccountPhonenumber', $id, $data);
     }
