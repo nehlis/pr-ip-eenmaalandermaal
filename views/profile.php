@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\AuthService;
 use App\Controllers\AccountController;
 use App\Controllers\CountryController;
 use App\Controllers\QuestionController;
@@ -9,36 +10,43 @@ $accountController  = new AccountController;
 $questionController = new QuestionController;
 $countryController  = new CountryController;
 
-// TODO: Change user for current logged in user.
-$userId = 978;
+// Redirect to login if user is nog logged in
+AuthService::checkAuth();
+
+$userId = $_SESSION['id'];
 
 $phoneNumbers = [$accountController->getPhoneNumbers($userId)];
 
 if (isset($_POST) && count($_POST) > 0) {
-    $_POST['Password'] = hash('sha256', $_POST['Password']);
-    
-    $accountValidator = new AccountValidator($_POST);
-    
-    // Validate and update all account values.
-    if ($accountValidator->validate()) {
-        $accountController->update($userId, $accountValidator->getData());
-        $edited = true;
+  $_POST['Password'] = hash('sha256', $_POST['Password']);
+
+  $accountValidator = new AccountValidator($_POST);
+
+  // Validate and update all account values.
+  if ($accountValidator->validate()) {
+    $accountController->update($userId, $accountValidator->getData());
+    $edited = true;
+  }
+
+  // Edit each phone if post is set.
+  for ($i = 1, $max = count($phoneNumbers); $i <= $max; $i++) {
+    if (!isset($_POST["phone-$i"])) {
+      break;
     }
-    
-    // Edit each phone if post is set.
-    for ($i = 1, $max = count($phoneNumbers); $i <= $max; $i++) {
-        if (!isset($_POST["phone-$i"])) {
-            break;
-        }
-      
-        $accountController->updatePhoneNumber($phoneNumbers[$i-1]['ID'], [
-            'Phonenumber' => $_POST["phone-$i"],
-        ]);
-    }
+
+    $accountController->updatePhoneNumber($phoneNumbers[$i - 1]['ID'], [
+      'Phonenumber' => $_POST["phone-$i"],
+    ]);
+  }
 }
 
-$phoneNumbers = [$accountController->getPhoneNumbers($userId)];
-$user         = $accountController->get($userId);
+$phoneNumbers = $accountController->getPhoneNumbers($userId);
+
+// When only one phone number is found it is not a loopable array. To fix this
+// we check if array has a direct key 'Phonenumber'.
+$phoneNumbers = array_key_exists('Phonenumber', $phoneNumbers) ? [$phoneNumbers] : $phoneNumbers;
+
+$user = $accountController->get($userId);
 
 ?>
 
@@ -101,13 +109,13 @@ $user         = $accountController->get($userId);
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <!-- TODO: Add insert column to account table. -->
               <label for="inserts">Tussenvoegsel</label>
               <input
                 type="text"
                 class="form-control"
                 name="Inserts"
                 id="inserts"
+                value="<?= $user['Inserts'] ?? '' ?>"
                 required
               >
             </div>
@@ -127,14 +135,14 @@ $user         = $accountController->get($userId);
         <div class="form-group">
           <label for="question">Geheime vraag</label>
           <select class="form-control" id="question" name="QuestionID">
-              <?php foreach ($questionController->index() as $availableQuestion): ?>
-                <option
-                  value="<?= $availableQuestion['ID'] ?>"
-                    <?= $availableQuestion === $accountController->getQuestion($userId) ? 'selected' : null ?>
-                >
-                    <?= $availableQuestion['Description'] ?>
-                </option>
-              <?php endforeach; ?>
+            <?php foreach ($questionController->index() as $availableQuestion) : ?>
+              <option
+                value="<?= $availableQuestion['ID'] ?>"
+                <?= $availableQuestion === $accountController->getQuestion($userId) ? 'selected' : null ?>
+              >
+                <?= $availableQuestion['Description'] ?>
+              </option>
+            <?php endforeach; ?>
           </select>
         </div>
         <div class="form-group">
@@ -155,12 +163,8 @@ $user         = $accountController->get($userId);
           <input
             type="datetime-local"
             class="form-control"
-            value="<?= date(
-                "Y-m-d\TH:i:s",
-                DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()
-            ) ?>"
-            name="Birthdate"
-            id="birthDate"
+            value="<?= date("Y-m-d\TH:i:s", DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()) ?>"
+            name="Birthdate" id="birthDate"
             required
           >
         </div>
@@ -211,41 +215,36 @@ $user         = $accountController->get($userId);
         <div class="form-group">
           <label for="country">Land</label>
           <select class="form-control" id="country" name="CountryID">
-              <?php foreach ($countryController->index() as $value): ?>
-                <option
-                  value="<?= $value['ID'] ?>"
-                    <?= $value['ID'] === $user['CountryID'] ? 'selected' : null ?>
-                >
-                    <?= $value['Name'] ?>
-                </option>
-              <?php endforeach; ?>
+            <?php foreach ($countryController->index() as $value) : ?>
+              <option value="<?= $value['ID'] ?>" <?= $value['ID'] === $user['CountryID'] ? 'selected' : null ?>>
+                <?= $value['Name'] ?>
+              </option>
+            <?php endforeach; ?>
           </select>
         </div>
-          <?php $index = 0; ?>
-          <?php foreach ($phoneNumbers as $phoneNumber): $index++; ?>
-            <div class="form-group">
-              <label for="phone-<?= $index ?>">
-                Telefoonnummer <?= $index ?>
-              </label>
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text"><?= $index ?></div>
-                </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="phone-<?= $index ?>"
-                  id="phone-<?= $index ?>"
-                  value="<?= $phoneNumber['Phonenumber'] ?? '' ?>"
-                  required
-                >
+        <?php $index = 0; ?>
+        <?php foreach ($phoneNumbers as $phoneNumber) : $index++; ?>
+          <div class="form-group">
+            <label for="phone-<?= $index ?>">
+              Telefoonnummer <?= $index ?>
+            </label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><?= $index ?></div>
               </div>
+              <input
+                type="text"
+                class="form-control"
+                name="phone-<?= $index ?>"
+                id="phone-<?= $index ?>"
+                value="<?= $phoneNumber['Phonenumber'] ?? '' ?>"
+                required
+              >
             </div>
-          <?php endforeach; ?>
-        <!-- TODO: Make dynamic using JavaScript. -->
-        <button class="btn btn-secondary mt-3 w-100">Telefoonnummer toevoegen</button>
+          </div>
       </div>
+    <?php endforeach; ?>
+      <button type="submit" class="btn btn-primary mt-3 w-100">Wijzigingen opslaan</button>
     </div>
-    <button type="submit" class="btn btn-primary mt-3 w-100">Wijzigingen opslaan</button>
   </form>
 </div>
