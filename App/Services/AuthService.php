@@ -16,7 +16,7 @@ class AuthService
      * @var AccountController $ac Account Controller which contains all functions related to accounts
      */
     private $ac;
-    
+
     /**
      * AuthService constructor.
      */
@@ -40,19 +40,19 @@ class AuthService
         if (!isset($user) || $user['Password'] !== $password) {
             throw new Error('Wachtwoord onjuist!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten?</a>');
         }
-        
+
         if ($user['Blocked'] !== 0) {
             throw new Error('Je bent geblokkeerd of je account is nog niet geactiveerd! Neem contact op met de <a href="#" class="alert-link">klantenservice</a>');
         }
-    
+
         // TODO: Welke data is nodig door de site?
         $_SESSION['ID']   = $user['ID'];
         $_SESSION['Name'] = $user['Firstname'] . ' ' . $user['Lastname'];
-    
+
         // Redirect after successfully login
         Router::Redirect($_GET['referrer'] ?? '/profiel');
     }
-    
+
     /**
      * Logs the current logged in user out.
      * @return void
@@ -71,7 +71,7 @@ class AuthService
      * Is Logged In - Check whether a user is logged in or not.
      * @return bool Returns TRUE if logged in and FALSE otherwise
      */
-    public static function isloggedIn(): bool
+    public static function isLoggedIn(): bool
     {
         return isset($_SESSION['ID']);
     }
