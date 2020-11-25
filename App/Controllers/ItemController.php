@@ -121,20 +121,6 @@ class ItemController implements IController
 
 
     /**
-     * Gets the country that belongs to the item.
-     * @param int $id
-     * @return array|null
-     */
-    public function getCountry(int $id): ?array
-    {
-        $countryId = $this->database->get(self::$table, $id)['CountryID'];
-        $country   = $this->database->get('Country', $countryId);
-
-        return !$countryId || !$country ? null : $country;
-    }
-
-
-    /**
      * Ensures that the auction is set to closed
      * @param int $id, $buyerID
      * @param float $sellingPrice
@@ -173,15 +159,14 @@ class ItemController implements IController
         throw new Error("Item waarvan ID = $id niet verwijderd!");
     }
 
-    //! Extra functie voor het doen van custom SQL queries? Kan hier namelijk niet ophalen welke items er veel bekeken worden. Misschien views weghalen en sorteren op het aantal biedingen? Omdat views wordt opgehoogd zodra je de pagina bezoekt.
     /**
      * @param   int           $id   Get row where ID=$id
      * @return  array|null          Returns fetched row or null
      * @throws  Error               Throws error when no item is found.
      */
-    public function getFeaturedItems(): ?array
+    public function getFeaturedItems($amount): ?array
     {
-        $result = $this->database->customQuery("SELECT TOP 3 * FROM Item WHERE AuctionClosed = 'false' ORDER BY Views DESC");
+        $result = $this->database->customQuery("SELECT TOP 3 * FROM Item INNER JOIN Bidding B on Item.ID = B.ItemID WHERE AuctionClosed = 'false' AND EndDate > GETDATE() ORDER BY Views DESC");
 
         if ($result) {
             return $result;

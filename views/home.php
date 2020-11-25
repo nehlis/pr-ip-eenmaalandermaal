@@ -1,4 +1,19 @@
-<?php use App\Core\Component; ?>
+<?php
+
+use App\Core\Component;
+use App\Core\Database;
+use App\Controllers\ItemController;
+
+$ic = new ItemController();
+$db = new Database();
+
+try {
+    $featuredItems = $ic->getFeaturedItems(3);
+} catch (Error $error) {
+    $customError = $error->getMessage();
+}
+
+?>
 
 <main role="main" class="container">
     <div class="row py-5">
@@ -19,11 +34,11 @@
         </div>
         <div class="col-12">
             <div class="row">
-                <?php for ($x = 0; $x < 3; $x++): ?>
+                <?php foreach ($featuredItems as $item) : ?>
                     <div class="col-xs-12 col-md-4">
-                        <?php Component::render('card', ['image' => PLACEHOLDER]); ?>
+                        <?php Component::render('card', ['image' => PLACEHOLDER, 'title' => $item['Title'], 'price' => $item['Amount'], 'sluitingsTijd' => $item['EndDate']]); ?>
                     </div>
-                <?php endfor; ?>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -34,7 +49,7 @@
         </div>
         <div class="col-12">
             <div class="row">
-                <?php for ($x = 0; $x < 8; $x++): ?>
+                <?php for ($x = 0; $x < 8; $x++) : ?>
                     <div class="col-xs-12 col-md-6 col-lg-3 p-0">
                         <?php Component::render('category', [
                             'title'      => "categorie {$x}",

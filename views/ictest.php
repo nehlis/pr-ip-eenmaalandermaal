@@ -62,7 +62,7 @@
             }
 
             try {
-                $featuredItems = $ic->getFeaturedItems();
+                $featuredItems = $ic->getFeaturedItems(3);
             } catch (Error $error) {
                 $customError = $error->getMessage();
             }
