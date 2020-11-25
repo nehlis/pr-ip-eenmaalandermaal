@@ -100,8 +100,7 @@ if (count($_POST) > 0) {
             <?= $errors['Email']; ?>
           </div>
 
-
-          <input type="text" name="Email" class="form-control" id="email" value="<?= $_POST['Email'] ?? 'test@test.nl' ?>">
+          <input type="text" name="Email" class="form-control" id="email" value="<?= $_POST['Email'] ?>">
         </div>
         <div class="form-group">
           <label for="username">Gebruikersnaam</label>
@@ -110,7 +109,7 @@ if (count($_POST) > 0) {
             <?= $errors['Username']; ?>
           </div>
 
-          <input type="text" name="Username" class="form-control" id="username" value="<?= $_POST['Username'] ?? 'gebruikersnaam' ?>">
+          <input type="text" name="Username" class="form-control" id="username" value="<?= $_POST['Username'] ?>">
         </div>
         <div class=" form-group">
           <label for="password">Wachtwoord</label>
@@ -119,11 +118,11 @@ if (count($_POST) > 0) {
             <?= $errors['Password']; ?>
           </div>
 
-          <input type="password" name="Password" class="form-control" id="password" value="admin">
+          <input type="password" name="Password" class="form-control" id="password">
         </div>
         <div class="form-group">
           <label for="password">Herhaal wachtwoord</label>
-          <input type="password" name="ConfirmPassword" class="form-control" id="password" value="admin">
+          <input type="password" name="ConfirmPassword" class="form-control" id="password">
         </div>
 
         <div class="form-group">
@@ -147,7 +146,7 @@ if (count($_POST) > 0) {
             <?= $errors['QuestionAnswer']; ?>
           </div>
 
-          <input type="text" name="QuestionAnswer" class="form-control" id="answer" value="<?= $_POST['QuestionAnswer'] ?? 'Zwarte Piet' ?>">
+          <input type="text" name="QuestionAnswer" class="form-control" id="answer" value="<?= $_POST['QuestionAnswer'] ?>">
         </div>
 
         <div class=" row">
@@ -159,7 +158,7 @@ if (count($_POST) > 0) {
                 <?= $errors['Firstname']; ?>
               </div>
 
-              <input type="text" name="Firstname" class="form-control" id="firstName" value="<?= $_POST['Firstname'] ?? 'Vornam' ?>">
+              <input type="text" name="Firstname" class="form-control" id="firstName" value="<?= $_POST['Firstname'] ?>">
             </div>
           </div>
           <div class=" col-md-6">
@@ -170,7 +169,7 @@ if (count($_POST) > 0) {
                 <?= $errors['Lastname']; ?>
               </div>
 
-              <input type="text" name="Lastname" class="form-control" id="lastName" value="<?= $_POST['Lastname'] ?? 'Vornam' ?>">
+              <input type="text" name="Lastname" class="form-control" id="lastName" value="<?= $_POST['Lastname'] ?>">
             </div>
           </div>
         </div>
@@ -208,7 +207,7 @@ if (count($_POST) > 0) {
                 <?= $errors['Housenumber']; ?>
               </div>
 
-              <input type="number" name="Housenumber" class="form-control" id="adress" value="<?= $_POST['Housenumber'] ?? 12 ?>">
+              <input type="number" name="Housenumber" class="form-control" id="adress" value="<?= $_POST['Housenumber'] ?>">
             </div>
 
           </div>
@@ -221,7 +220,7 @@ if (count($_POST) > 0) {
             <?= $errors['Zipcode']; ?>
           </div>
 
-          <input type="text" name="Zipcode" class="form-control" id="zipCode" value="<?= $_POST['Zipcode'] ?? '9999xx' ?>">
+          <input type="text" name="Zipcode" class="form-control" id="zipCode" value="<?= $_POST['Zipcode'] ?>">
         </div>
 
         <div class=" form-group">
@@ -231,7 +230,7 @@ if (count($_POST) > 0) {
             <?= $errors['City']; ?>
           </div>
 
-          <input type="text" name="City" class="form-control" id="city" value="<?= $_POST['City'] ?? 'Stad' ?>">
+          <input type="text" name="City" class="form-control" id="city" value="<?= $_POST['City'] ?>">
         </div>
 
         <div class=" form-group">
