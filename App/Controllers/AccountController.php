@@ -9,7 +9,7 @@ use Error;
 /**
  * User Controller
  * All CRUD operations
- * 
+ *
  */
 class AccountController implements IController
 {
@@ -93,6 +93,7 @@ class AccountController implements IController
         $result = $this->database->update(self::$table, $id, $data);
 
         if ($result) {
+            $_SESSION['name'] = "{$data['Firstname']} {$data['Inserts']} {$data['Lastname']}";
             return $this->get($id);
         }
 
@@ -129,7 +130,7 @@ class AccountController implements IController
         $questionId = $this->database->get(self::$table, $id)['QuestionID'];
         $question   = $this->database->get('Question', $questionId);
 
-        return !$questionId || !$question ? null : $question;
+        return $questionId && $question ? $question : null;
     }
 
     /**
@@ -139,12 +140,12 @@ class AccountController implements IController
      */
     public function getPhoneNumbers(int $id): ?array
     {
-        return $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
+        return $this->database->getByColumn('Phonenumber', 'AccountID', $id);
     }
 
-    public function updatePhoneNumber(int $id, array $data)
+    public function updatePhoneNumber(int $id, array $data): void
     {
-        $this->database->update('AccountPhonenumber', $id, $data);
+        $this->database->update('Phonenumbers', $id, $data);
     }
 
     // TODO: Docs schrijven

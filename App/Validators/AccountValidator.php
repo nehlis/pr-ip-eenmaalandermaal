@@ -13,6 +13,7 @@ class AccountValidator extends Validator
      */
     private $rules = [
         'Firstname'      => 'required',
+        'Inserts'        => 'required',
         'Lastname'       => 'required',
         'Password'       => 'required',
         'Street'         => 'required',
