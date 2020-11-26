@@ -1,0 +1,13 @@
+// FTP-SERVER
+HOST=ftp.iproject.icasites.nl
+USER=iproject3
+PASSWORD=aeedZ8u8
+
+
+// MSSQL-server
+HOST=mssql.iproject.icasites.nl
+USER=iproject3
+PASSWORD=aeedZ8u8
+
+// URL
+iproject3.icasites.nl
