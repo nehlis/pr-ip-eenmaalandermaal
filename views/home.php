@@ -1,4 +1,20 @@
-<?php use App\Core\Component; ?>
+<?php
+
+use App\Core\Component;
+use App\Core\Database;
+use App\Controllers\ItemController;
+
+$ic = new ItemController();
+$db = new Database();
+
+try {
+    $featuredItems = $ic->getFeaturedItems(3);
+} catch (Error $error) {
+    $featuredItems = null;
+    $customError = $error->getMessage();
+}
+
+?>
 
 <main role="main" class="container">
     <div class="row py-5">
@@ -19,11 +35,22 @@
         </div>
         <div class="col-12">
             <div class="row">
-                <?php for ($x = 0; $x < 3; $x++): ?>
-                    <div class="col-xs-12 col-md-4">
-                        <?php Component::render('card', ['image' => PLACEHOLDER]); ?>
+                <?php if ($featuredItems): ?>
+                    <?php foreach ($featuredItems as $item): ?>
+                        <div class="col-xs-12 col-md-4">
+                            <?php Component::render('card', [
+                                'image'       => PLACEHOLDER,
+                                'title'       => $item['Title'],
+                                'price'       => $item['Amount'],
+                                'closingTime' => $item['EndDate'],
+                            ]); ?>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-xs-12 col-md-12">
+                      <h4>Er zijn op dit moment geen veilingen...</h4>
                     </div>
-                <?php endfor; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -34,7 +61,7 @@
         </div>
         <div class="col-12">
             <div class="row">
-                <?php for ($x = 0; $x < 8; $x++): ?>
+                <?php for ($x = 0; $x < 8; $x++) : ?>
                     <div class="col-xs-12 col-md-6 col-lg-3 p-0">
                         <?php Component::render('category', [
                             'title'      => "categorie {$x}",
@@ -47,3 +74,5 @@
         </div>
     </div>
 </main>
+
+<script src="./public/assets/js/countdown-timer.js"></script>
