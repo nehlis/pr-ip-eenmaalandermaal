@@ -41,6 +41,8 @@ class AccountController implements IController
         $phonenumbers = $data['Phonenumbers'];
         unset($data['Phonenumbers']);
 
+        // TODO: insert phone numbers
+
         $id = $this->database->create(self::$table, $data);
 
         if ($id) {
