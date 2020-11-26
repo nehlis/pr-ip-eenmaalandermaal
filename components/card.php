@@ -15,15 +15,15 @@
             </div>
         </span>
     </div>
-    <img src="<?= $image; ?>" class="card-img-top" alt="...">
+    <img src="<?= $image ?>" class="card-img-top" alt="...">
     <div class="card-body">
-        <h5 class="card-title text-uppercase mb-5"><?= $title ?? '<< geen titel meegegeven aan deze kaart >>'; ?></h5>
+        <h5 class="card-title text-uppercase mb-5"><?= $title ?? 'Titel niet gevonden' ?></h5>
         <div class="row">
             <div class="col-xs-12 col-xl-7">
-                <h2 class="font-weight-bold mb-0">€ <?= $price ?? '0,-'; ?></h2>
+                <h2 class="font-weight-bold mb-0">€ <?= $price ?? '0,-' ?></h2>
             </div>
             <div class="col-xs-12 col-xl-5">
-                <a href="<?= $destination ?? '#'; ?>" class="btn btn-primary btn-block text-uppercase">Bekijken</a>
+                <a href="<?= $destination ?? '#' ?>" class="btn btn-primary btn-block text-uppercase">Bekijken</a>
             </div>
         </div>
     </div>

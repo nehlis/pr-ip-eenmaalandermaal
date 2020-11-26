@@ -181,11 +181,11 @@ class Database
             ->prepare("SELECT * FROM $table WHERE $column = :value")
             ->bind(':value', $value, PDO::PARAM_STR)
             ->execute()
-            ->fetch(PDO::FETCH_ASSOC);
+            ->fetchAll(PDO::FETCH_ASSOC);
 
         $this->close();
 
-        return $result && count($result) > 0 ? $result : null;
+        return $result ? $result : null;
     }
     
     /**

@@ -9,7 +9,7 @@ use Error;
 /**
  * User Controller
  * All CRUD operations
- * 
+ *
  */
 class AccountController implements IController
 {
@@ -38,6 +38,11 @@ class AccountController implements IController
      */
     public function create(array $data): ?array
     {
+        $phonenumbers = $data['Phonenumbers'];
+        unset($data['Phonenumbers']);
+
+        // TODO: insert phone numbers
+
         $id = $this->database->create(self::$table, $data);
 
         if ($id) {
@@ -93,6 +98,7 @@ class AccountController implements IController
         $result = $this->database->update(self::$table, $id, $data);
 
         if ($result) {
+            $_SESSION['name'] = "{$data['Firstname']} {$data['Inserts']} {$data['Lastname']}";
             return $this->get($id);
         }
 
@@ -129,7 +135,7 @@ class AccountController implements IController
         $questionId = $this->database->get(self::$table, $id)['QuestionID'];
         $question   = $this->database->get('Question', $questionId);
 
-        return !$questionId || !$question ? null : $question;
+        return $questionId && $question ? $question : null;
     }
 
     /**
@@ -139,12 +145,12 @@ class AccountController implements IController
      */
     public function getPhoneNumbers(int $id): ?array
     {
-        return $this->database->getByColumn('AccountPhonenumber', 'AccountID', $id);
+        return $this->database->getByColumn('Phonenumber', 'AccountID', $id);
     }
 
-    public function updatePhoneNumber(int $id, array $data)
+    public function updatePhoneNumber(int $id, array $data): void
     {
-        $this->database->update('AccountPhonenumber', $id, $data);
+        $this->database->update('Phonenumber', $id, $data);
     }
 
     // TODO: Docs schrijven
@@ -153,10 +159,17 @@ class AccountController implements IController
         $result = $this->database->getByColumn(self::$table, 'Email', $email);
 
         if ($result) {
-            return $result;
+            return $result[0];
         }
 
-        throw new Error($email . ' is niet aan een account gekoppeld. <hr>Klik <a href="#registreren" class="alert-link">hier</a> om je te registreren.');
+        throw new Error($email . ' is niet aan een account gekoppeld.');
+    }
+
+    // TODO: Docs schrijven
+    public function existsByColumn(string $column, string $value): bool
+    {
+        $result = $this->database->getByColumn(self::$table, $column, $value);
+        return $result ? true : false;
     }
 
     // TODO: Docs schrijven 
