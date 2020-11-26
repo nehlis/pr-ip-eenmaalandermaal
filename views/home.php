@@ -62,3 +62,5 @@ try {
         </div>
     </div>
 </main>
+
+<script src="./public/assets/js/countdown-timer.js"></script>

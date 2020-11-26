@@ -168,10 +168,10 @@ class ItemController implements IController
     {
         $result = $this->database->customQuery("SELECT Item.*, Temp1.Amount FROM (
             SELECT TOP 3 Item.ID, MAX(B.Amount) AS Amount FROM Item
-            INNER JOIN Bidding B on Item.ID = B.ItemID
-            WHERE Item.AuctionClosed = 'false' AND Item.EndDate > GETDATE()
+            LEFT JOIN Bidding B on Item.ID = B.ItemID
+            WHERE Item.AuctionClosed = 'false' AND Item.EndDate > GETDATE() AND Item.StartDate > GETDATE()
             GROUP BY Item.ID) AS Temp1
-            INNER JOIN Item ON Item.ID = Temp1.ID
+            LEFT JOIN Item ON Item.ID = Temp1.ID
             ORDER BY Item.Views  DESC 
             ");
 
