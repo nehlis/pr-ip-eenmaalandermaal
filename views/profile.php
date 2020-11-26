@@ -15,7 +15,7 @@ AuthService::checkAuth();
 
 $userId = $_SESSION['id'];
 
-$phoneNumbers = [$accountController->getPhoneNumbers($userId)];
+$phoneNumbers = $accountController->getPhoneNumbers($userId);
 
 if (isset($_POST) && count($_POST) > 0) {
   $_POST['Password'] = hash('sha256', $_POST['Password']);
@@ -40,11 +40,13 @@ if (isset($_POST) && count($_POST) > 0) {
   }
 }
 
-$phoneNumbers = $accountController->getPhoneNumbers($userId);
-
 // When only one phone number is found it is not a loopable array. To fix this
 // we check if array has a direct key 'Phonenumber'.
-$phoneNumbers = array_key_exists('Phonenumber', $phoneNumbers) ? [$phoneNumbers] : $phoneNumbers;
+if ($phoneNumbers = $accountController->getPhoneNumbers($userId)) {
+    $phoneNumbers = array_key_exists('Phonenumber', $phoneNumbers) ? [$phoneNumbers] : $phoneNumbers;
+} else {
+  $phoneNumbers = [];
+}
 
 $user = $accountController->get($userId);
 
@@ -242,9 +244,9 @@ $user = $accountController->get($userId);
               >
             </div>
           </div>
+        <?php endforeach; ?>
       </div>
-    <?php endforeach; ?>
-      <button type="submit" class="btn btn-primary mt-3 w-100">Wijzigingen opslaan</button>
-    </div>
+    <button type="submit" class="btn btn-primary mt-3 w-100">Wijzigingen opslaan</button>
   </form>
+</div>
 </div>
