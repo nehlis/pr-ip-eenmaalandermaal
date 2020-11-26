@@ -122,16 +122,21 @@ class ItemController implements IController
 
     /**
      * Ensures that the auction is set to closed
-     * @param int $id, $buyerID
-     * @param float $sellingPrice
-     * @return array|null
+     * @param int           $id ID from Item
+     * @param int           $buyerID ID from buyer
+     * @param float         $sellingPrice The celling price
+     * @return void
      * @throws Error  
      */
     public function handleSold(int $id, int $buyerID, float $sellingPrice): void
     {
         $item = $this->get($id);
 
-        $result = $this->database->update(self::$table, $id, ['AuctionClosed' => !$item['AuctionClosed'], 'SellingPrice' => $sellingPrice, 'BuyerID' => $buyerID,]);
+        $result = $this->database->update(self::$table, $id, [
+            'AuctionClosed' => !$item['AuctionClosed'],
+            'SellingPrice' => $sellingPrice,
+            'BuyerID' => $buyerID,
+        ]);
 
         if (!$result) {
             throw new Error("Item status niet gewijzigd!");
@@ -140,17 +145,17 @@ class ItemController implements IController
 
 
     /**
-     * @param int           $id     Update item view with 1 by ID=$id
+     * @param int                   Update item view with 1 by ID=$id
      * @return array|null           The updated item as an associative array
      * @throws  Error               Throws error when item is not found or when updating failed.
      */
-    public function increaseView(int $id): ?array
+    public function increaseViews(int $id): ?array
     {
         if (!$item = $this->get($id)) {
             return null;
         }
 
-        $result = $this->database->update(self::$table, $id, ['Views' => $item['Views'] += 1]);
+        $result = $this->database->update(self::$table, $id, ['Views' => ++$item['Views']]);
 
         if ($result) {
             return $item;
@@ -160,16 +165,16 @@ class ItemController implements IController
     }
 
     /**
-     * @param   int           $id   Get row where ID=$id
+     * @param   int                 Amount of items
      * @return  array|null          Returns fetched row or null
      * @throws  Error               Throws error when no item is found.
      */
-    public function getFeaturedItems($amount): ?array
+    public function getFeaturedItems(int $amountItems): ?array
     {
         $result = $this->database->customQuery("SELECT Item.*, Temp1.Amount FROM (
-            SELECT TOP 3 Item.ID, MAX(B.Amount) AS Amount FROM Item
+            SELECT TOP $amountItems Item.ID, MAX(B.Amount) AS Amount FROM Item
             LEFT JOIN Bidding B on Item.ID = B.ItemID
-            WHERE Item.AuctionClosed = 'false' AND Item.EndDate > GETDATE() AND Item.StartDate > GETDATE()
+            WHERE Item.AuctionClosed = 'false' AND Item.StartDate < GETDATE() AND Item.EndDate > GETDATE()
             GROUP BY Item.ID) AS Temp1
             LEFT JOIN Item ON Item.ID = Temp1.ID
             ORDER BY Item.Views  DESC 

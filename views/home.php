@@ -10,6 +10,7 @@ $db = new Database();
 try {
     $featuredItems = $ic->getFeaturedItems(3);
 } catch (Error $error) {
+    $featuredItems = null;
     $customError = $error->getMessage();
 }
 
@@ -34,11 +35,17 @@ try {
         </div>
         <div class="col-12">
             <div class="row">
-                <?php foreach ($featuredItems as $item) : ?>
-                    <div class="col-xs-12 col-md-4">
-                        <?php Component::render('card', ['image' => PLACEHOLDER, 'title' => $item['Title'], 'price' => $item['Amount'], 'sluitingsTijd' => $item['EndDate']]); ?>
-                    </div>
-                <?php endforeach; ?>
+                <?php
+                if ($featuredItems != null) {
+                    foreach ($featuredItems as $item) :
+                        echo ' <div class="col-xs-12 col-md-4">';
+                        Component::render('card', ['image' => PLACEHOLDER, 'title' => $item['Title'], 'price' => $item['Amount'], 'closingTime' => $item['EndDate']]);
+                        echo '</div>';
+                    endforeach;
+                } else {
+                    echo '<div class="col-xs-12 col-md-12"> <h4>Er zijn op dit moment geen veilingen...</h4> </div>';
+                }
+                ?>
             </div>
         </div>
     </div>

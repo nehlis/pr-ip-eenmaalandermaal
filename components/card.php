@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var $sluitingsTijd       string De tijd wanneer de veiling sluit.
+ * @var $closingTime       string De tijd wanneer de veiling sluit.
  * @var $image               string De afbeelding die bij de card hoort.
  * @var $title               string De titel van de card.
  * @var $price               string De huidige prijs van de veiling.
@@ -9,7 +9,7 @@
  */
 ?>
 <div class="card">
-    <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions"><span class="countdownTimer" id="<?= $sluitingsTijd ?>">
+    <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions"><span class="countdownTimer" id="<?= $closingTime ?>">
             <div class="spinner-border mx-5 text-light" role="status">
                 <span class="sr-only">Loading...</span>
             </div>

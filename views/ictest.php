@@ -17,7 +17,7 @@
             }
 
             try {
-                $ic->increaseView(31);
+                $ic->increaseViews(31);
             } catch (Error $error) {
                 $increaseError = $error->getMessage();
             }
