@@ -49,7 +49,6 @@ class AuthService
         if ($user['Blocked'] === 1) {
             throw new Error('Je bent geblokkeerd of je account is nog niet geactiveerd! Neem contact op met de <a href="#" class="alert-link">klantenservice</a>');
         }
-        // exit($user['Blocked'] === 1);
 
         // TODO: Welke data is nodig door de site?
         $_SESSION['id']   = $user['ID'];

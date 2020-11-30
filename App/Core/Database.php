@@ -65,8 +65,6 @@ class Database
         $columns = Format::insertColumns($data);
         $values  = Format::insertValues($data);
 
-        // exit("INSERT INTO $table ($columns) VALUES ($values)");
-
         $result = $this
             ->connect()
             ->prepare("INSERT INTO $table ($columns) VALUES ($values)")
