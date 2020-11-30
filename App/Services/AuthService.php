@@ -28,10 +28,10 @@ class AuthService
 
     /**
      * Logins user into the platform
-     * First checks if email exists and then matches the password. After saving 
+     * First checks if email exists and then matches the password. After saving
      * needed data in session storage it redirects the user to either the referrer or profile page.
      * @param   string  $email      Emailaddress of the user
-     * @param   string  $password   Password of the user   
+     * @param   string  $password   Password of the user
      * @throws  Error               Throws error when password is incorrect.
      */
     public function login(string $email, string $password): void
@@ -62,7 +62,7 @@ class AuthService
 
     /**
      * Registers user to the database
-     * First checks if email exists and then if the username exists 
+     * First checks if email exists and then if the username exists
      * @param   array $data   Associative array with all required user data
      * @return  string
      */
@@ -78,7 +78,7 @@ class AuthService
 
         try {
             $data['Password'] = hash('sha256', $data['Password']);
-            $user = $this->ac->create($data);
+            $this->ac->create($data);
         } catch (Error $error) {
             throw new Error("Kon niet registreren!");
         }
