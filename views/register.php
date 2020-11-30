@@ -2,7 +2,6 @@
 
 use App\Core\Router;
 use App\Services\AuthService;
-use App\Controllers\PhonenumberController;
 use App\Controllers\QuestionController;
 use App\Controllers\CountryController;;
 
@@ -16,9 +15,10 @@ if (AuthService::isLoggedIn()) {
   Router::redirect('/profiel');
 }
 
-// Init Questions and Countries
+// Initialize questions and county
 $questions = $qc->index();
 $countries = $cc->index();
+
 
 // Get Phonenumbers
 $phonenumbers = array();
