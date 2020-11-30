@@ -6,15 +6,11 @@ use App\Config\DatabaseConfig;
 use PDO;
 use PDOStatement;
 use PDOException;
-use Error;
 
 /**
  * Database Class
  *
  * In this class you find all generic CRUD operations to be used in Controller classes.
- *
- * TODO: Dubbele code eruit halen!
- *
  */
 class Database
 {
@@ -101,7 +97,7 @@ class Database
 
         $this->close();
 
-        return $result ? $result : null;
+        return $result ?: null;
     }
 
     /**
@@ -119,7 +115,7 @@ class Database
 
         $this->close();
 
-        return $result ? $result : null;
+        return $result ?: null;
     }
 
     /**
@@ -139,8 +135,7 @@ class Database
 
         $this->close();
 
-        // HIERNAAR KIJKEN EXECUTE RETURNT GEEN BOOLEAN!!
-        return isset($result) && $result === TRUE ? true : false;
+        return isset($result) && $result;
     }
 
     /**
@@ -159,8 +154,7 @@ class Database
 
         $this->close();
 
-        // HIERNAAR KIJKEN EXECUTE RETURNT GEEN BOOLEAN!!
-        return isset($result) && $result === TRUE ? true : false;
+        return isset($result) && $result;
     }
 
     /**
@@ -185,7 +179,7 @@ class Database
 
         $this->close();
 
-        return $result ? $result : null;
+        return $result ?: null;
     }
     
     /**
@@ -223,7 +217,7 @@ class Database
             $this->handlePDOException($ex->getMessage());
         }
 
-        return $chained ? $this->statement : $result;
+        return $chained ? $this->statement : $result ?? false;
     }
 
     /**

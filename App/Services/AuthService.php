@@ -94,7 +94,7 @@ class AuthService
     public static function logout(): void
     {
         session_destroy();
-        Router::redirect('/inloggen');
+        Router::redirect('/');
     }
 
     /**
