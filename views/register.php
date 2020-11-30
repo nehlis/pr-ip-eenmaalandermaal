@@ -7,9 +7,9 @@ use App\Controllers\QuestionController;
 use App\Controllers\CountryController;;
 
 
-$as = new AuthService();
-$qc = new QuestionController();
-$cc = new CountryController();
+$as = new AuthService;
+$qc = new QuestionController;
+$cc = new CountryController;
 
 // Redirect if already logged in
 if (AuthService::isLoggedIn()) {
@@ -25,8 +25,8 @@ $phonenumbers = array();
 
 if (($amountPhonenumbers = count($_POST["phoneNumbers"])) > 0) {
   for ($i = 0; $i < $amountPhonenumbers; $i++) {
-    if (trim($_POST["phoneNumbers"][$i] != '')) {
-      array_push($phonenumbers, $_POST["phoneNumbers"][$i]);
+    if (trim($_POST["phoneNumbers"][$i]) !== '') {
+      $phonenumbers[] = $_POST["phoneNumbers"][$i];
     }
   }
 }
