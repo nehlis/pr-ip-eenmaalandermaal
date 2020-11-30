@@ -68,11 +68,11 @@ class AuthService
     public function register(array $data): string
     {
         if ($this->ac->existsByColumn('Email', $data['Email'])) {
-            throw new Error("Er is al een account gekoppeld aan " . $data['Email']);
+            throw new Error("Er is al een account gekoppeld aan {$data['Email']}");
         }
 
         if ($this->ac->existsByColumn('Username', $data['Username'])) {
-            throw new Error("Er is al een account gekoppeld aan " . $data['Username']);
+            throw new Error("Er is al een account gekoppeld aan {$data['Username']}");
         }
 
         try {
