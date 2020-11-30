@@ -53,7 +53,7 @@ class AuthService
 
         // TODO: Welke data is nodig door de site?
         $_SESSION['id']   = $user['ID'];
-        $_SESSION['name'] = $user['Firstname'] . ' ' . $user['Lastname'];
+        $_SESSION['name'] = "{$user['Firstname']} {$user['Lastname']}";
 
         // Redirect after successfully login
         Router::redirect($_GET['referrer'] ?? '/profiel');
