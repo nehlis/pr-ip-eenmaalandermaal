@@ -64,9 +64,9 @@ class AuthService
      * Registers user to the database
      * First checks if email exists and then if the username exists 
      * @param   array $data   Associative array with all required user data
-     * @return  
+     * @return  string
      */
-    public function register($data)
+    public function register(array $data): string
     {
         if ($this->ac->existsByColumn('Email', $data['Email'])) {
             throw new Error("Er is al een account gekoppeld aan " . $data['Email']);
