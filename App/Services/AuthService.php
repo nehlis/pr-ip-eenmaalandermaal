@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Controllers\AccountController;
 use App\Core\Router;
 use Error;
-use PDO;
 
 /**
  * Class AuthService
