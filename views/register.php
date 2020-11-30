@@ -15,6 +15,9 @@ if (AuthService::isLoggedIn()) {
   Router::redirect('/profiel');
 }
 
+// Initialize questions and county
+$questions = $qc->index();
+$countries = $cc->index();
 
 
 // Get Phonenumbers
