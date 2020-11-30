@@ -28,7 +28,7 @@
                     'Housenumber' => 1,
                     'Zipcode' => '9999XX',
                     'City' => 'stad',
-                    'Country' => 'land',
+                    'CountryID' => 99,
                     'QuestionID' => 11,
                     'QuestionAnswer' => 'antwoord'
                 ]);
