@@ -40,6 +40,7 @@ if (count($_POST) > 0) {
   $data['QuestionID'] = $_POST['QuestionID'];
   $data['QuestionAnswer'] = $_POST['QuestionAnswer'];
   $data['Firstname'] = $_POST['Firstname'];
+  $data['Inserts'] = $_POST['Inserts'];
   $data['Lastname'] = $_POST['Lastname'];
   $data['Birthdate'] = $_POST['Birthdate'];
   $data['Street'] = $_POST['Street'];
@@ -65,7 +66,7 @@ if (count($_POST) > 0) {
   unset($data['ConfirmPassword']);
 
   // Register Logic
-  if (count($errors) == 0) {
+  if (count($errors) === 0) {
     try {
       $success = $as->register($data);
     } catch (Error $error) {
@@ -81,11 +82,11 @@ if (count($_POST) > 0) {
       <h1 class="h3 m-0 font-weight-bold">Registreer uw account</h1>
     </div>
 
-    <div class="alert alert-danger mh-1 <?= $errors['register'] ? 'd-block' : 'd-none' ?>">
+    <div class="alert alert-danger  <?= $errors['register'] ? 'd-block' : 'd-none' ?>">
       <?= $errors['register']; ?>
     </div>
 
-    <div class="alert alert-success mh-1 <?= $success ? 'd-block' : 'd-none' ?>">
+    <div class="alert alert-success  <?= $success ? 'd-block' : 'd-none' ?>">
       <?= $success; ?>
       <hr>
       Klik <a href="/inloggen">hier</a> om in te loggen.
@@ -93,10 +94,11 @@ if (count($_POST) > 0) {
 
     <div class="row">
       <div class="col-md-6 has-signup-devider">
+        <h3>Inloggevens</h3>
         <div class="form-group">
           <label for="email">E-mailadres</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['Email'] ? 'd-block' : 'd-none' ?>">
+          <div class="alert alert-danger  <?= $errors['Email'] ? 'd-block' : 'd-none' ?>">
             <?= $errors['Email']; ?>
           </div>
 
@@ -105,7 +107,7 @@ if (count($_POST) > 0) {
         <div class="form-group">
           <label for="username">Gebruikersnaam</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['Username'] ? 'd-block' : 'd-none' ?>">
+          <div class="alert alert-danger  <?= $errors['Username'] ? 'd-block' : 'd-none' ?>">
             <?= $errors['Username']; ?>
           </div>
 
@@ -114,7 +116,7 @@ if (count($_POST) > 0) {
         <div class=" form-group">
           <label for="password">Wachtwoord</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['Password'] ? 'd-block' : 'd-none' ?>">
+          <div class="alert alert-danger  <?= $errors['Password'] ? 'd-block' : 'd-none' ?>">
             <?= $errors['Password']; ?>
           </div>
 
@@ -128,7 +130,7 @@ if (count($_POST) > 0) {
         <div class="form-group">
           <label for="question">Geheime vraag</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['QuestionID'] ? 'd-block' : 'd-none' ?>">
+          <div class="alert alert-danger  <?= $errors['QuestionID'] ? 'd-block' : 'd-none' ?>">
             <?= $errors['QuestionID']; ?>
           </div>
 
@@ -142,30 +144,44 @@ if (count($_POST) > 0) {
         <div class="form-group">
           <label for="answer">Antwoord op geheime vraag</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['QuestionAnswer'] ? 'd-block' : 'd-none' ?>">
+          <div class="alert alert-danger  <?= $errors['QuestionAnswer'] ? 'd-block' : 'd-none' ?>">
             <?= $errors['QuestionAnswer']; ?>
           </div>
 
           <input type="text" name="QuestionAnswer" class="form-control" id="answer" value="<?= $_POST['QuestionAnswer'] ?>">
         </div>
+      </div>
+
+      <div class=" col-md-6">
+        <h3>Personalia</h3>
+        <div class="form-group">
+          <label for="firstName">Voornaam</label>
+
+          <div class="alert alert-danger  <?= $errors['Firstname'] ? 'd-block' : 'd-none' ?>">
+            <?= $errors['Firstname']; ?>
+          </div>
+
+          <input type="text" name="Firstname" class="form-control" id="firstName" value="<?= $_POST['Firstname'] ?>">
+        </div>
 
         <div class=" row">
-          <div class="col-md-6 pr-md-0">
+          <div class="col-md-4 pr-md-0">
             <div class="form-group">
-              <label for="firstName">Voornaam</label>
+              <label for="inserts">Tussenvoegsel</label>
 
-              <div class="alert alert-danger mh-1 <?= $errors['Firstname'] ? 'd-block' : 'd-none' ?>">
-                <?= $errors['Firstname']; ?>
+              <div class="alert alert-danger px-3 <?= $errors['Inserts'] ? 'd-block' : 'd-none' ?>">
+                <?= $errors['Inserts']; ?>
               </div>
 
-              <input type="text" name="Firstname" class="form-control" id="firstName" value="<?= $_POST['Firstname'] ?>">
+              <input type="text" name="Inserts" class="form-control" id="inserts" value="<?= $_POST['Inserts'] ?>">
             </div>
+
           </div>
-          <div class=" col-md-6">
+          <div class=" col-md-8">
             <div class="form-group">
               <label for="lastName">Achternaam</label>
 
-              <div class="alert alert-danger mh-1 <?= $errors['Lastname'] ? 'd-block' : 'd-none' ?>">
+              <div class="alert alert-danger  <?= $errors['Lastname'] ? 'd-block' : 'd-none' ?>">
                 <?= $errors['Lastname']; ?>
               </div>
 
@@ -173,13 +189,11 @@ if (count($_POST) > 0) {
             </div>
           </div>
         </div>
-      </div>
 
-      <div class=" col-md-6">
         <div class="form-group">
           <label for="birthDate">Geboortedatum</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['Birthdate'] ? 'd-block' : 'd-none' ?>">
+          <div class="alert alert-danger  <?= $errors['Birthdate'] ? 'd-block' : 'd-none' ?>">
             <?= $errors['Birthdate']; ?>
           </div>
 
@@ -191,7 +205,7 @@ if (count($_POST) > 0) {
             <div class="form-group">
               <label for="adress">Straat</label>
 
-              <div class="alert alert-danger mh-1 <?= $errors['Street'] ? 'd-block' : 'd-none' ?>">
+              <div class="alert alert-danger  <?= $errors['Street'] ? 'd-block' : 'd-none' ?>">
                 <?= $errors['Street']; ?>
               </div>
 
@@ -203,7 +217,7 @@ if (count($_POST) > 0) {
             <div class="form-group">
               <label for="adress">Huisnummer</label>
 
-              <div class="alert alert-danger mh-1 <?= $errors['Housenumber'] ? 'd-block' : 'd-none' ?>">
+              <div class="alert alert-danger px-2 <?= $errors['Housenumber'] ? 'd-block' : 'd-none' ?>">
                 <?= $errors['Housenumber']; ?>
               </div>
 
@@ -213,30 +227,38 @@ if (count($_POST) > 0) {
           </div>
         </div>
 
-        <div class=" form-group">
-          <label for="zipCode">Postcode</label>
+        <div class="row">
+          <div class="col-md-4">
+            <div class=" form-group">
+              <label for="zipCode">Postcode</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['Zipcode'] ? 'd-block' : 'd-none' ?>">
-            <?= $errors['Zipcode']; ?>
+              <div class="alert alert-danger px-2  <?= $errors['Zipcode'] ? 'd-block' : 'd-none' ?>">
+                <?= $errors['Zipcode']; ?>
+              </div>
+
+              <input type="text" name="Zipcode" class="form-control" id="zipCode" value="<?= $_POST['Zipcode'] ?>">
+            </div>
           </div>
 
-          <input type="text" name="Zipcode" class="form-control" id="zipCode" value="<?= $_POST['Zipcode'] ?>">
-        </div>
+          <div class="col-md-8">
+            <div class=" form-group">
+              <label for="city">Plaats</label>
 
-        <div class=" form-group">
-          <label for="city">Plaats</label>
+              <div class="alert alert-danger  <?= $errors['City'] ? 'd-block' : 'd-none' ?>">
+                <?= $errors['City']; ?>
+              </div>
 
-          <div class="alert alert-danger mh-1 <?= $errors['City'] ? 'd-block' : 'd-none' ?>">
-            <?= $errors['City']; ?>
+              <input type="text" name="City" class="form-control" id="city" value="<?= $_POST['City'] ?>">
+            </div>
           </div>
-
-          <input type="text" name="City" class="form-control" id="city" value="<?= $_POST['City'] ?>">
         </div>
+
+
 
         <div class=" form-group">
           <label for="country">Land</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['Country'] ? 'd-block' : 'd-none' ?>">
+          <div class="alert alert-danger  <?= $errors['Country'] ? 'd-block' : 'd-none' ?>">
             <?= $errors['Country']; ?>
           </div>
 
@@ -251,7 +273,7 @@ if (count($_POST) > 0) {
         <div class="form-group">
           <label for="phone">Telefoonnummer(s)</label>
 
-          <div class="alert alert-danger mh-1 <?= $errors['Phonenumbers'] ? 'd-block' : 'd-none' ?>">
+          <div class="alert alert-danger  <?= $errors['Phonenumbers'] ? 'd-block' : 'd-none' ?>">
             <?= $errors['Phonenumbers']; ?>
           </div>
 
