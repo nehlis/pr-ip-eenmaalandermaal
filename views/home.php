@@ -35,8 +35,8 @@ try {
         </div>
         <div class="col-12">
             <div class="row">
-                <?php if ($featuredItems): ?>
-                    <?php foreach ($featuredItems as $item): ?>
+                <?php if ($featuredItems) : ?>
+                    <?php foreach ($featuredItems as $item) : ?>
                         <div class="col-xs-12 col-md-4">
                             <?php Component::render('card', [
                                 'image'       => PLACEHOLDER,
@@ -46,9 +46,11 @@ try {
                             ]); ?>
                         </div>
                     <?php endforeach; ?>
-                <?php else: ?>
+                <?php else : ?>
                     <div class="col-xs-12 col-md-12">
-                      <h4>Er zijn op dit moment geen veilingen...</h4>
+                        <div class="alert alert-danger" role="alert">
+                            Er zijn op dit moment geen veilingen...
+                        </div>
                     </div>
                 <?php endif; ?>
             </div>
