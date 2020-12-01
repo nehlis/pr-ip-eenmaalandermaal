@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Controllers\AccountController;
+use App\Controllers\PhonenumberController;
 use App\Core\Router;
 use Error;
 
@@ -18,11 +19,18 @@ class AuthService
     private $ac;
 
     /**
+     * @var PhonenumberController $ac Account Controller which contains all functions related to accounts
+     */
+    private $pc;
+
+
+    /**
      * AuthService constructor.
      */
     public function __construct()
     {
-        $this->ac = new AccountController;
+        $this->ac = new AccountController();
+        $this->pc = new PhonenumberController();
     }
 
     /**
@@ -75,8 +83,19 @@ class AuthService
         }
 
         try {
+            // Extract phonenumbers
+            $phonenumbers = $data['Phonenumbers'];
+            unset($data['Phonenumbers']);
+
+            // Hash password
             $data['Password'] = password_hash($data['Password'], PASSWORD_BCRYPT);
-            $this->ac->create($data);
+
+            $user = $this->ac->create($data);
+
+            // Register phonenumbers
+            foreach ($phonenumbers as $key => $value) {
+                $this->pc->create(['AccountID' => $user['ID'], 'Phonenumber' => $value]);
+            }
         } catch (Error $error) {
             throw new Error("Kon niet registreren!");
         }
