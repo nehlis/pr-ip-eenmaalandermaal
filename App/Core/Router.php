@@ -53,6 +53,10 @@ class Router
             'view'  => 'ictest',
             'title' => '[TEST] Item Controller',
         ],
+        '/pctest'      => [
+            'view'  => 'pctest',
+            'title' => '[TEST] Phonenumber Controller',
+        ],
     ];
 
     /**
