@@ -86,12 +86,17 @@ class Router
         echo "<script>window.location = '$url'</script>";
     }
 
+    /**
+     * Gets referrer page to which it needs to be redirected to
+     * @param   array   $exceptions Array of request uri's which need to be ignored.
+     * @return  string              referrer request uri.
+     */
     public static function getReferrer(array $exceptions): string
     {
-        if (!isset($_GET['referrer']) && !in_array($_GET['referrer'], $exceptions)) {
+        if (!isset($_GET['referrer']) && !in_array($_SERVER['REQUEST_URI'], $exceptions)) {
             return '?referrer=' . $_SERVER['REQUEST_URI'];
         } else {
-            return '?referrer=' . $_GET['REQUEST_URI'];
+            return '';
         }
     }
 }
