@@ -55,7 +55,7 @@ class AuthService
         $_SESSION['name'] = "{$user['Firstname']} {$user['Lastname']}";
 
         // Redirect after successfully login
-        Router::redirect($_GET['referrer'] ?? '/profiel');
+        Router::redirect($_GET['referrer'] ?? '/');
     }
 
     /**
