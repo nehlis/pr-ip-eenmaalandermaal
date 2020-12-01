@@ -26,7 +26,6 @@
                         <a class="dropdown-item" href="/profiel">Profiel</a>
                         <a class="dropdown-item" href="/uitloggen">Uitloggen</a>
                     <?php else : ?>
-                        <a href="#">Test: <?= $_GET['referrer'] ?></a>
                         <a class="dropdown-item" href="/inloggen<?= Router::getReferrer(['/', '/inloggen', '/registreren', '/uitloggen']) ?>">Inloggen</a>
                         <a class="dropdown-item" href="/registreren">Registreren</a>
                     <?php endif; ?>
