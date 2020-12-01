@@ -48,13 +48,12 @@ class PhonenumberController implements IController
     }
 
     /**
-     * @param int $id       Account ID of which all phonenumers should be found
-     * @return array|null   Returns array of all phonenumbers or null if nothing was found
-     * @throws Error        Throws error when nothing was found.
+     * @param int $id
+     * @return array|null
      */
-    public function get(int $accountID): ?array
+    public function get(int $id): ?array
     {
-        $result = $this->database->customQuery("SELECT * FROM Phonenumber WHERE AccountID = $accountID");
+        $result = $this->database->get(self::$table, $id);
 
         if ($result) return $result;
 
@@ -92,5 +91,17 @@ class PhonenumberController implements IController
     {
         // TODO: Implement update() method.
         return [];
+    }
+
+    /**
+     * 
+     */
+    public function getByAccountID(int $accountID)
+    {
+        $result = $this->database->customQuery("SELECT * FROM Phonenumber WHERE AccountID = $accountID");
+
+        if ($result) return $result;
+
+        throw new Error("Geen telefoonnummers gevonden!");
     }
 }
