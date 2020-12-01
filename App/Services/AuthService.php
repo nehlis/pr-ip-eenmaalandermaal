@@ -39,11 +39,11 @@ class AuthService
         try {
             $user = $this->ac->getByEmail($email);
         } catch (Error $error) {
-            throw new Error($error->getMessage() . '<hr>Klik <a href="/registreren" class="alert-link">hier</a> om je te registreren.</a>');
+            throw new Error('Email en wachtwoord combinatie niet bekend!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten</a> of <a href="/registreren" class="alert-link">Nieuw account aanmaken</a> ');
         }
 
-        if (password_verify($password, password_hash($user['Password'], PASSWORD_BCRYPT))) {
-            throw new Error('Wachtwoord onjuist!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten?</a>');
+        if (!password_verify($password, $user['Password'])) {
+            throw new Error('Email en wachtwoord combinatie niet bekend!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten</a> of <a href="/registreren" class="alert-link">Nieuw account aanmaken</a> ');
         }
 
         if ($user['Blocked'] === 1) {
