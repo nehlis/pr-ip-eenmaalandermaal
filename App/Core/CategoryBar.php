@@ -15,7 +15,7 @@ class CategoryBar
      */
     public static function render(array $categories): void
     {
-        echo '<ul class="a-category-bar__list-item">';
+        echo '<ul class="a-category-bar__list">';
         
         foreach ($categories as $category => $children) {
             echo '<li class="a-category-bar__list-item">';
