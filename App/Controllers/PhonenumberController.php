@@ -38,21 +38,25 @@ class PhonenumberController implements IController
      */
     public function create(array $data): ?array
     {
-        // TODO: Implement create() method.
-        return [];
+        $id = $this->database->create(self::$table, $data);
+
+        if ($id) {
+            return $this->get($id);
+        }
+
+        throw new Error('Telefoonnummer niet geregistreerd!');
     }
 
     /**
-     * @param int $id
-     * @return array|null
+     * @param int $id       Account ID of which all phonenumers should be found
+     * @return array|null   Returns array of all phonenumbers or null if nothing was found
+     * @throws Error        Throws error when nothing was found.
      */
-    public function get(int $id): ?array
+    public function get(int $accountID): ?array
     {
-        $result = $this->database->get(self::$table, $id);
+        $result = $this->database->customQuery("SELECT * FROM Phonenumber WHERE AccountID = $accountID");
 
-        if ($result) {
-            return $result;
-        }
+        if ($result) return $result;
 
         throw new Error("Geen telefoonnummers gevonden!");
     }
