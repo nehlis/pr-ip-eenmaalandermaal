@@ -41,6 +41,10 @@ class Router
             'view'  => 'profile',
             'title' => 'Profiel',
         ],
+        '/veilingen'     => [
+            'view'  => 'auctions',
+            'title' => 'Veilingen',
+        ],
         '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',
