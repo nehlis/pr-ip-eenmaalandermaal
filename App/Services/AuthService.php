@@ -42,7 +42,7 @@ class AuthService
             throw new Error($error->getMessage() . '<hr>Klik <a href="/registreren" class="alert-link">hier</a> om je te registreren.</a>');
         }
 
-        if (hash('sha256', $password) !== $user['Password']) {
+        if (password_verify($password, password_hash($user['Password'], PASSWORD_BCRYPT))) {
             throw new Error('Wachtwoord onjuist!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten?</a>');
         }
 
@@ -75,7 +75,7 @@ class AuthService
         }
 
         try {
-            $data['Password'] = hash('sha256', $data['Password']);
+            $data['Password'] = password_hash($data['Password'], PASSWORD_BCRYPT);
             $this->ac->create($data);
         } catch (Error $error) {
             throw new Error("Kon niet registreren!");
