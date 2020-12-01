@@ -69,6 +69,7 @@ if (count($_POST) > 0) {
   if (count($errors) === 0) {
     try {
       $success = $as->register($data);
+      unset($_POST);
     } catch (Error $error) {
       $errors['register'] = $error->getMessage();
     }
