@@ -11,3 +11,4 @@ PASSWORD=aeedZ8u8
 
 // URL
 iproject3.icasites.nl
+http://ipadres.hanservices.nl
