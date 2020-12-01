@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Controllers\AccountController;
+use App\Controllers\PhonenumberController;
 use App\Core\Router;
 use Error;
 
@@ -18,11 +19,18 @@ class AuthService
     private $ac;
 
     /**
+     * @var PhonenumberController $ac Account Controller which contains all functions related to accounts
+     */
+    private $pc;
+
+
+    /**
      * AuthService constructor.
      */
     public function __construct()
     {
-        $this->ac = new AccountController;
+        $this->ac = new AccountController();
+        $this->pc = new PhonenumberController();
     }
 
     /**
@@ -39,11 +47,11 @@ class AuthService
         try {
             $user = $this->ac->getByEmail($email);
         } catch (Error $error) {
-            throw new Error($error->getMessage() . '<hr>Klik <a href="/registreren" class="alert-link">hier</a> om je te registreren.</a>');
+            throw new Error('Email en wachtwoord combinatie niet bekend!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten</a> of <a href="/registreren" class="alert-link">Nieuw account aanmaken</a> ');
         }
 
-        if (password_verify($password, password_hash($user['Password'], PASSWORD_BCRYPT))) {
-            throw new Error('Wachtwoord onjuist!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten?</a>');
+        if (!password_verify($password, $user['Password'])) {
+            throw new Error('Email en wachtwoord combinatie niet bekend!<hr> <a href="wachtwoord-vergeten" class="alert-link">Wachtwoord vergeten</a> of <a href="/registreren" class="alert-link">Nieuw account aanmaken</a> ');
         }
 
         if ($user['Blocked'] === 1) {
@@ -55,7 +63,7 @@ class AuthService
         $_SESSION['name'] = "{$user['Firstname']} {$user['Lastname']}";
 
         // Redirect after successfully login
-        Router::redirect($_GET['referrer'] ?? '/profiel');
+        Router::redirect($_GET['referrer'] ?? '/');
     }
 
     /**
@@ -75,8 +83,19 @@ class AuthService
         }
 
         try {
+            // Extract phonenumbers
+            $phonenumbers = $data['Phonenumbers'];
+            unset($data['Phonenumbers']);
+
+            // Hash password
             $data['Password'] = password_hash($data['Password'], PASSWORD_BCRYPT);
-            $this->ac->create($data);
+
+            $user = $this->ac->create($data);
+
+            // Register phonenumbers
+            foreach ($phonenumbers as $key => $value) {
+                $this->pc->create(['AccountID' => $user['ID'], 'Phonenumber' => $value]);
+            }
         } catch (Error $error) {
             throw new Error("Kon niet registreren!");
         }

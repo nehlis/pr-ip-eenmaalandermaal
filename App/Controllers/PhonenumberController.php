@@ -38,8 +38,13 @@ class PhonenumberController implements IController
      */
     public function create(array $data): ?array
     {
-        // TODO: Implement create() method.
-        return [];
+        $id = $this->database->create(self::$table, $data);
+
+        if ($id) {
+            return $this->get($id);
+        }
+
+        throw new Error('Telefoonnummer niet geregistreerd!');
     }
 
     /**
@@ -50,9 +55,7 @@ class PhonenumberController implements IController
     {
         $result = $this->database->get(self::$table, $id);
 
-        if ($result) {
-            return $result;
-        }
+        if ($result) return $result;
 
         throw new Error("Geen telefoonnummers gevonden!");
     }
@@ -88,5 +91,17 @@ class PhonenumberController implements IController
     {
         // TODO: Implement update() method.
         return [];
+    }
+
+    /**
+     * 
+     */
+    public function getByAccountID(int $accountID)
+    {
+        $result = $this->database->customQuery("SELECT * FROM Phonenumber WHERE AccountID = $accountID");
+
+        if ($result) return $result;
+
+        throw new Error("Geen telefoonnummers gevonden!");
     }
 }
