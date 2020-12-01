@@ -22,7 +22,11 @@ class CategoryBar
                 echo '<a class="a-category-bar__link">';
                     echo is_array($children) ? $category : $children;
                 echo '</a>';
-                is_array($children) ? self::render($children) : null;
+                
+                if (is_array($children)) {
+                    self::render($children);
+                }
+                
             echo '</li>';
         }
         
