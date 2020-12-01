@@ -18,7 +18,7 @@ $userId = $_SESSION['id'];
 $phoneNumbers = $accountController->getPhoneNumbers($userId);
 
 if (isset($_POST) && count($_POST) > 0) {
-  $_POST['Password'] = hash('sha256', $_POST['Password']);
+  $_POST['Password'] = password_hash($_POST['Password'], PASSWORD_BCRYPT);
 
   $accountValidator = new AccountValidator($_POST);
 
@@ -163,9 +163,9 @@ $user = $accountController->get($userId);
         <div class="form-group">
           <label for="birthDate">Geboortedatum</label>
           <input
-            type="datetime-local"
+            type="date"
             class="form-control"
-            value="<?= date("Y-m-d\TH:i:s", DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()) ?>"
+            value="<?= date("Y-m-d", DateTime::createFromFormat('M d Y H:i:s:A', $user['Birthdate'])->getTimestamp()) ?>"
             name="Birthdate" id="birthDate"
             required
           >
