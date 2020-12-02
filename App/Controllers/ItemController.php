@@ -63,6 +63,11 @@ class ItemController implements IController
         throw new Error("Item met id = $id niet gevonden!");
     }
 
+    /**
+     * @param int           $id     The ID to get detailed information from
+     * @return array|null           Returns matching detailed item information
+     * @throws Error                Throws error when item could not be found
+     */
     public function getDetailed(int $id): ?array
     {
         $result = $this->database->customQuery("
