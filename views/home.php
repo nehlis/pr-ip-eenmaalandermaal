@@ -43,7 +43,7 @@ try {
                                 'title'       => $item['Title'],
                                 'price'       => $item['Amount'],
                                 'closingTime' => $item['EndDate'],
-                                'destination' => '/veiling?id=' . $item['ID']
+                                'destination' => '/veiling?id=' . $item['ID'] . '&title=' . urlencode($item['Title'])
                             ]); ?>
                         </div>
                     <?php endforeach; ?>
