@@ -5,13 +5,14 @@ use App\Controllers\ItemController;
 
 $ic = new ItemController;
 
-$veilingId = intval($_GET['id']);
+$veilingId = (int)$_GET['id'];
 
 $veilingDetails = $ic->getDetailed($veilingId);
 
 $veiling = $veilingDetails[0];
 
 $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
+
 ?>
 
 <script src="./public/assets/js/date-handler.js"></script>
@@ -22,7 +23,7 @@ $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
                 <div class="col-12 col-sm-7 col-md-5 col-lg-4">
                     <h4 class="text-secondary">
                         Totale looptijd: <script>
-                            getTotalDuration("<?= $veiling['StartDate']; ?>", "<?= $veiling['EndDate']; ?>");
+                            getTotalDuration("<?= $veiling['StartDate'] ?>", "<?= $veiling['EndDate'] ?>");
                         </script>
                     </h4>
                     <div class="bg-primary p-3 rounded text-center">
@@ -77,7 +78,7 @@ $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
                 <div class="col-6">
                     <h2 class="font-weight-bold text-primary">Verzending</h2>
                     <small class="text-secondary font-weight-bold">Verzendinstructies</small>
-                    <p><?= $veiling['SendInstructions'] ?? "De verkoper heeft geen verzendinformatie opgegeven bij deze veiling.."; ?></p>
+                    <p><?= $veiling['SendInstructions'] ?? "De verkoper heeft geen verzendinformatie opgegeven bij deze veiling.." ?></p>
                 </div>
             </div>
         </div>

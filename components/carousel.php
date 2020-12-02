@@ -1,18 +1,17 @@
 <?php
-
 /**
  * @var $images     array Een array van images om te gebruiken
  */
 ?>
 <div id="veilingCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-        <?php for ($i = 0; $i < count($images); $i++) : ?>
-            <li data-target="#veilingCarousel" data-slide-to="<?= $i ?>" class="<?= $i == 0 ? 'active' : '' ?>"></li>
+        <?php for ($i = 0, $max = count($images); $i < $max; $i++): ?>
+            <li data-target="#veilingCarousel" data-slide-to="<?= $i ?>" class="<?= $i === 0 ? 'active' : '' ?>"></li>
         <?php endfor ?>
     </ol>
     <div class="carousel-inner">
-        <?php for ($i = 0; $i < count($images); $i++) : ?>
-            <div class="carousel-item <?= $i == 0 ? 'active' : '' ?>">
+        <?php for ($i = 0, $max = count($images); $i < $max; $i++): ?>
+            <div class="carousel-item <?= $i === 0 ? 'active' : '' ?>">
                 <div class="carousel-item-image" style="background-image: url('<?= $images[$i] ?>');'"></div>
             </div>
         <?php endfor ?>
