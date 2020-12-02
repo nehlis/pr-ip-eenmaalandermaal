@@ -6,20 +6,7 @@ const makeId = () =>
     Math.random().toString(36).substring(2, 15) +
     Math.random().toString(36).substring(2, 15);
 
-const convertJsToPhp = () => {
-    let phoneNumberArray = phoneNumbers.map((pn) => {
-        let _pn = { ...pn };
-        _pn.Phonenumber = _pn.number;
-        delete _pn._id;
-        delete _pn.number;
-        return _pn;
-    });
-    phoneNumbers = [];
-    $.post("/profiel", { elements: JSON.stringify(phoneNumberArray) });
-};
-
 if (window.currentPhoneNumbers !== undefined) {
-    //? Convert PHP Numbers to JavaScript
     window.currentPhoneNumbers.forEach((pn) => {
         let _pn = { ...pn };
         _pn._id = makeId();
@@ -27,8 +14,19 @@ if (window.currentPhoneNumbers !== undefined) {
         delete _pn.Phonenumber;
         phoneNumbers.push(_pn);
     });
-    window.currentPhoneNumbers = [];
 }
+
+const convertJsToPhp = () => {
+    let newPhoneNumbers = phoneNumbers.map((pn) => {
+        let _pn = { ...pn };
+        _pn.Phonenumber = _pn.number;
+        delete _pn._id;
+        delete _pn.number;
+        return _pn;
+    });
+    // TODO: POST THIS TO PHP PLEASE
+    phoneNumbers = [];
+};
 
 const changePhoneNumber = ({ target: { value = "" } }, id) => {
     let itemToChange = phoneNumbers.findIndex((pn) => pn._id === id);
@@ -68,7 +66,6 @@ ${
 </div>`;
 
 function renderPhoneNumberElements() {
-    console.log(phoneNumbers);
     listItemElement.innerHTML = "";
     phoneNumbers.forEach(
         (phoneNumber, index) =>

@@ -29,8 +29,8 @@ if (isset($_POST) && count($_POST) > 0) {
     }
 
     // Edit each phone if post is set.
-    for ($i = 1, $max = count($phoneNumbers); $i <= $max; $i++) {
-        if (!isset($_POST["phone-$i"])) {
+    for ($i = 0, $max = count($phoneNumbers); $i < $max; $i++) {
+        if (!isset($_POST["phone-" . ($i + 1)])) {
             break;
         }
 
@@ -48,11 +48,7 @@ if ($phoneNumbers = $accountController->getPhoneNumbers($userId)) {
     $phoneNumbers = [];
 }
 
-
 $user = $accountController->get($userId);
-
-highlight_string("<?php\n" . var_export($user, true) . ";\n?>");
-highlight_string("<?php\n" . var_export($phoneNumbers, true) . ";\n?>");
 ?>
 
 <script type="text/javascript">
