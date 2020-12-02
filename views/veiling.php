@@ -70,15 +70,22 @@ $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
                 <div class="dropdown-divider my-4"></div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-4">
                     <h2 class="font-weight-bold text-primary">Betaling</h2>
                     <small class="text-secondary font-weight-bold">Betalingsinstructies</small>
                     <p><?= $veiling['PaymentInstructions'] ?? "De verkoper heeft geen betalingsinstructies opgegeven bij deze veiling.." ?></p>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-4">
                     <h2 class="font-weight-bold text-primary">Verzending</h2>
                     <small class="text-secondary font-weight-bold">Verzendinstructies</small>
                     <p><?= $veiling['SendInstructions'] ?? "De verkoper heeft geen verzendinformatie opgegeven bij deze veiling.." ?></p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <h2 class="font-weight-bold text-primary">Verkoper</h2>
+                    <small class="text-secondary font-weight-bold">Gebruikersnaam</small>
+                    <p><?= $veiling['Username'] ?></p>
+                    <small class="text-secondary font-weight-bold">Locatie</small>
+                    <p><?= $veiling['City'] ?></p>
                 </div>
             </div>
         </div>

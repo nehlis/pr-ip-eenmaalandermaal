@@ -71,10 +71,12 @@ class ItemController implements IController
     public function getDetailed(int $id): ?array
     {
         $result = $this->database->customQuery("
-            SELECT I.*, B.ID as BiddingID, B.AccountID as BidderID, B.Time as BiddingTime, B.Amount as BiddingAmount
+            SELECT I.*, A.Username, B.ID as BiddingID, B.AccountID as BidderID, B.Time as BiddingTime, B.Amount as BiddingAmount
             FROM Item I
             LEFT JOIN Bidding B
             ON I.ID = B.ItemID
+            LEFT JOIN Account A
+            ON I.SellerID = A.ID
             WHERE I.ID = $id
             ORDER BY B.Amount DESC;
         ");
