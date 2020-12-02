@@ -31,15 +31,16 @@ class CategoryBar
   public function render(array $categories = []): void
   {
     if (empty($categories)) {
-      $keys = array_keys($this->categories[0]);
+      $keys = array_keys($this->categories);
       
+      // Display only first 6 Categories.
       $categories = [
-        $this->categories[0][$keys[0]],
-        $this->categories[0][$keys[1]],
-        $this->categories[0][$keys[2]],
-        $this->categories[0][$keys[3]],
-        $this->categories[0][$keys[4]],
-        $this->categories[0][$keys[5]],
+        $this->categories[$keys[0]],
+        $this->categories[$keys[1]],
+        $this->categories[$keys[2]],
+        $this->categories[$keys[3]],
+        $this->categories[$keys[4]],
+        $this->categories[$keys[5]],
       ];
     }
     
@@ -87,6 +88,7 @@ class CategoryBar
   }
   
   /**
+   * Formats the queried data per level and removes the duplicates
    * @param $columns
    * @param $new
    * @return array
@@ -105,30 +107,24 @@ class CategoryBar
       foreach ($levels as $index => $level) {
         [$id, $name] = $level;
         
-        // Skip if is null.
-        if (is_null($id) || is_null($name)) {
+        if (!$id || !$name) {
           continue;
         }
         
         // If the Level does not exists, add it and initialize the children array.
         if (!array_key_exists($id, $new[$index])) {
-          $new[$index][$id] = [
-            'name'     => $name,
-            'children' => [],
-          ];
+          $new[$index][$id] = ['name' => $name, 'children' => []];
         }
         
-        // While there are children, add them to the children key.
-        for ($i = 1; isset($levels[$index + $i][0]); $i++) {
-          [$childId, $childName] = $levels[$index + $i];
-          
-          if (!array_key_exists($childId, $new[$index][$id]['children'])) {
-            $new[$index][$id]['children'][$childId] = [
-              'name'     => $childName,
-              'children' => [],
-            ];
-          }
+        // If the child is already initialized, don't add it again.
+        if (array_key_exists($levels[$index + 1][0], $new[$index][$id]['children'])) {
+          continue;
         }
+        
+        [$childId, $childName] = $levels[$index + 1];
+  
+        // Here we add the children (if found) to the children property.
+        $new[$index][$id]['children'][$childId] = ['name' => $childName, 'children' => []];
       }
     }
     
@@ -136,24 +132,32 @@ class CategoryBar
   }
   
   /**
+   * Formats all the inputted array from by-level to an associative array.
    * @param array $levels
    * @return array
    */
   private function formatAssociative(array $levels): array
   {
-    foreach ($levels as $depth => $level) {
-      // 0 => 1 => 2 => 3 => 4
-      foreach ($level as $itemId => $item) {
-        // 1 => ['name' => 'Verzamelen', 'children' => [...]
+    // Unset levels if fully empty. We do this because otherwise
+    // the count in the for loop won't output the desired amount.
+    foreach ($levels as $id => $level) {
+      if (empty($level)) {
+        unset($levels[$id]);
+      }
+    }
+    
+    // Loop through the levels, start at the second last index, stop with the first.
+    for ($i = count($levels) - 2; $i >= 0; $i--) {
+      foreach ($levels[$i] as $itemId => $item) {
         foreach ($item['children'] as $childId => $child) {
-          // 32 => Poppen
-          if (isset($levels[$depth + 1][$childId])) {
-            $levels[$depth][$itemId]['children'][$childId] = $levels[$depth + 1][$childId];
+          // If child ID is set, copy it to this iteration in array.
+          if (isset($levels[$i + 1][$childId])) {
+            $levels[$i][$itemId]['children'][$childId] = $levels[$i + 1][$childId];
           }
         }
       }
     }
     
-    return $levels;
+    return $levels[0];
   }
 }
