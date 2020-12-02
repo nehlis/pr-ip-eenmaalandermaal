@@ -9,7 +9,7 @@ $ic = new ItemController();
 if (isset($_GET['titel']) && !empty($_GET['titel'])) $filters['title'] = $_GET['titel'];
 if (isset($_GET['minPrijs']) && !empty($_GET['minPrijs'])) $filters['price'][0] = $_GET['minPrijs'];
 if (isset($_GET['maxPrijs']) && !empty($_GET['maxPrijs'])) $filters['price'][1] = $_GET['maxPrijs'];
-if (isset($_GET['categorie']) && !empty($_GET['categorie'])) $filters['category'] = $_GET['categorie'];
+if (isset($_GET['categorieId']) && !empty($_GET['categorieId'])) $filters['categoryId'] = $_GET['categorieId'];
 
 foreach ($filters as $key => &$value) {
     if ($key === 'price') {
@@ -25,105 +25,9 @@ foreach ($filters as $key => &$value) {
 if (count($errors) === 0) {
     // Search logic
     try {
-        // doe je ding
-
-        // Dummy Data
-        $auctions = [
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Zwarte Piet', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'Stofzuiger', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 9999.99, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-            ['Title' => 'asdsadsadasdasad', 'Amount' => 100, 'EndDate' => '2020-12-01T14:15:00Z'],
-        ];
+        $auctions = $ic->getOverview($filters);
     } catch (Error $err) {
-        $error = $err->getMessage();
+        $errors['overview'] = $err->getMessage();
     }
 }
 ?>
@@ -133,7 +37,7 @@ if (count($errors) === 0) {
         <div class=" col-md-4 col-lg-3 mt-3 mt-md-5">
             <div class="row d-flex justify-content-between align-items-center px-4">
                 <h3><i class="fas fa-filter small"></i> Filters</h3>
-                <?= count($filters) > 0 || count($errors) > 0 ? '<a href="/veilingen">reset</a>' : '' ?>
+                <?= count($filters) > 0 || count($errors) > 0 ? '<a href="/veilingen?categorieId=' . $_GET['categorieId'] . '">reset</a>' : '' ?>
             </div>
 
             <div class="alert alert-danger p-2 <?= $filterError ? 'd-block' : 'd-none' ?>" role="alert">
@@ -184,43 +88,6 @@ if (count($errors) === 0) {
                             </div>
                         </div>
                     </div>
-
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center" id="headingTwo">
-                            <h5 class="mb-0">
-                                <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <i class="fas fa-stream"></i> Rubrieken
-                                </button>
-                            </h5>
-
-                            <?= isset($filters['category']) ? '<i class="far fa-check-circle text-success"></i>' : '' ?>
-                            <?= isset($errors['category']) ? '<i class="far fa-times-circle text-danger"></i>' : '' ?>
-                        </div>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                            <div class="card-body">
-                                <div class="alert alert-danger px-2 py-1 <?= $errors['category'] ? 'd-block' : 'd-none' ?>" role="alert">
-                                    <?= $errors['category'] ?>
-                                </div>
-
-                                <div class="input-group">
-                                    <input list="categories" name="categorie" class="form-control" placeholder="Coming Soon..." value="<?= $_GET['categorie'] ?>">
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-outline-primary" title="Pas filter toe">
-                                            <i class="fas fa-sync-alt"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <datalist id="categories">
-                                    <option value="Autos">
-                                    <option value="Motoren">
-                                    <option value="Zwarte Pieten">
-                                    <option value="Schildpadden">
-                                    <option value="Schoonmoeders">
-                                </datalist>
-                            </div>
-                        </div>
-                    </div>
             </form>
         </div>
 
@@ -233,7 +100,7 @@ if (count($errors) === 0) {
                     <?php Component::render('card', [
                         'image'       => PLACEHOLDER,
                         'title'       => $item['Title'],
-                        'price'       => $item['Amount'],
+                        'price'       => $item['StartingPrice'],
                         'closingTime' => $item['EndDate'],
                     ]); ?>
                 </div>
@@ -241,7 +108,7 @@ if (count($errors) === 0) {
         <?php else : ?>
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">
-                    Er zijn op dit moment geen veilingen...
+                    Er zijn op dit moment geen veilingen...: <?= $errors['overview'] ?>
                 </div>
             </div>
         <?php endif; ?>
