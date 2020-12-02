@@ -31,26 +31,15 @@ class CategoryBar
     public function render(array $categories = []): void
     {
         if (empty($categories)) {
-            $keys = array_keys($this->categories);
-            
             // Display only first 6 Categories.
-            $categories = [
-                $this->categories[$keys[0]],
-                $this->categories[$keys[1]],
-                $this->categories[$keys[2]],
-                $this->categories[$keys[3]],
-                $this->categories[$keys[4]],
-                $this->categories[$keys[5]],
-            ];
+            $categories = array_slice($this->categories, 0, 6, true);
         }
         
         echo "<ul class='a-category-bar__list'>";
         
         foreach ($categories as $id => $category) {
             echo "<li class='a-category-bar__list-item'>";
-            echo "<a href='/veilingen?categorie=$id' class='a-category-bar__link'>";
-            echo $category['name'];
-            echo "</a>";
+            echo "<a href='/veilingen?categorie=$id' class='a-category-bar__link'>{$category['name']}</a>";
             
             if (!empty($category['children'])) {
                 self::render($category['children']);
