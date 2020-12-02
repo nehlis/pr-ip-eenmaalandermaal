@@ -9,7 +9,8 @@
  */
 ?>
 <div class="card mb-5 mb-lg-0 mb-md-0">
-    <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions"><span class="countdownTimer" id="<?= $closingTime ?>">
+    <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions">
+        <span class="countdownTimer" id="<?= $closingTime ?>">
             <div class="spinner-border mx-5 text-light" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
