@@ -2,10 +2,10 @@
   $self: &;
   display: flex;
   justify-content: left;
+  position: relative;
 
   &__wrapper {
     display: flex;
-    max-width: 700px;
     width: 100%;
   }
 
@@ -24,7 +24,7 @@
       background: none;
       bottom: auto;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       left: auto;
       list-style: none;
       margin: 0;
@@ -36,7 +36,9 @@
 
       #{$self}__list-item {
         color: white;
-        padding: 10px 30px;
+        padding: 10px;
+        position: initial;
+        width: 100%;
         transition: background-color .3s ease;
         will-change: background-color;
 
@@ -54,7 +56,10 @@
       > #{$self}__list-item {
         > #{$self}__list {
           left: 0;
+          position: absolute;
+          right: 0;
           top: 43px;
+          width: 100%;
         }
       }
     }
@@ -65,5 +70,10 @@
     margin: 0;
     padding: 0;
     position: relative;
+  }
+
+  &__link , &__link:hover {
+    color: white;
+    text-decoration: none;
   }
 }
