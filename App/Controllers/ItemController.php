@@ -63,6 +63,22 @@ class ItemController implements IController
         throw new Error("Item met id = $id niet gevonden!");
     }
 
+    public function getDetailed(int $id): ?array
+    {
+        $result = $this->database->customQuery("SELECT I.*, B.ID as BiddingID, B.AccountID as BidderID, B.Time as BiddingTime, B.Amount as BiddingAmount
+                                                FROM Item I
+                                                LEFT JOIN Bidding B
+                                                ON I.ID = B.ItemID
+                                                WHERE I.ID = $id
+                                                ORDER BY B.Amount DESC;");
+
+        if ($result) {
+            return $result;
+        }
+
+        throw new Error("Item met id = $id niet gevonden!");
+    }
+
     /**
      * @return array|null   Returns array with all iterms
      * @throws  Error               Throws error when no items were found.

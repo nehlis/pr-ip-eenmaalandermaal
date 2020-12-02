@@ -7,7 +7,9 @@ $ic = new ItemController;
 
 $veilingId = intval($_GET['id']);
 
-$veiling = $ic->get($veilingId);
+$veilingDetails = $ic->getDetailed($veilingId);
+
+$veiling = $veilingDetails[0];
 
 $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
 ?>
@@ -50,7 +52,7 @@ $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <h2 class="text-primary font-weight-bold">Huidig bod</h2>
-                            <p class="display-3 text-dark font-weight-bold">&euro; 100,00</p>
+                            <p class="display-3 text-dark font-weight-bold">&euro; <?= $veiling['BiddingAmount'] ?? '0,-' ?></p>
                         </div>
                         <div class="col-12 col-md-6">
                             <h2 class="text-primary font-weight-bold">Nieuw bod</h2>
