@@ -6,15 +6,27 @@ use App\Controllers\ItemController;
 $ic = new ItemController();
 
 // Validation & Sanization
-if (isset($_GET['titel']) && !empty($_GET['titel'])) $filters['title'] = $_GET['titel'];
-if (isset($_GET['minPrijs']) && !empty($_GET['minPrijs'])) $filters['price'][0] = $_GET['minPrijs'];
-if (isset($_GET['maxPrijs']) && !empty($_GET['maxPrijs'])) $filters['price'][1] = $_GET['maxPrijs'];
-if (isset($_GET['categorieId']) && !empty($_GET['categorieId'])) $filters['categoryId'] = $_GET['categorieId'];
+if (isset($_GET['titel']) && !empty($_GET['titel'])) {
+    $filters['title'] = $_GET['titel'];
+}
+if (isset($_GET['minPrijs']) && !empty($_GET['minPrijs'])) {
+    $filters['price'][0] = $_GET['minPrijs'];
+}
+if (isset($_GET['maxPrijs']) && !empty($_GET['maxPrijs'])) {
+    $filters['price'][1] = $_GET['maxPrijs'];
+}
+if (isset($_GET['categorieId']) && !empty($_GET['categorieId'])) {
+    $filters['categoryId'] = $_GET['categorieId'];
+}
 
 foreach ($filters as $key => &$value) {
     if ($key === 'price') {
-        if (empty($value[0])) $value[0] = 0;
-        if (empty($value[1])) $value[1] = 99999;
+        if (empty($value[0])) {
+            $value[0] = 0;
+        }
+        if (empty($value[1])) {
+            $value[1] = 99999;
+        }
         if ($value[0] > $value[1]) {
             unset($filters['price']);
             $errors[$key] = "Incorrecte invoer!";
@@ -37,7 +49,7 @@ if (count($errors) === 0) {
         <div class=" col-md-4 col-lg-3 mt-3 mt-md-5">
             <div class="row d-flex justify-content-between align-items-center px-4">
                 <h3><i class="fas fa-filter small"></i> Filters</h3>
-                <?= count($filters) > 0 || count($errors) > 0 ? '<a href="/veilingen?categorieId=' . $_GET['categorieId'] . '">reset</a>' : '' ?>
+                <?= count($filters) > 0 || count($errors) > 0 ? ('<a href="/veilingen">reset</a>') : '' ?>
             </div>
 
             <div class="alert alert-danger p-2 <?= $filterError ? 'd-block' : 'd-none' ?>" role="alert">
@@ -100,7 +112,7 @@ if (count($errors) === 0) {
                     <?php Component::render('card', [
                         'image'       => PLACEHOLDER,
                         'title'       => $item['Title'],
-                        'price'       => $item['StartingPrice'],
+                        'price'       => $item['HighestPrice'],
                         'closingTime' => $item['EndDate'],
                     ]); ?>
                 </div>
@@ -108,7 +120,7 @@ if (count($errors) === 0) {
         <?php else : ?>
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">
-                    Er zijn op dit moment geen veilingen...: <?= $errors['overview'] ?>
+                    <?= $errors['overview'] ?? "Geen veilingen  gevonden!" ?>
                 </div>
             </div>
         <?php endif; ?>

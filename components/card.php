@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var $closingTime         string De tijd wanneer de veiling sluit. Format: 
+ * @var $closingTime         string De tijd wanneer de veiling sluit. Format: yyyy-mm-ddThh:mm:ssZ 
  * @var $image               string De afbeelding die bij de card hoort.
  * @var $title               string De titel van de card.
  * @var $price               string De huidige prijs van de veiling.

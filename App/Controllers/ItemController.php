@@ -195,25 +195,29 @@ class ItemController implements IController
      */
     public function getOverview(array $filters = null): ?array
     {
-        $query = "  SELECT I.ID, I.ItemCategoryID, I.Title, I.EndDate, I.StartingPrice
+        $query = "  SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                     FROM Item I
-                    WHERE 1 = 1
-                ";
+                            LEFT JOIN Bidding B On I.ID = B.ItemID
+                    WHERE 1 = 1";
 
         foreach ($filters as $key => $value) {
-            if ($key === 'title') {
-                $query .= " AND I.Title LIKE '%$value%'";
-            } elseif ($key === 'price') {
-                $query .= " AND I.StartingPrice BETWEEN $value[0] AND $value[1]";
-            } elseif ($key === 'categoryId') {
-                $query .= " AND I.ItemCategoryID = $value";
+            switch ($key) {
+                case 'title':
+                    $query .= " AND I.Title LIKE '%$value%'";
+                    break;
+                case 'price':
+                    $query .= " AND IIF(B.Amount IS NULL, I.StartingPrice, B.Amount) BETWEEN $value[0] AND $value[1]";
+                    break;
+                case 'categoryId':
+                    $query .= " AND I.ItemCategoryID = $value";
+                    break;
             }
         }
 
-        $query .= "ORDER BY I.EndDate ASC";
+        $query .= " GROUP BY I.ID, I.Title, I.StartingPrice, I.EndDate
+                    ORDER BY I.EndDate ASC";
 
         $result = $this->database->customQuery($query);
-
 
         if ($result) return $result;
 
