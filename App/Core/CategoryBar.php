@@ -11,6 +11,7 @@ use App\Controllers\CategoryController;
 class CategoryBar
 {
     /**
+     * The formatted categories to display in the menu.
      * @var
      */
     private $categories = [0 => [], 1 => [], 2 => [], 3 => [], 4 => []];
@@ -38,7 +39,7 @@ class CategoryBar
         
         foreach ($categories as $id => $category) {
             echo "<li class='a-category-bar__list-item'>";
-            echo "<a href='/veilingen?categorie=$id' class='a-category-bar__link'>{$category['name']}</a>";
+            echo "<a href='/veilingen?categorieId=$id' class='a-category-bar__link'>{$category['name']}</a>";
             
             if (!empty($category['children'])) {
                 self::render($category['children']);
@@ -72,6 +73,8 @@ class CategoryBar
     private function formatPerLevel($columns, $new): array
     {
         foreach ($columns as $column) {
+            // Here we build our own array, this because this way we can
+            // differentiate each level without having to check for key value.
             $levels = [
                 [$column['Level1ID'], $column['Level1Name']],
                 [$column['Level2ID'], $column['Level2Name']],
@@ -91,7 +94,7 @@ class CategoryBar
                 if (!array_key_exists($id, $new[$index])) {
                     $new[$index][$id] = ['name' => $name, 'children' => []];
                 }
-    
+                
                 [$childId, $childName] = $levels[$index + 1];
                 
                 // If the child is already initialized or empty, don't add it again.
@@ -134,6 +137,8 @@ class CategoryBar
             }
         }
         
+        // After deprecating each value to the parent, the first index will
+        // include all of it's children, so we only return this value.
         return $levels[0];
     }
 }
