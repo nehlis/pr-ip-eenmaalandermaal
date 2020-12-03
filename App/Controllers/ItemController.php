@@ -211,4 +211,41 @@ class ItemController implements IController
 
         throw new Error("Geen uitgelichte items gevonden...");
     }
+
+    /**
+     * Function that is used to load up items in the auctions (veilingen) view. It accepts an array with filter data.
+     * @param   array       $filters    Associative array which contains filters for: title, price and categoryId
+     * @return  array|null              Array containing all auctions found in the database
+     * @throws  Error                   Throws and error if no auctions were found.
+     */
+    public function getOverview(array $filters = null): ?array
+    {
+        $query = "SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
+                  FROM Item I
+                    LEFT JOIN Bidding B On I.ID = B.ItemID
+                  WHERE 1 = 1";
+
+        foreach ($filters as $key => $value) {
+            switch ($key) {
+                case 'title':
+                    $query .= " AND I.Title LIKE '%$value%'";
+                    break;
+                case 'price':
+                    $query .= " AND IIF(B.Amount IS NULL, I.StartingPrice, B.Amount) BETWEEN $value[0] AND $value[1]";
+                    break;
+                case 'categoryId':
+                    $query .= " AND I.ItemCategoryID = $value";
+                    break;
+            }
+        }
+
+        $query .= " GROUP BY I.ID, I.Title, I.StartingPrice, I.EndDate
+                    ORDER BY I.EndDate ASC";
+
+        $result = $this->database->customQuery($query);
+
+        if ($result) return $result;
+
+        throw new Error("Geen veilingen gevonden!");
+    }
 }

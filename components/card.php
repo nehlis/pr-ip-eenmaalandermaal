@@ -8,7 +8,7 @@
  * @var $destination         string De detailpagina URL die bij de card hoort.
  */
 ?>
-<div class="card mb-5 mb-lg-0 mb-md-0">
+<div class="card">
     <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions">
         <span class="countdownTimer" id="<?= $closingTime ?>">
             <div class="spinner-border mx-5 text-light" role="status">
@@ -18,12 +18,12 @@
     </div>
     <img src="<?= $image ?>" class="card-img-top" alt="...">
     <div class="card-body">
-        <h5 class="card-title text-uppercase mb-5"><?= $title ?? 'Titel niet gevonden' ?></h5>
+        <h5 class="card-title text-uppercase mb-2"><?= $title ?? 'Titel niet gevonden' ?></h5>
         <div class="row">
-            <div class="col-xs-12 col-xl-7">
+            <div class="col-6 col-sm-12">
                 <h2 class="font-weight-bold mb-0">€ <?= $price ?? '0,-' ?></h2>
             </div>
-            <div class="col-xs-12 col-xl-5">
+            <div class="col-6 col-sm-12">
                 <a href="<?= $destination ?? '#' ?>" class="btn btn-primary btn-block text-uppercase mt-1">Bekijken</a>
             </div>
         </div>
