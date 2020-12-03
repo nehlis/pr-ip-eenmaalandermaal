@@ -44,6 +44,9 @@ class Router
         '/veilingen'     => [
             'view'  => 'auctions',
             'title' => 'Veilingen',
+        '/veiling'     => [
+            'view'  => 'veiling',
+            'title' => 'Veiling informatie'
         ],
         '/404'         => [
             'view'  => '404',

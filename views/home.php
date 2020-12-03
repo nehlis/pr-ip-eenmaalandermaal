@@ -43,6 +43,7 @@ try {
                                 'title'       => $item['Title'],
                                 'price'       => $item['Amount'],
                                 'closingTime' => $item['EndDate'],
+                                'destination' => "/veiling?id={$item['ID']}"
                             ]); ?>
                         </div>
                     <?php endforeach; ?>

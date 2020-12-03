@@ -8,8 +8,10 @@
  * @var $destination         string De detailpagina URL die bij de card hoort.
  */
 ?>
+
 <div class="card">
-    <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions"><span class="countdownTimer" id="<?= $closingTime ?>">
+    <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions">
+        <span class="countdownTimer" id="<?= $closingTime ?>">
             <div class="spinner-border mx-5 text-light" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
