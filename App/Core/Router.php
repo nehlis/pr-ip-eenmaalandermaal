@@ -41,6 +41,9 @@ class Router
             'view'  => 'profile',
             'title' => 'Profiel',
         ],
+        '/veilingen'     => [
+            'view'  => 'auctions',
+            'title' => 'Veilingen',
         '/veiling'     => [
             'view'  => 'veiling',
             'title' => 'Veiling informatie'
