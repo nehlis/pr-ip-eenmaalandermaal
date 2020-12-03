@@ -83,7 +83,7 @@ class CategoryBar
             foreach ($levels as $index => $level) {
                 [$id, $name] = $level;
                 
-                if (is_null($id) || is_null($name)) {
+                if (is_null($id)) {
                     continue;
                 }
                 
@@ -94,8 +94,8 @@ class CategoryBar
     
                 [$childId, $childName] = $levels[$index + 1];
                 
-                // If the child is already initialized, don't add it again.
-                if (array_key_exists($childId, $new[$index][$id]['children']) || is_null($childId) || is_null($childName)) {
+                // If the child is already initialized or empty, don't add it again.
+                if (array_key_exists($childId, $new[$index][$id]['children']) || is_null($childId)) {
                     continue;
                 }
                 
