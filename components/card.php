@@ -1,15 +1,14 @@
 <?php
 
 /**
- * @var $closingTime         string De tijd wanneer de veiling sluit. Format: yyyy-mm-ddThh:mm:ssZ 
+ * @var $closingTime         string De tijd wanneer de veiling sluit.
  * @var $image               string De afbeelding die bij de card hoort.
  * @var $title               string De titel van de card.
  * @var $price               string De huidige prijs van de veiling.
  * @var $destination         string De detailpagina URL die bij de card hoort.
  */
 ?>
-
-<div class="card">
+<div class="card mb-5 mb-lg-0 mb-md-0">
     <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions">
         <span class="countdownTimer" id="<?= $closingTime ?>">
             <div class="spinner-border mx-5 text-light" role="status">
@@ -19,11 +18,13 @@
     </div>
     <img src="<?= $image ?>" class="card-img-top" alt="...">
     <div class="card-body">
-        <h5 class="card-title text-uppercase"><?= $title ?? 'Titel niet gevonden' ?></h5>
+        <h5 class="card-title text-uppercase mb-5"><?= $title ?? 'Titel niet gevonden' ?></h5>
         <div class="row">
-            <div class="col-12">
-                <h4 class="font-weight-bold m-0 mb-1">€ <?= $price ?? '0,-' ?></h4>
-                <a href="<?= $destination ?? '#' ?>" class="btn btn-primary btn-block text-uppercase m-0">Bekijken</a>
+            <div class="col-xs-12 col-xl-7">
+                <h2 class="font-weight-bold mb-0">€ <?= $price ?? '0,-' ?></h2>
+            </div>
+            <div class="col-xs-12 col-xl-5">
+                <a href="<?= $destination ?? '#' ?>" class="btn btn-primary btn-block text-uppercase mt-1">Bekijken</a>
             </div>
         </div>
     </div>
