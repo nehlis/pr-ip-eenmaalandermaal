@@ -31,8 +31,7 @@ class CategoryBar
     public function render(array $categories = []): void
     {
         if (empty($categories)) {
-            // Display only first 6 Categories.
-            $categories = array_slice($this->categories, 0, 6, true);
+            $categories = $this->categories;
         }
         
         echo "<ul class='a-category-bar__list'>";
@@ -84,7 +83,7 @@ class CategoryBar
             foreach ($levels as $index => $level) {
                 [$id, $name] = $level;
                 
-                if (!$id || !$name) {
+                if (is_null($id) || is_null($name)) {
                     continue;
                 }
                 
@@ -92,13 +91,13 @@ class CategoryBar
                 if (!array_key_exists($id, $new[$index])) {
                     $new[$index][$id] = ['name' => $name, 'children' => []];
                 }
+    
+                [$childId, $childName] = $levels[$index + 1];
                 
                 // If the child is already initialized, don't add it again.
-                if (array_key_exists($levels[$index + 1][0], $new[$index][$id]['children'])) {
+                if (array_key_exists($childId, $new[$index][$id]['children']) || is_null($childId) || is_null($childName)) {
                     continue;
                 }
-                
-                [$childId, $childName] = $levels[$index + 1];
                 
                 // Here we add the children (if found) to the children property.
                 $new[$index][$id]['children'][$childId] = ['name' => $childName, 'children' => []];
