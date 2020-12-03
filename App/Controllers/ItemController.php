@@ -227,8 +227,8 @@ class ItemController implements IController
 
         foreach ($filters as $key => $value) {
             switch ($key) {
-                case 'title':
-                    $query .= " AND I.Title LIKE '%$value%'";
+                case 'searchValue':
+                    $query .= " AND I.Title LIKE '%$value%' OR I.Description LIKE '%$value%'";
                     break;
                 case 'price':
                     $query .= " AND IIF(B.Amount IS NULL, I.StartingPrice, B.Amount) BETWEEN $value[0] AND $value[1]";
