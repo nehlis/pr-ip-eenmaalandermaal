@@ -254,8 +254,6 @@ if (count($_POST) > 0) {
           </div>
         </div>
 
-
-
         <div class=" form-group">
           <label for="country">Land</label>
 
