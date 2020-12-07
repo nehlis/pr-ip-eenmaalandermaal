@@ -60,17 +60,17 @@ class CategoryBar
     {
         $cc = new CategoryController;
         
-        $this->categories = $this->formatPerLevel($cc->index(), $this->categories);
-        $this->categories = $this->formatAssociative($this->categories);
+        $this->categories = $this
+            ->sortPerLevel($cc->index())
+            ->sortAccociatively();
     }
     
     /**
      * Formats the queried data per level and removes the duplicates
      * @param $columns
-     * @param $new
-     * @return array
+     * @return CategoryBar
      */
-    private function formatPerLevel($columns, $new): array
+    private function sortPerLevel($columns): CategoryBar
     {
         foreach ($columns as $column) {
             // Here we build our own array, this because this way we can
@@ -91,47 +91,46 @@ class CategoryBar
                 }
                 
                 // If the Level does not exists, add it and initialize the children array.
-                if (!array_key_exists($id, $new[$index])) {
-                    $new[$index][$id] = ['name' => $name, 'children' => []];
+                if (!array_key_exists($id, $this->categories[$index])) {
+                    $this->categories[$index][$id] = ['name' => $name, 'children' => []];
                 }
                 
                 [$childId, $childName] = $levels[$index + 1];
                 
                 // If the child is already initialized or empty, don't add it again.
-                if (array_key_exists($childId, $new[$index][$id]['children']) || is_null($childId)) {
+                if (array_key_exists($childId, $this->categories[$index][$id]['children']) || is_null($childId)) {
                     continue;
                 }
                 
                 // Here we add the children (if found) to the children property.
-                $new[$index][$id]['children'][$childId] = ['name' => $childName, 'children' => []];
+                $this->categories[$index][$id]['children'][$childId] = ['name' => $childName, 'children' => []];
             }
         }
         
-        return $new;
+        return $this;
     }
     
     /**
      * Formats all the inputted array from by-level to an associative array.
-     * @param array $levels
      * @return array
      */
-    private function formatAssociative(array $levels): array
+    private function sortAccociatively(): array
     {
         // Unset levels if fully empty. We do this because otherwise
         // the count in the for loop won't output the desired amount.
-        foreach ($levels as $id => $level) {
+        foreach ($this->categories as $id => $level) {
             if (empty($level)) {
-                unset($levels[$id]);
+                unset($this->categories[$id]);
             }
         }
         
         // Loop through the levels, start at the second last index, stop with the first.
-        for ($i = count($levels) - 2; $i >= 0; $i--) {
-            foreach ($levels[$i] as $itemId => $item) {
+        for ($i = count($this->categories) - 2; $i >= 0; $i--) {
+            foreach ($this->categories[$i] as $itemId => $item) {
                 foreach ($item['children'] as $childId => $child) {
                     // If child ID is set, copy it to this iteration in array.
-                    if (isset($levels[$i + 1][$childId])) {
-                        $levels[$i][$itemId]['children'][$childId] = $levels[$i + 1][$childId];
+                    if (isset($this->categories[$i + 1][$childId])) {
+                        $this->categories[$i][$itemId]['children'][$childId] = $this->categories[$i + 1][$childId];
                     }
                 }
             }
@@ -139,6 +138,6 @@ class CategoryBar
         
         // After deprecating each value to the parent, the first index will
         // include all of it's children, so we only return this value.
-        return $levels[0];
+        return $this->categories[0];
     }
 }
