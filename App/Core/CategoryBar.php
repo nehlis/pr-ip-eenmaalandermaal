@@ -11,10 +11,16 @@ use App\Controllers\CategoryController;
 class CategoryBar
 {
     /**
-     * The formatted categories to display in the menu.
+     * The formatted categories to display in the menu. Starts by level.
      * @var
      */
-    private $categories = [0 => [], 1 => [], 2 => [], 3 => [], 4 => []];
+    private $categories = [
+        0 => [],
+        1 => [],
+        2 => [],
+        3 => [],
+        4 => [],
+    ];
     
     /**
      * CategoryBar constructor.
