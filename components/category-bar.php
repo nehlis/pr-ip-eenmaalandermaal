@@ -8,6 +8,6 @@ $categoryBar = new CategoryBar;
 
 <div class="row m-0 bg-primary w-100 a-category-bar">
   <div class="a-category-bar__wrapper">
-      <?php $categoryBar->render(); ?>
+    <?php $categoryBar->render(true); ?>
   </div>
 </div>

@@ -33,12 +33,20 @@ class CategoryBar
     /**
      * Renders the Category bar in a recursive way.
      * This method uses the getAll method listed below to gather its first basic data.
+     * @param bool  $all
      * @param array $categories
      */
-    public function render(array $categories = []): void
+    public function render(bool $all = false, array $categories = []): void
     {
         if (empty($categories)) {
-            $categories = $this->categories;
+            $categories = array_slice($this->categories, 0, 5);
+        }
+    
+        if ($all) {
+            array_unshift($categories, [
+                'name'     => 'Alles',
+                'children' => $categories,
+            ]);
         }
         
         echo "<ul class='a-category-bar__list'>";
@@ -48,7 +56,7 @@ class CategoryBar
             echo "<a href='/veilingen?categorieId=$id' class='a-category-bar__link'>{$category['name']}</a>";
             
             if (!empty($category['children'])) {
-                self::render($category['children']);
+                self::render(false, $category['children']);
             }
             
             echo "</li>";
