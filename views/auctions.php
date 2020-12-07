@@ -6,8 +6,8 @@ use App\Controllers\ItemController;
 $ic = new ItemController();
 
 // Validation & Sanization
-if (isset($_GET['titel']) && !empty($_GET['titel'])) {
-    $filters['title'] = $_GET['titel'];
+if (isset($_GET['searchValue']) && !empty($_GET['searchValue'])) {
+    $filters['searchValue'] = $_GET['searchValue'];
 }
 if (isset($_GET['minPrijs']) && !empty($_GET['minPrijs'])) {
     $filters['price'][0] = $_GET['minPrijs'];
@@ -62,7 +62,7 @@ if (count($errors) === 0) {
                         <span>
                             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                         </span>
-                        <input type="text" name="titel" class="form-control" placeholder="Zoeken..." value="<?= $_GET['titel'] ?>">
+                        <input type="text" name="searchValue" class="form-control" placeholder="Zoeken..." value="<?= $_GET['searchValue'] ?>">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit"> Zoeken</button>
                         </div>
