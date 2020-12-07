@@ -63,8 +63,7 @@ $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
                         </div>
                         <div class="col-12 col-md-6">
                             <h2 class="text-primary font-weight-bold">Nieuw bod</h2>
-                            <small class="font-weight-bold d-block">Startbod: &euro; <?= $veiling['StartingPrice'] ?></small>
-                            <small class="font-weight-bold text-secondary d-block">Ophoging: &euro; 0.1</small>
+                            <small class="font-weight-bold d-block">Minimum bod: &euro; <?= $veiling['BiddingAmount'] ? $veiling['BiddingAmount'] + 0.1 : $veiling['StartingPrice'] ?></small>
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-12 col-sm-6 p-0 mb-2">
