@@ -234,7 +234,7 @@ class ItemController implements IController
                     $query .= " AND IIF(B.Amount IS NULL, I.StartingPrice, B.Amount) BETWEEN $value[0] AND $value[1]";
                     break;
                 case 'categoryId':
-                    $query .= " AND I.ItemCategoryID = $value";
+                    $query .= " AND I.CategoryID = $value";
                     break;
             }
         }
