@@ -15,7 +15,6 @@ AuthService::checkAuth();
 
 $userId = $_SESSION['id'];
 
-$phoneNumbers = $accountController->getPhoneNumbers($userId);
 
 if (isset($_POST) && count($_POST) > 0) {
     $_POST['Password'] = password_hash($_POST['Password'], PASSWORD_BCRYPT);
@@ -27,28 +26,18 @@ if (isset($_POST) && count($_POST) > 0) {
         $accountController->update($userId, $accountValidator->getData());
         $edited = true;
     }
+    $accountController->deletePhoneNumberByUser($userId);
 
     // Edit each phone if post is set.
-    for ($i = 0, $max = count($phoneNumbers); $i < $max; $i++) {
-        if (!isset($_POST["phone-" . ($i + 1)])) {
-            break;
+    if( is_array( $_POST["phoneNumbers"] ) ) {
+        foreach( $_POST["phoneNumbers"] as $number ) {
+            $accountController->addPhoneNumberByUser(['AccountID' => $userId, 'Phonenumber' => $number]);
         }
-
-        $accountController->updatePhoneNumber($phoneNumbers[$i - 1]['ID'], [
-            'Phonenumber' => $_POST["phone-$i"],
-        ]);
     }
 }
-
-// When only one phone number is found it is not a loopable array. To fix this
-// we check if array has a direct key 'Phonenumber'.
-if ($phoneNumbers = $accountController->getPhoneNumbers($userId)) {
-    $phoneNumbers = array_key_exists('Phonenumber', $phoneNumbers) ? [$phoneNumbers] : $phoneNumbers;
-} else {
-    $phoneNumbers = [];
-}
-
+$phoneNumbers = $accountController->getPhoneNumbers($userId);
 $user = $accountController->get($userId);
+
 ?>
 
 <script type="text/javascript">

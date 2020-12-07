@@ -143,9 +143,14 @@ class AccountController implements IController
         return $this->database->getByColumn('Phonenumber', 'AccountID', $id);
     }
 
-    public function updatePhoneNumber(int $id, array $data): void
+    public function addPhoneNumberByUser(array $data): void
     {
-        $this->database->update('Phonenumber', $id, $data);
+        $this->database->create('Phonenumber', $data);
+    }
+
+    public function deletePhoneNumberByUser(int $AccountID): void
+    {
+        $this->database->customQuery('DELETE FROM Phonenumber WHERE AccountID = '.$AccountID);
     }
 
     // TODO: Docs schrijven
