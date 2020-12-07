@@ -148,7 +148,7 @@ class AccountController implements IController
         $this->database->create('Phonenumber', $data);
     }
 
-    public function deletePhoneNumberByUser(int $AccountID): void
+    public function deletePhoneNumberByUserId(int $AccountID): void
     {
         $this->database->customQuery('DELETE FROM Phonenumber WHERE AccountID = '.$AccountID);
     }

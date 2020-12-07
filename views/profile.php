@@ -26,7 +26,7 @@ if (isset($_POST) && count($_POST) > 0) {
         $accountController->update($userId, $accountValidator->getData());
         $edited = true;
     }
-    $accountController->deletePhoneNumberByUser($userId);
+    $accountController->deletePhoneNumberByUserId($userId);
 
     // Edit each phone if post is set.
     if( is_array( $_POST["phoneNumbers"] ) ) {
