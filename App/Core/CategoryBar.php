@@ -41,7 +41,7 @@ class CategoryBar
      */
     public function render(): void
     {
-        $this->build(true);
+        $this->build(true, array_slice($this->categories, 0, 4));
         echo $this->markup;
     }
     
@@ -52,11 +52,7 @@ class CategoryBar
      */
     public function build(bool $all = false, array $categories = []): void
     {
-        if (empty($categories)) {
-            $categories = array_slice($this->categories, 0, 4);
-        }
-    
-        if ($all) {
+    	if ($all) {
             array_unshift($categories, ['name' => 'Alles', 'children' => $categories]);
         }
         

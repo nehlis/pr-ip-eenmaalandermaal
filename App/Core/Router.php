@@ -105,10 +105,10 @@ class Router
      */
     public static function getReferrer(array $exceptions): string
     {
-        if (!isset($_GET['referrer']) && !in_array($_SERVER['REQUEST_URI'], $exceptions)) {
+        if (!isset($_GET['referrer']) && !in_array($_SERVER['REQUEST_URI'], $exceptions, true)) {
             return '?referrer=' . $_SERVER['REQUEST_URI'];
-        } else {
-            return '';
         }
-    }
+	
+		return '';
+	}
 }
