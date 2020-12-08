@@ -19,11 +19,8 @@ $biddings = $bc->indexBiddingsWithUsernameByAuctionId($auctionId);
 
 $veilingImages = array(PLACEHOLDER);
 
-try {
-    $veilingImages = $fc->getByAuctionId($auctionId);
-} catch (Exception $ex) {
-    $veilingImages = array(PLACEHOLDER);
-}
+$veilingImages = $fc->getByAuctionId($auctionId);
+if (count($veilingImages) <= 0) $veilingImages = [['FileName' => PLACEHOLDER]];
 
 if (isset($_POST) && count($_POST) > 0) {
     if (isset($_SESSION['id'])) {

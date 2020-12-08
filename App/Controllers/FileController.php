@@ -63,15 +63,13 @@ class FileController implements IController
     /**
      * @param   int         $id     AuctionID to fetch images from
      * @return  array|null          A list of images from the auction
-     * @throws  Error               Throws error when auction has no images
      */
-    public function getByAuctionId(int $id): ?array
+    public function getByAuctionId(int $id): array
     {
         $result = $this->database->customQuery("SELECT * FROM [" . self::$table . "] WHERE ItemID = $id");
 
         if ($result) return $result;
-
-        throw new Error("Geen bestanden beschikbaar bij deze veiling!");
+        return [];
     }
 
     /**
