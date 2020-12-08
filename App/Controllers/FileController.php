@@ -55,7 +55,9 @@ class FileController implements IController
     {
         $result = $this->database->get(self::$table, $id);
 
-        if ($result) return $result;
+        if ($result) {
+            return $result;
+        }
 
         throw new Error("Geen bestanden gevonden!");
     }

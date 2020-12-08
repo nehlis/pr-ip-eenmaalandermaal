@@ -88,13 +88,6 @@ class ItemController implements IController
         throw new Error("Item met id = $id niet gevonden!");
     }
 
-    
-    /**
-     * @param   int         $id     AuctionID to fetch images from
-     * @return  array|null          A list of images from the auction
-     * @throws  Error               Throws error when auction has no images
-     */
-
     /**
      * @return array|null   Returns array with all iterms
      * @throws  Error               Throws error when no items were found.

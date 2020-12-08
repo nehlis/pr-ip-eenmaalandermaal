@@ -75,7 +75,9 @@ class BiddingController implements IController
                                                 WHERE B.ItemID = $id
                                                 ORDER BY B.Amount DESC;");
 
-        if ($result) return $result;
+        if ($result) {
+            return $result;
+        }
         return [];
     }
 
