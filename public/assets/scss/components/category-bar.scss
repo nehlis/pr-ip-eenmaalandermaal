@@ -10,55 +10,50 @@
   }
 
   &__list {
-    background: white;
-    border-bottom: solid 1px lightgrey;
+    background: #5F4B8B;
     display: none;
-    left: 0;
-    padding: 20px 40px;
+    left: 250px;
+    padding: 0;
     position: absolute;
-    top: 50px;
-    width: 100%;
+    top: 0;
+    width: 250px;
     z-index: 1;
-
-    &:hover {
-      display: flex;
-    }
 
     &:first-child {
       background: none;
-      border: none;
       bottom: auto;
       display: flex;
       justify-content: space-between;
-      left: auto;
+      left: 0;
       list-style: none;
       margin: 0;
-      padding: 0;
-      position: initial;
+      opacity: 1;
+      position: relative;
       right: auto;
       top: auto;
       width: 100%;
 
-      > #{$self}__list-item {
-        transition: background-color .4s ease;
+      #{$self}__list-item {
+        color: white;
+        padding: 10px;
+        position: initial;
         width: 100%;
+        transition: background-color .3s ease;
         will-change: background-color;
-        font-size: 13px;
-        text-align: center;
-
-        > #{$self}__link {
-          color: white;
-        }
 
         &:hover {
-          background: darken(#5F4B8B, 10%);
+          background-color: darken(#5F4B8B, 5%);
           cursor: pointer;
+        }
+      }
 
-          > #{$self}__list {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-          }
+      > #{$self}__list-item {
+        > #{$self}__list {
+          left: 0;
+          position: absolute;
+          right: 0;
+          top: 43px;
+          width: 100%;
         }
       }
     }
@@ -67,13 +62,23 @@
   &__list-item {
     list-style: none;
     margin: 0;
-    padding: 15px;
-    width: 20%;
+    padding: 0;
+    position: relative;
   }
 
   &__link, &__link:hover {
-    color: #5F4B8B;
-    font-weight: 600;
+    color: white;
     text-decoration: none;
+    margin-right: 10px;
+  }
+
+  &__icon {
+    margin-left: 10px;
+    transition: transform .4s ease;
+    will-change: transform;
+
+    &.toggled {
+      transform: rotate(180deg);
+    }
   }
 }
