@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <form method="get" action="/veilingen" class="form-inline">
             <div class="input-group mx-5">
-                <input type="text" name="searchValue" value="<?= $_GET['searchValue'] ?>" class="form-control" placeholder="Zoek veilingen..." aria-label="zoek veilingen" aria-describedby="button-search">
+                <input type="text" name="searchValue" value="<?= $_GET['searchValue'] ?? '' ?>" class="form-control" placeholder="Zoek veilingen..." aria-label="zoek veilingen" aria-describedby="button-search">
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-outline-primary" id="button-search">Zoeken</button>
                 </div>
