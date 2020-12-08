@@ -35,11 +35,15 @@ class Router
         ],
         '/uitloggen'   => [
             'view'  => 'logout',
-            'title' => 'uitloggen',
+            'title' => 'Uitloggen',
         ],
         '/profiel'     => [
             'view'  => 'profile',
             'title' => 'Profiel',
+        ],
+        '/veilingen'    => [
+            'view'  =>  'auctions',
+            'title' =>  'Veilingen',
         ],
         '/veiling'     => [
             'view'  => 'auction',

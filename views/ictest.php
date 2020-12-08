@@ -179,7 +179,7 @@
                                     <th scope="col">BuyerID</th>
                                     <th scope="col">SellingPrice</th>
                                     <th scope="col">AuctionClosed</th>
-                                    <th scope="col">ItemCategoryID</th>
+                                    <th scope="col">CategoryID</th>
                                     <th scope="col">Views</th>
 
                                 </tr>
@@ -203,7 +203,7 @@
                                         <td><?php echo $item['BuyerID'] ?></td>
                                         <td><?php echo $item['SellingPrice'] ?></td>
                                         <td><?php echo $item['AuctionClosed'] ?></td>
-                                        <td><?php echo $item['ItemCategoryID'] ?></td>
+                                        <td><?php echo $item['CategoryID'] ?></td>
                                         <td><?php echo $item['Views'] ?></td>
                                         <td>
                                             <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">

@@ -2,59 +2,63 @@
   $self: &;
   display: flex;
   justify-content: left;
+  position: relative;
 
   &__wrapper {
     display: flex;
-    max-width: 700px;
     width: 100%;
   }
 
   &__list {
-    background: #5F4B8B;
+    background: white;
+    border-bottom: solid 1px lightgrey;
     display: none;
-    left: 250px;
-    opacity: 0;
-    padding: 0;
+    left: 0;
+    padding: 20px 40px;
     position: absolute;
-    top: 0;
-    width: 250px;
+    top: 50px;
+    width: 100%;
     z-index: 1;
+
+    &:hover {
+      display: flex;
+    }
 
     &:first-child {
       background: none;
+      border: none;
       bottom: auto;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       left: auto;
       list-style: none;
       margin: 0;
-      opacity: 1;
-      position: relative;
+      padding: 0;
+      position: initial;
       right: auto;
       top: auto;
       width: 100%;
 
-      #{$self}__list-item {
-        color: white;
-        padding: 10px 30px;
-        transition: background-color .3s ease;
+      > #{$self}__list-item {
+        transition: background-color .4s ease;
+        width: 100%;
         will-change: background-color;
+        font-size: 13px;
+        text-align: center;
+
+        > #{$self}__link {
+          color: white;
+        }
 
         &:hover {
-          background-color: darken(#5F4B8B, 5%);
+          background: darken(#5F4B8B, 10%);
           cursor: pointer;
 
-          > * {
-            display: block;
-            opacity: 1;
+          > #{$self}__list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
           }
-        }
-      }
-
-      > #{$self}__list-item {
-        > #{$self}__list {
-          left: 0;
-          top: 43px;
         }
       }
     }
@@ -63,7 +67,13 @@
   &__list-item {
     list-style: none;
     margin: 0;
-    padding: 0;
-    position: relative;
+    padding: 15px;
+    width: 20%;
+  }
+
+  &__link, &__link:hover {
+    color: #5F4B8B;
+    font-weight: 600;
+    text-decoration: none;
   }
 }
