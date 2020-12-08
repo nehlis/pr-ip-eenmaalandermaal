@@ -19,19 +19,25 @@ if (isset($_GET['categorieId']) && !empty($_GET['categorieId'])) {
     $filters['categoryId'] = $_GET['categorieId'];
 }
 
-foreach ($filters as $key => &$value) {
-    if ($key === 'price') {
-        if (empty($value[0])) {
-            $value[0] = 0;
-        }
-        if (empty($value[1])) {
-            $value[1] = 99999;
-        }
-        if ($value[0] > $value[1]) {
-            unset($filters['price']);
-            $errors[$key] = "Incorrecte invoer!";
+$errors = [];
+
+if (isset($filters)) {
+    foreach ($filters as $key => &$value) {
+        if ($key === 'price') {
+            if (empty($value[0])) {
+                $value[0] = 0;
+            }
+            if (empty($value[1])) {
+                $value[1] = 99999;
+            }
+            if ($value[0] > $value[1]) {
+                unset($filters['price']);
+                $errors[$key] = "Incorrecte invoer!";
+            }
         }
     }
+} else {
+    $filters = null;
 }
 
 if (count($errors) === 0) {
@@ -49,7 +55,7 @@ if (count($errors) === 0) {
         <div class=" col-md-4 col-lg-3 mt-3 mt-md-5">
             <div class="row d-flex justify-content-between align-items-center px-4">
                 <h3><i class="fas fa-filter small"></i> Filters</h3>
-                <?= count($filters) > 0 || count($errors) > 0 ? ('<a href="/veilingen' . ($_GET['categorieId'] ? ('?categorieId=' . $_GET['categorieId']) : '') . '">reset</a>') : '' ?>
+                <?= isset($filters) && count($filters) > 0 ? ('<a href="/veilingen' . (isset($_GET['categorieId']) ? ('?categorieId=' . $_GET['categorieId']) : '') . '">reset</a>') : '' ?>
             </div>
 
             <div class="alert alert-danger p-2 <?= $filterError ? 'd-block' : 'd-none' ?>" role="alert">
@@ -62,7 +68,7 @@ if (count($errors) === 0) {
                         <span>
                             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                         </span>
-                        <input type="text" name="searchValue" class="form-control" placeholder="Zoeken..." value="<?= $_GET['searchValue'] ?>">
+                        <input type="text" name="searchValue" class="form-control" placeholder="Zoeken..." value="<?= $_GET['searchValue'] ?? '' ?>">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit"> Zoeken</button>
                         </div>
@@ -89,8 +95,8 @@ if (count($errors) === 0) {
                                 </div>
 
                                 <div class="input-group">
-                                    <input type="number" name="minPrijs" class="form-control" placeholder="van" value="<?= $_GET['minPrijs'] ?>">
-                                    <input type="number" name="maxPrijs" class="form-control" placeholder="tot" value="<?= $_GET['maxPrijs'] ?>">
+                                    <input type="number" name="minPrijs" class="form-control" placeholder="van" value="<?= $_GET['minPrijs'] ?? '' ?>">
+                                    <input type="number" name="maxPrijs" class="form-control" placeholder="tot" value="<?= $_GET['maxPrijs'] ?? '' ?>">
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-outline-primary" title="Pas filter toe">
                                             <i class="fas fa-sync-alt"></i>
@@ -106,7 +112,7 @@ if (count($errors) === 0) {
     </div>
 
     <div class="col-md-8 col-lg-9 mt-3 mt-md-5 d-flex flex-wrap">
-        <?php if ($auctions) : ?>
+        <?php if (isset($auctions) && count($auctions) > 0) : ?>
             <?php foreach ($auctions as $item) : ?>
                 <div class="col-md-6 col-lg-4 m-0 p-2">
                     <?php Component::render('card', [
@@ -114,6 +120,7 @@ if (count($errors) === 0) {
                         'title'       => $item['Title'],
                         'price'       => $item['HighestPrice'],
                         'closingTime' => $item['EndDate'],
+                        'destination' => "/veiling?id={$item['ID']}"
                     ]); ?>
                 </div>
             <?php endforeach; ?>
