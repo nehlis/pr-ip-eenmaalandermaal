@@ -223,19 +223,22 @@ class ItemController implements IController
         $query = "SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                   FROM Item I
                     LEFT JOIN Bidding B On I.ID = B.ItemID
-                  WHERE 1 = 1";
+                  WHERE 1 = 1
+                    AND I.EndDate > ";
 
-        foreach ($filters as $key => $value) {
-            switch ($key) {
-                case 'searchValue':
-                    $query .= " AND I.Title LIKE '%$value%' OR I.Description LIKE '%$value%'";
-                    break;
-                case 'price':
-                    $query .= " AND IIF(B.Amount IS NULL, I.StartingPrice, B.Amount) BETWEEN $value[0] AND $value[1]";
-                    break;
-                case 'categoryId':
-                    $query .= " AND I.CategoryID = $value";
-                    break;
+        if (isset($filters)) {
+            foreach ($filters as $key => $value) {
+                switch ($key) {
+                    case 'searchValue':
+                        $query .= " AND I.Title LIKE '%$value%' OR I.Description LIKE '%$value%'";
+                        break;
+                    case 'price':
+                        $query .= " AND IIF(B.Amount IS NULL, I.StartingPrice, B.Amount) BETWEEN $value[0] AND $value[1]";
+                        break;
+                    case 'categoryId':
+                        $query .= " AND I.CategoryID = $value";
+                        break;
+                }
             }
         }
 

@@ -5,7 +5,7 @@
  * @var $image               string De afbeelding die bij de card hoort.
  * @var $title               string De titel van de card.
  * @var $price               string De huidige prijs van de veiling.
- * @var $destination         string De detailpagina URL die bij de card hoort.
+ * @var $id                  int    Id die bij de huidige veiling hoort.
  */
 ?>
 <div class="card">
@@ -24,7 +24,7 @@
                 <h2 class="font-weight-bold mb-0">€ <?= $price ?? '0,-' ?></h2>
             </div>
             <div class="col-6 col-sm-12">
-                <a href="<?= $destination ?? '#' ?>" class="btn btn-primary btn-block text-uppercase mt-1">Bekijken</a>
+                <a href="<?= '/veiling?id=' . $id ?>" class="btn btn-primary btn-block text-uppercase mt-1">Bekijken</a>
             </div>
         </div>
     </div>

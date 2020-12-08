@@ -202,7 +202,7 @@
                                         <td><?php echo $item['SellerID'] ?></td>
                                         <td><?php echo $item['BuyerID'] ?></td>
                                         <td><?php echo $item['SellingPrice'] ?></td>
-                                        <td><?php echo $item['AuctionClosed'] ?></td>
+                                        <td><?php echo gettype($item['AuctionClosed']) ?></td>
                                         <td><?php echo $item['CategoryID'] ?></td>
                                         <td><?php echo $item['Views'] ?></td>
                                         <td>
