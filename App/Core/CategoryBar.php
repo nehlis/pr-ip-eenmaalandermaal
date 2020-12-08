@@ -57,28 +57,25 @@ class CategoryBar
         }
     
         if ($all) {
-            array_unshift($categories, [
-                'name'     => 'Alles',
-                'children' => $categories,
-            ]);
-            
-            $classes = 'js-category-bar-main';
-        } else {
-            $classes = 'js-category-bar-sub';
+            array_unshift($categories, ['name' => 'Alles', 'children' => $categories]);
         }
         
         $this->markup .= "<ul class='a-category-bar__list'>";
         
         foreach ($categories as $id => $category) {
             $this->markup .=
-              "<li class='a-category-bar__list-item $classes'>
-                <div>
-                  <a href='/veilingen?categorieId=$id' class='a-category-bar__link'>
-                    {$category['name']}
-                  </a>";
+                "<li class='a-category-bar__list-item js-category-bar'>
+                    <div>
+                        <a href='/veilingen?categorieId=$id' class='a-category-bar__link'>
+                            {$category['name']}
+                        </a>";
     
             if (!empty($category['children'])) {
-                $this->markup .= "<i class='fas fa-chevron-down a-category-bar__icon'></i>";
+                if ($all) {
+                    $this->markup .= "<i class='fas fa-chevron-down a-category-bar__icon'></i>";
+                } else {
+                    $this->markup .= "<i class='fas fa-chevron-right a-category-bar__icon'></i>";
+                }
             }
     
             $this->markup .= "</div>";
