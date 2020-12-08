@@ -42,7 +42,7 @@ class Router
             'title' => 'Profiel',
         ],
         '/veiling'     => [
-            'view'  => 'veiling',
+            'view'  => 'auction',
             'title' => 'Veiling informatie'
         ],
         '/404'         => [

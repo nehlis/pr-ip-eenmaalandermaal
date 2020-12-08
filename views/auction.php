@@ -1,18 +1,38 @@
 <?php
 
+use App\Controllers\BiddingController;
 use App\Core\Component;
 use App\Controllers\ItemController;
+use App\Services\AuthService;
 
 $ic = new ItemController;
+$bc = new BiddingController;
+
+$isLoggedIn = AuthService::isLoggedIn();
 
 $veilingId = (int)$_GET['id'];
-
 $veilingDetails = $ic->getDetailed($veilingId);
-
 $veiling = $veilingDetails[0];
-var_dump($veiling);
+
+$biddings = $bc->indexBiddingsWithUsernameByAuctionId($veilingId);
 
 $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
+
+if (isset($_POST) && count($_POST) > 0) {
+    if (isset($_SESSION['id'])) {
+        $userId = $_SESSION['id'];
+        $bidding = $_POST['bidding'];
+        if ($bidding > $veiling['BiddingAmount']) {
+            $bc->create([
+                'ItemID' => $veilingId,
+                'AccountID' => $userId,
+                'Time' => date("Y-m-d H:i:s"),
+                'Amount' => $bidding
+            ]);
+            echo "<script>window.location.href = '/veiling?id=$veilingId';</script>";
+        }
+    }
+}
 
 ?>
 
@@ -63,21 +83,28 @@ $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
                         </div>
                         <div class="col-12 col-md-6">
                             <h2 class="text-primary font-weight-bold">Nieuw bod</h2>
-                            <small class="font-weight-bold d-block">Minimum bod: &euro; <?= $veiling['BiddingAmount'] ? $veiling['BiddingAmount'] + 0.1 : $veiling['StartingPrice'] ?></small>
-                            <div class="col-12">
-                                <div class="row">
-                                    <div class="col-12 col-sm-6 p-0 mb-2">
+                            <small class="font-weight-bold d-block mb-2">Minimum bod: &euro; <?= $veiling['BiddingAmount'] ? $veiling['BiddingAmount'] + 0.1 : $veiling['StartingPrice'] ?></small>
+                            <div class="col-12 p-0">
+                                <form class="row" action="/veiling?id=<?= $veilingId ?>" method="POST">
+                                    <div class="col-12 col-sm-6 mb-2">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">&euro;</span>
                                             </div>
-                                            <input type="number" id='biddingInput' min="<?= $veiling['BiddingAmount'] + 0.1 ?>" step="0.1" class="form-control" placeholder="<?= $veiling['BiddingAmount'] + 0.1; ?>" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <input type="number" id='biddingInput' min="<?= $biddings ? $veiling['BiddingAmount'] + 0.1 : $veiling['StartingPrice']  ?>" step="0.1" class="form-control" placeholder="<?= $biddings ? $veiling['BiddingAmount'] + 0.1 : $veiling['StartingPrice'] ?>" aria-label="Bidding amount" aria-describedby="basic-addon2" <?php if (!$isLoggedIn) : ?> disabled <?php endif ?> name="bidding">
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 p-0 pl-sm-2">
-                                        <button class="btn btn-primary btn-block">Bod plaatsen</button>
+                                    <div class="col-12 col-sm-6 pl-sm-0 mb-3 mb-sm-0">
+                                        <button type="submit" class="btn btn-primary btn-block" <?php if (!$isLoggedIn) : ?> disabled <?php endif ?>>Bod plaatsen</button>
                                     </div>
-                                </div>
+                                </form>
+                                <?php if (!$isLoggedIn) : ?>
+                                    <div class="col-12 p-0 m-0">
+                                        <div class="alert alert-info" role="alert">
+                                            U moet ingelogd zijn voordat u een bod kunt plaatsen op deze veiling..
+                                        </div>
+                                    </div>
+                                <?php endif ?>
                             </div>
                         </div>
                     </div>
@@ -87,7 +114,32 @@ $veilingImages = array(PLACEHOLDER, PLACEHOLDER_ALT, PLACEHOLDER);
                 </div>
                 <div class="col-12 col-lg-4">
                     <h2 class="text-primary font-weight-bold">Recente biedingen</h2>
-                    IMPLEMENTATIE
+                    <?php if ($biddings) : ?>
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Gebruiker</th>
+                                    <th scope="col">Tijd</th>
+                                    <th scope="col">Bod</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($biddings as $bidding) : ?>
+                                    <tr>
+                                        <th scope="row"><?= $bidding['Username'] ?></th>
+                                        <td><?= date("H:i:s", strtotime($bidding['Time'])) ?></td>
+                                        <td>&euro; <?= $bidding['Amount'] ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    <?php else : ?>
+                        <div class="col-12 p-0">
+                            <div class="alert alert-info" role="alert">
+                                Er zijn nog geen biedingen geplaatst..
+                            </div>
+                        </div>
+                    <?php endif ?>
                 </div>
             </div>
             <div class="col-12">
