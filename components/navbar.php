@@ -45,7 +45,8 @@ use App\Services\AuthService;
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                    <i class="fas fa-user"></i> <?= $_SESSION['name'] ?? 'Account' ?>
+                    <i class="fas fa-user"></i>
+                    <?= $_SESSION['name'] ?? 'Account' ?>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <h6 class="dropdown-header">Account</h6>
