@@ -13,7 +13,6 @@
     background: #5F4B8B;
     display: none;
     left: 250px;
-    opacity: 0;
     padding: 0;
     position: absolute;
     top: 0;
@@ -32,6 +31,7 @@
       position: relative;
       right: auto;
       top: auto;
+      width: 100%;
 
       #{$self}__list-item {
         color: white;
@@ -44,11 +44,6 @@
         &:hover {
           background-color: darken(#5F4B8B, 5%);
           cursor: pointer;
-
-          > * {
-            display: block;
-            opacity: 1;
-          }
         }
       }
 
@@ -71,8 +66,19 @@
     position: relative;
   }
 
-  &__link , &__link:hover {
+  &__link, &__link:hover {
     color: white;
     text-decoration: none;
+    margin-right: 10px;
+  }
+
+  &__icon {
+    margin-left: 10px;
+    transition: transform .4s ease;
+    will-change: transform;
+
+    &.toggled {
+      transform: rotate(180deg);
+    }
   }
 }

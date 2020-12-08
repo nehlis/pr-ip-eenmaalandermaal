@@ -7,7 +7,8 @@ $categoryBar = new CategoryBar;
 ?>
 
 <div class="row m-0 bg-primary w-100 a-category-bar">
-  <div class="a-category-bar__wrapper">
-    <?php $categoryBar->render(true); ?>
+  <div class="a-category-bar__wrapper container">
+    <?php $categoryBar->render(); ?>
   </div>
 </div>
+<script src="/public/assets/js/category-bar.js"></script>
