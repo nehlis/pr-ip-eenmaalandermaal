@@ -23,6 +23,12 @@ class CategoryBar
     ];
     
     /**
+     * The HTML markup.
+     * @var
+     */
+    private $markup;
+    
+    /**
      * CategoryBar constructor.
      */
     public function __construct()
@@ -31,44 +37,63 @@ class CategoryBar
     }
     
     /**
+     * Builds the Category Bar and echoes it.
+     */
+    public function render(): void
+    {
+        $this->build(true);
+        echo $this->markup;
+    }
+    
+    /**
      * Renders the Category bar in a recursive way.
-     * This method uses the getAll method listed below to gather its first basic data.
      * @param bool  $all
      * @param array $categories
      */
-    public function render(bool $all = false, array $categories = []): void
+    public function build(bool $all = false, array $categories = []): void
     {
         if (empty($categories)) {
-            $categories = array_slice($this->categories, 0, 5);
+            $categories = array_slice($this->categories, 0, 4);
         }
     
         if ($all) {
-            array_unshift($categories, [
-                'name'     => 'Alles',
-                'children' => $categories,
-            ]);
+            array_unshift($categories, ['name' => 'Alles', 'children' => $categories]);
         }
         
-        echo "<ul class='a-category-bar__list'>";
+        $this->markup .= "<ul class='a-category-bar__list'>";
         
         foreach ($categories as $id => $category) {
-            echo "<li class='a-category-bar__list-item'>";
-            echo "<a href='/veilingen?categorieId=$id' class='a-category-bar__link'>{$category['name']}</a>";
+            $this->markup .=
+                "<li class='a-category-bar__list-item js-category-bar'>
+                    <div>
+                        <a href='/veilingen?categorieId=$id' class='a-category-bar__link'>
+                            {$category['name']}
+                        </a>";
+    
+            if (!empty($category['children'])) {
+                if ($all) {
+                    $this->markup .= "<i class='fas fa-chevron-down a-category-bar__icon'></i>";
+                } else {
+                    $this->markup .= "<i class='fas fa-chevron-right a-category-bar__icon'></i>";
+                }
+            }
+    
+            $this->markup .= "</div>";
             
             if (!empty($category['children'])) {
-                self::render(false, $category['children']);
+                $this->build(false, $category['children']);
             }
-            
-            echo "</li>";
+    
+            $this->markup .= "</li>";
         }
-        
-        echo "</ul>";
+    
+        $this->markup .= "</ul>";
     }
     
     /**
      * This method regulates the creation of the categories based on
      * the index method of the category controller.
-     * @return void All Categories
+     * @return void
      */
     public function setCategories(): void
     {
