@@ -4,6 +4,7 @@ use App\Controllers\BiddingController;
 use App\Controllers\FileController;
 use App\Core\Component;
 use App\Controllers\ItemController;
+use App\Core\Router;
 use App\Services\AuthService;
 
 $ic = new ItemController;
@@ -22,19 +23,17 @@ $veilingImages = array(PLACEHOLDER);
 $veilingImages = $fc->getByAuctionId($auctionId);
 if (count($veilingImages) <= 0) $veilingImages = [['FileName' => PLACEHOLDER]];
 
-if (isset($_POST) && count($_POST) > 0) {
-    if (isset($_SESSION['id'])) {
-        $userId = $_SESSION['id'];
-        $bidding = $_POST['bidding'];
-        if ($bidding > $auction['BiddingAmount']) {
-            $bc->create([
-                'ItemID' => $auctionId,
-                'AccountID' => $userId,
-                'Time' => date("Y-m-d H:i:s"),
-                'Amount' => $bidding
-            ]);
-            echo "<script>window.location.href = '/veiling?id=$auctionId';</script>";
-        }
+if (isset($_POST) && count($_POST) > 0 && isset($_SESSION['id'])) {
+    $userId = $_SESSION['id'];
+    $bidding = $_POST['bidding'];
+    if ($bidding > $auction['BiddingAmount']) {
+        $bc->create([
+            'ItemID' => $auctionId,
+            'AccountID' => $userId,
+            'Time' => date("Y-m-d H:i:s"),
+            'Amount' => $bidding
+        ]);
+        Router::redirect("/veiling?id=$auctionId");
     }
 }
 
@@ -99,7 +98,7 @@ if (isset($_POST) && count($_POST) > 0) {
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6 pl-sm-0 mb-3 mb-sm-0">
-                                        <button type="submit" class="btn btn-primary btn-block" <?php if (!$isLoggedIn) : ?> disabled <?php endif ?>>Bod plaatsen</button>
+                                        <button type="submit" id="submitBtn" class="btn btn-primary btn-block" <?php if (!$isLoggedIn) : ?> disabled <?php endif ?>>Bod plaatsen</button>
                                     </div>
                                 </form>
                                 <?php if (!$isLoggedIn) : ?>

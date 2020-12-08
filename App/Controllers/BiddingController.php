@@ -63,25 +63,10 @@ class BiddingController implements IController
     }
 
     /**
-     * @param int           $id     Get bidding where AuctionID=$id
-     * @return array|null           Returns fetched row or null
-     * @throws Error                Throws error when no bidding is found
+     * @param int       $id     Get bidding 
+     * @return array            Returns fetched rows or an empty array if no biddings are found
      */
-    public function indexBiddingsByAuctionId(int $id): ?array
-    {
-        $result = $this->database->getByColumn(self::$table, "ItemID", $id);
-
-        if ($result) {
-            return $result;
-        } else {
-            return [];
-        };
-    }
-
-    /**
-     * @param int           $id     Get bidding 
-     */
-    public function indexBiddingsWithUsernameByAuctionId(int $id): ?array
+    public function indexBiddingsWithUsernameByAuctionId(int $id): array
     {
         $result = $this->database->customQuery("SELECT B.*, A.Username
                                                 FROM Bidding B
@@ -90,11 +75,8 @@ class BiddingController implements IController
                                                 WHERE B.ItemID = $id
                                                 ORDER BY B.Amount DESC;");
 
-        if ($result) {
-            return $result;
-        } else {
-            return [];
-        }
+        if ($result) return $result;
+        return [];
     }
 
     /**
