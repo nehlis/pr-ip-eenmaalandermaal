@@ -36,7 +36,7 @@
       #{$self}__list-item {
         color: white;
         padding: 10px;
-        position: initial;
+        position: relative;
         width: 100%;
         transition: background-color .3s ease;
         will-change: background-color;
@@ -53,7 +53,6 @@
           position: absolute;
           right: 0;
           top: 43px;
-          width: 100%;
         }
       }
     }
@@ -73,7 +72,6 @@
   }
 
   &__icon {
-    margin-left: 10px;
     transition: transform .4s ease;
     will-change: transform;
 
