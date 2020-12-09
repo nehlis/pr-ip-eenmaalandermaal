@@ -41,13 +41,17 @@ class Router
             'view'  => 'profile',
             'title' => 'Profiel',
         ],
-        '/veilingen'    => [
+        '/veilingen'   => [
             'view'  =>  'auctions',
             'title' =>  'Veilingen',
         ],
         '/veiling'     => [
             'view'  => 'auction',
             'title' => 'Veiling informatie'
+        ],
+        'rubrieken'    => [
+            'view'  => 'category',
+            'title' => 'Rubrieken beheer'
         ],
         '/404'         => [
             'view'  => '404',
@@ -108,7 +112,7 @@ class Router
         if (!isset($_GET['referrer']) && !in_array($_SERVER['REQUEST_URI'], $exceptions, true)) {
             return '?referrer=' . $_SERVER['REQUEST_URI'];
         }
-	
-		return '';
-	}
+
+        return '';
+    }
 }
