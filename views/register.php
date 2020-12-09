@@ -19,7 +19,6 @@ if (AuthService::isLoggedIn()) {
 $questions = $qc->index();
 $countries = $cc->index();
 
-
 // Get Phonenumbers
 $phonenumbers = array();
 

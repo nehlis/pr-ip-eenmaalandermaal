@@ -38,7 +38,15 @@ class ItemController implements IController
      */
     public function create(array $data): ?array
     {
+        // Extract categories before adding item to database
+        $categories = $data['Categories'];
+        unset($data['Categories']);
+
         $id = $this->database->create(self::$table, $data);
+
+        foreach ($categories as $category) {
+            $this->database->customQuery("INSERT INTO CategoriesByItem (ItemID, CategoryID) VALUES ('$id', '$category')");
+        }
 
         if ($id) {
             return $this->get($id);

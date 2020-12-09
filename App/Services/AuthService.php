@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Core\Database;
 use App\Controllers\AccountController;
 use App\Controllers\PhonenumberController;
 use App\Core\Router;
@@ -25,12 +26,19 @@ class AuthService
 
 
     /**
+     * @var Database Database to execute custom queries.
+     */
+    private $db;
+
+
+    /**
      * AuthService constructor.
      */
     public function __construct()
     {
         $this->ac = new AccountController();
         $this->pc = new PhonenumberController();
+        $this->db = new Database();
     }
 
     /**
@@ -61,6 +69,9 @@ class AuthService
         // TODO: Welke data is nodig door de site?
         $_SESSION['id']   = $user['ID'];
         $_SESSION['name'] = "{$user['Firstname']} {$user['Lastname']}";
+
+        $test = $this->db->customQuery("SELECT * FROM Seller WHERE AccountID = " . $user['ID']);
+        $_SESSION['isSeller'] = isset($test) && count($test) > 0 ? true : false;
 
         // Redirect after successfully login
         Router::redirect($_GET['referrer'] ?? '/');
@@ -125,6 +136,15 @@ class AuthService
     public static function isLoggedIn(): bool
     {
         return isset($_SESSION['id']);
+    }
+
+    /**
+     * Is Seller - Check if user is a seller.
+     * @return bool Returns TRUE if user is a seller and FALSE otherwise.
+     */
+    public static function isSeller(): bool
+    {
+        return isset($_SESSION['isSeller']) && $_SESSION['isSeller'];
     }
 
     /**
