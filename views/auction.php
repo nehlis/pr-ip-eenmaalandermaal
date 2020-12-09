@@ -20,8 +20,10 @@ $biddings = $bc->indexBiddingsWithUsernameByAuctionId($auctionId);
 
 $veilingImages = array(PLACEHOLDER);
 
-$veilingImages = $fc->getByAuctionId($auctionId);
-if (count($veilingImages) <= 0) $veilingImages = [['FileName' => PLACEHOLDER]];
+$veilingImages = array_map(function ($element) {
+    return REMOTE_URL . $element['Path'];
+}, $fc->getByAuctionId($auctionId));
+if (count($veilingImages) <= 0) $veilingImages = [PLACEHOLDER];
 
 if (isset($_POST) && count($_POST) > 0 && isset($_SESSION['id'])) {
     $userId = $_SESSION['id'];
@@ -63,7 +65,7 @@ if (isset($_POST) && count($_POST) > 0 && isset($_SESSION['id'])) {
         </div>
         <div class="col-12 col-lg-8">
             <?php Component::render("carousel", [
-                'images' => array_column($veilingImages, 'FileName')
+                'images' => $veilingImages, "Path"
             ]); ?>
         </div>
         <div class="col-12 col-lg-4">
