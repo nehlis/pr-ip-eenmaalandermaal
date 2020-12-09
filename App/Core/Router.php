@@ -49,6 +49,10 @@ class Router
             'view'  => 'auction',
             'title' => 'Veiling informatie'
         ],
+        '/veilingen/toevoegen'     => [
+            'view'  => 'add-auction',
+            'title' => 'Veiling Toevoegen'
+        ],
         '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',

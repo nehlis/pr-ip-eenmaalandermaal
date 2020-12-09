@@ -21,3 +21,35 @@ jQuery(() => {
         return false;
     });
 });
+
+// Custom HTML Datalist (with value and label)
+document.querySelector("input[list]").addEventListener("input", function (e) {
+    console.log("TEST");
+    var input = e.target,
+        list = input.getAttribute("list"),
+        options = document.querySelectorAll("#" + list + " option"),
+        hiddenInput = document.getElementById(
+            input.getAttribute("id") + "-hidden"
+        ),
+        label = input.value;
+
+    hiddenInput.value = label;
+
+    for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+
+        if (option.innerText === label) {
+            hiddenInput.value = option.getAttribute("data-value");
+            break;
+        }
+    }
+});
+
+// For debugging purposes
+document
+    .getElementById("addAuctionForm")
+    .addEventListener("submit", function (e) {
+        var value = document.getElementById("answer-hidden").value;
+        document.getElementById("result").innerHTML = value;
+        e.preventDefault();
+    });

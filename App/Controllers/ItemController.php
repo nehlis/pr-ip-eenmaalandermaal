@@ -146,7 +146,7 @@ class ItemController implements IController
 
 
     /**
-     * Ensures that the auction is set to closed
+     * Ensures that the auction is set to closed 
      * @param int           $id ID from Item
      * @param int           $buyerID ID from buyer
      * @param float         $sellingPrice The celling price

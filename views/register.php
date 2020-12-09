@@ -262,7 +262,6 @@ if (count($_POST) > 0) {
           </div>
 
           <select class="form-control" name="CountryID" id="question-country">
-            <!-- TODO: Maak met query in Countries ipv dummy data. -->
             <?php foreach ($countries as $id => $value) : ?>
               <option value="<?= $id; ?>" <?= $value['Name'] === 'Nederland' ? 'selected' : '' ?>><?= $value['Name']; ?></option>
             <?php endforeach; ?>

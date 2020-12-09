@@ -16,7 +16,7 @@ class CategoryController implements IController
      * @var Database $database Database class which contains all generic CRUD functions.
      */
     private $database;
-    
+
     /**
      * AccountController constructor.
      */
@@ -24,7 +24,7 @@ class CategoryController implements IController
     {
         $this->database = new Database;
     }
-    
+
     /**
      * @param array $data
      * @return array|null
@@ -34,7 +34,7 @@ class CategoryController implements IController
         // TODO: Implement create() method.
         return [];
     }
-    
+
     /**
      * @param int $id
      * @return array|null
@@ -44,7 +44,7 @@ class CategoryController implements IController
         // TODO: Implement get() method.
         return [];
     }
-    
+
     /**
      * Gets all categories in an associative format.
      * @return array|null
@@ -71,14 +71,14 @@ class CategoryController implements IController
             WHERE L1.ParentID = -1
             ORDER BY L1.ID, L2.ID, L3.ID"
         );
-        
+
         if (!$result) {
             throw new Error("Er is iets misgegaan bij het ophalen van de categorieën");
         }
-        
+
         return $result;
     }
-    
+
     /**
      * @param int   $id
      * @param array $data
@@ -89,8 +89,8 @@ class CategoryController implements IController
         // TODO: Implement update() method.
         return [];
     }
-    
-    /**
+
+    /**private
      * @param int $id
      * @return array|null
      */
@@ -98,5 +98,23 @@ class CategoryController implements IController
     {
         // TODO: Implement delete() method.
         return [];
+    }
+
+    /** EXTRA FUNCTIONS */
+
+    public function getDatalist()
+    {
+        $query = "SELECT DISTINCT C.ID, C.Name
+                FROM Category C
+                    LEFT JOIN  Category C2 on C2.ParentID = C.ID
+                WHERE C2.ParentID IS NULL";
+
+        $result = $this->database->customQuery($query);
+
+        if (isset($result) && count($result) > 0) {
+            return $result;
+        }
+
+        throw new Error("Geen categorieen gevonden!");
     }
 }
