@@ -24,10 +24,9 @@ jQuery(() => {
 
 // Custom HTML Datalist (with value and label)
 document.querySelector("input[list]").addEventListener("input", function (e) {
-    console.log("TEST");
-    var input = e.target,
+    let input = e.target,
         list = input.getAttribute("list"),
-        options = document.querySelectorAll("#" + list + " option"),
+        options = document.querySelectorAll(`#${list} option`),
         hiddenInput = document.getElementById(
             input.getAttribute("id") + "-hidden"
         ),
@@ -35,8 +34,8 @@ document.querySelector("input[list]").addEventListener("input", function (e) {
 
     hiddenInput.value = label;
 
-    for (var i = 0; i < options.length; i++) {
-        var option = options[i];
+    for (let i = 0; i < options.length; i++) {
+        let option = options[i];
 
         if (option.innerText === label) {
             hiddenInput.value = option.getAttribute("data-value");

@@ -113,7 +113,7 @@ class CategoryController implements IController
         throw new Error("Categorie waarvan ID = $id niet geupdate!");
     }
 
-    /**private
+    /**
      * @param int $id
      * @return array|null
      */

@@ -7,10 +7,10 @@ use App\Controllers\CountryController;
 use App\Controllers\ItemController;
 use App\Controllers\FileController;
 
-$catc = new CategoryController();
-$cc = new CountryController();
-$ic = new ItemController();
-$fc = new FileController();
+$catc = new CategoryController;
+$cc = new CountryController;
+$ic = new ItemController;
+$fc = new FileController;
 
 // Redirect if already logged in
 if (!AuthService::isLoggedIn() || !AuthService::isSeller()) {
@@ -70,7 +70,7 @@ if (count($_POST) > 0) {
 
                     // Check whether file type is valid 
                     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-                    if (in_array($fileType, $allowTypes)) {
+                    if (in_array($fileType, $allowTypes, true)) {
                         // Upload file to server 
                         if (move_uploaded_file($_FILES["images"]["tmp_name"][$key], $targetFilePath)) {
                             // Image db insert sql 
