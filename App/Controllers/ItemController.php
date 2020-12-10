@@ -44,9 +44,9 @@ class ItemController implements IController
 
         $id = $this->database->create(self::$table, $data);
 
-        foreach ($categories as $category) {
-            $this->database->customQuery("INSERT INTO CategoriesByItem (ItemID, CategoryID) VALUES ('$id', '$category')");
-        }
+        // foreach ($categories as $category) {
+        //     $this->database->customQuery("INSERT INTO CategoriesByItem (ItemID, CategoryID) VALUES ('$id', '$category')");
+        // }
 
         if ($id) {
             return $this->get($id);

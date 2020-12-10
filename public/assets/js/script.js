@@ -1,6 +1,6 @@
 //? Verkrijg alle verplichte velden om tekst erbij te zetten
 let requiredFields = document.getElementsByClassName("required-field");
-Array.from(requiredFields).forEach((rf) => {
+Array.from(requiredFields).forEach(rf => {
     rf.className += " text-muted font-italic ml-1";
     rf.innerHTML = `(verplicht)`;
 });
@@ -45,11 +45,10 @@ document.querySelector("input[list]").addEventListener("input", function (e) {
     }
 });
 
-// For debugging purposes
-document
-    .getElementById("addAuctionForm")
-    .addEventListener("submit", function (e) {
-        var value = document.getElementById("answer-hidden").value;
-        document.getElementById("result").innerHTML = value;
-        e.preventDefault();
-    });
+$(".input-images").imageUploader({
+    maxFiles: 4,
+    label: "Sleep bestanden hierheen of klik om te bladeren (Maximaal 4)",
+    extensions: [".jpg", ".jpeg", ".png"],
+    mimes: ["image/jpeg", "image/png"],
+    maxSize: 2 * 1024 * 1024,
+});

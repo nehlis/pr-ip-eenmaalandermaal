@@ -20,7 +20,7 @@ class FileController implements IController
     /**
      * @var string      $table      Table name on which the CRUD operations should apply.
      */
-    private static $table = 'File';
+    private static $table = '[File]';
 
 
     /**
@@ -39,12 +39,11 @@ class FileController implements IController
     public function create(array $data): ?array
     {
         $id = $this->database->create(self::$table, $data);
-
         if ($id) {
             return $this->get($id);
         }
 
-        throw new Error('Bestand niet geregistreerd!');
+        throw new Error('Afbeelding(en) niet toegevoegd!');
     }
 
     /**
@@ -68,7 +67,7 @@ class FileController implements IController
      */
     public function getByAuctionId(int $id): array
     {
-        $result = $this->database->customQuery("SELECT * FROM [" . self::$table . "] WHERE ItemID = $id");
+        $result = $this->database->customQuery("SELECT * FROM ".self::$table." WHERE ItemID = $id");
 
         if ($result) return $result;
         return [];
@@ -105,5 +104,28 @@ class FileController implements IController
     {
         // TODO: Implement delete() method.
         return [];
+    }
+
+
+    /**
+     * @param int $source, $destination, $quality
+     * @return string Returns the path of the saved image
+     */
+    public function compress($source, $destination, $quality) {
+
+        $info = getimagesize($source);
+    
+        if ($info['mime'] == 'image/jpeg') 
+            $image = imagecreatefromjpeg($source);
+    
+        elseif ($info['mime'] == 'image/gif') 
+            $image = imagecreatefromgif($source);
+    
+        elseif ($info['mime'] == 'image/png') 
+            $image = imagecreatefrompng($source);
+    
+        imagejpeg($image, $destination, $quality);
+    
+        return $destination;
     }
 }
