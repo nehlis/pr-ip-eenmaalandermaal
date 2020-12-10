@@ -19,6 +19,12 @@
     width: 250px;
     z-index: 1;
 
+    @media screen and (max-width: 800px) {
+      position: relative;
+      top: 20px;
+      left: 20px;
+    }
+
     &:first-child {
       background: none;
       bottom: auto;
@@ -33,6 +39,10 @@
       top: auto;
       width: 100%;
 
+      @media screen and (max-width: 800px) {
+        flex-direction: column;
+      }
+
       #{$self}__list-item {
         color: white;
         padding: 10px;
@@ -45,20 +55,24 @@
           justify-content: space-between;
           position: relative;
           width: 100%;
-
-          i {
-
-          }
         }
 
         &:hover {
           background-color: darken(#5F4B8B, 5%);
           cursor: pointer;
+
+          @media screen and (max-width: 800px) {
+            background-color: #5F4B8B;
+          }
         }
       }
 
       > #{$self}__list-item {
         margin-right: 50px;
+
+        @media screen and (max-width: 800px) {
+          margin-right: 0;
+        }
 
         &:last-child {
           margin-right: 0;
@@ -69,6 +83,11 @@
           position: absolute;
           right: 0;
           top: 43px;
+
+          @media screen and (max-width: 800px) {
+            position: relative;
+            top: 10px;
+          }
         }
       }
     }
