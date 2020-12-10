@@ -16,6 +16,11 @@ class CategoryController implements IController
      * @var Database $database Database class which contains all generic CRUD functions.
      */
     private $database;
+
+    /**
+     * @var string      $table      Table name on which the CRUD operations should apply.
+     */
+    private static $table = 'Category';
     
     /**
      * AccountController constructor.
@@ -76,6 +81,21 @@ class CategoryController implements IController
             throw new Error("Er is iets misgegaan bij het ophalen van de categorieën");
         }
         
+        return $result;
+    }
+
+    /**
+     * Gets top level categories
+     * @return array|null       An array of top level categories
+     * @throws Error            Error if categories could not be indexed
+     */
+    public function indexTopLevel():?array {
+        $result = $this->database->getByColumn(self::$table, "ParentID", -1);
+
+        if(!$result) {
+            throw new Error("Er is iets misgegaan tijdens het ophalen van de top-level categorieën");
+        }
+
         return $result;
     }
     

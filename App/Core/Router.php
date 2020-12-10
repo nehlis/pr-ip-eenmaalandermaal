@@ -49,7 +49,7 @@ class Router
             'view'  => 'auction',
             'title' => 'Veiling informatie'
         ],
-        'rubrieken'    => [
+        '/rubrieken'    => [
             'view'  => 'category',
             'title' => 'Rubrieken beheer'
         ],
