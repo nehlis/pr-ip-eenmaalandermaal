@@ -32,7 +32,7 @@ class ItemController implements IController
     }
 
     /**
-     * @param   array       $data   Associative array with all Item  data (Title, Description, City, CountryID, StartingPrice, StartDate, EndDate, PaymentMethod, PaymentInstructions, ShippingCosts, SendInstructions, SellerID, ItemCategoryID).
+     * @param   array       $data   Associative array with all Item  data (Title, Description, City, CountryID, StartingPrice, StartDate, EndDate, PaymentMethod, PaymentInstructions, ShippingCosts, SendInstructions, SellerID).
      * @return  array|null          Returns created Item  as array or null.
      * @throws  Error               Throws error when Item  could not be created.
      */
