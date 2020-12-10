@@ -90,7 +90,7 @@ if (count($_POST) > 0) {
 
                 <div class="row mb-3">
                     <div class="col-md-9">
-                        <label for="title" class="form-label">Titel*</label>
+                        <label for="title" class="form-label">Titel</label>
                         <div class="alert alert-danger  <?= $errors['Title'] ? 'd-block' : 'd-none' ?>">
                             <?= $errors['Title']; ?>
                         </div>
@@ -108,7 +108,7 @@ if (count($_POST) > 0) {
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Omschrijving*</label>
+                    <label for="description" class="form-label">Omschrijving</label>
                     <div class="alert alert-danger  <?= $errors['Description'] ? 'd-block' : 'd-none' ?>">
                         <?= $errors['Description']; ?>
                     </div>

@@ -1,6 +1,6 @@
 //? Verkrijg alle verplichte velden om tekst erbij te zetten
 let requiredFields = document.getElementsByClassName("required-field");
-Array.from(requiredFields).forEach((rf) => {
+Array.from(requiredFields).forEach(rf => {
     rf.className += " text-muted font-italic ml-1";
     rf.innerHTML = `(verplicht)`;
 });
@@ -27,7 +27,7 @@ document.querySelector("input[list]").addEventListener("input", function (e) {
     console.log("TEST");
     var input = e.target,
         list = input.getAttribute("list"),
-        options = document.querySelectorAll("#" + list + " option"),
+        options = document.querySelectorAll(`#${list} option`),
         hiddenInput = document.getElementById(
             input.getAttribute("id") + "-hidden"
         ),
@@ -35,7 +35,7 @@ document.querySelector("input[list]").addEventListener("input", function (e) {
 
     hiddenInput.value = label;
 
-    for (var i = 0; i < options.length; i++) {
+    for (let i = 0; i < options.length; i++) {
         var option = options[i];
 
         if (option.innerText === label) {
@@ -44,12 +44,3 @@ document.querySelector("input[list]").addEventListener("input", function (e) {
         }
     }
 });
-
-// For debugging purposes
-document
-    .getElementById("addAuctionForm")
-    .addEventListener("submit", function (e) {
-        var value = document.getElementById("answer-hidden").value;
-        document.getElementById("result").innerHTML = value;
-        e.preventDefault();
-    });

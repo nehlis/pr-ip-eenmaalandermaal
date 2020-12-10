@@ -176,31 +176,28 @@ class CategoryBar
         return $this->categories[0];
     }
 
-    public function getCategories(): array
-    {
-        return $this->categories;
-    }
-
     /** EXTA FUNCTIONS */
 
     /** 
      * Returns datalist containing all formatted rubrieken.
      * Does this recursively.
+     * 
+     * FIXME: Niet verwijderen kan nog handig zijn. Bij definitieve versie wel verwijderen
      */
-    public function getDatalist(array $data, int $counter = 0)
-    {
-        $result = "";
+    // public function getDatalist(array $data, int $counter = 0)
+    // {
+    //     $result = "";
 
-        foreach ($data as $key => &$value) {
-            $result .= '<option data-value="' . $key . '">';
-            $result .= str_repeat('&nbsp;&nbsp;', $counter) . $value['name'];
-            $result .= '</option>';
+    //     foreach ($data as $key => &$value) {
+    //         $result .= '<option data-value="' . $key . '">';
+    //         $result .= str_repeat('&nbsp;&nbsp;', $counter) . $value['name'];
+    //         $result .= '</option>';
 
-            if (!empty($value['children'])) {
-                $result .= $this->getDatalist($value['children'], ++$counter);
-            }
-        }
+    //         if (!empty($value['children'])) {
+    //             $result .= $this->getDatalist($value['children'], ++$counter);
+    //         }
+    //     }
 
-        return $result;
-    }
+    //     return $result;
+    // }
 }
