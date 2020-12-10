@@ -41,19 +41,19 @@ class CategoryBar
      */
     public function render(): void
     {
-        $this->build(true, array_slice($this->categories, 0, 4));
+        $this->build(array_slice($this->categories, 0, 4), $this->categories);
         echo $this->markup;
     }
-    
-    /**
-     * Renders the Category bar in a recursive way.
-     * @param bool  $all
-     * @param array $categories
-     */
-    public function build(bool $all = false, array $categories = []): void
+	
+	/**
+	 * Renders the Category bar in a recursive way.
+	 * @param array $categories Categories to render, works recursive if 'children' array value is not empty.
+	 * @param array $all List of all categories, used for the first call with the 'All' parent.
+	 */
+    public function build(array $categories, array $all = []): void
     {
-    	if ($all) {
-            array_unshift($categories, ['name' => 'Alles', 'children' => $categories]);
+    	if (!empty($all)) {
+            array_unshift($categories, ['name' => 'Alles', 'children' => $all]);
         }
         
         $this->markup .= "<ul class='a-category-bar__list'>";
@@ -67,7 +67,7 @@ class CategoryBar
                         </a>";
     
             if (!empty($category['children'])) {
-                if ($all) {
+                if (!empty($all)) {
                     $this->markup .= "<i class='fas fa-chevron-down a-category-bar__icon'></i>";
                 } else {
                     $this->markup .= "<i class='fas fa-chevron-right a-category-bar__icon'></i>";
@@ -77,7 +77,7 @@ class CategoryBar
             $this->markup .= "</div>";
             
             if (!empty($category['children'])) {
-                $this->build(false, $category['children']);
+                $this->build($category['children']);
             }
     
             $this->markup .= "</li>";

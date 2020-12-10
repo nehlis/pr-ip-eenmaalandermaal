@@ -19,11 +19,17 @@
     width: 250px;
     z-index: 1;
 
+    @media screen and (max-width: 800px) {
+      position: relative;
+      top: 20px;
+      left: 20px;
+    }
+
     &:first-child {
       background: none;
       bottom: auto;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       left: 0;
       list-style: none;
       margin: 0;
@@ -33,26 +39,55 @@
       top: auto;
       width: 100%;
 
+      @media screen and (max-width: 800px) {
+        flex-direction: column;
+      }
+
       #{$self}__list-item {
         color: white;
         padding: 10px;
         position: relative;
-        width: 100%;
         transition: background-color .3s ease;
         will-change: background-color;
+
+        > div {
+          display: flex;
+          justify-content: space-between;
+          position: relative;
+          width: 100%;
+        }
 
         &:hover {
           background-color: darken(#5F4B8B, 5%);
           cursor: pointer;
+
+          @media screen and (max-width: 800px) {
+            background-color: #5F4B8B;
+          }
         }
       }
 
       > #{$self}__list-item {
+        margin-right: 50px;
+
+        @media screen and (max-width: 800px) {
+          margin-right: 0;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+
         > #{$self}__list {
           left: 0;
           position: absolute;
           right: 0;
           top: 43px;
+
+          @media screen and (max-width: 800px) {
+            position: relative;
+            top: 10px;
+          }
         }
       }
     }
@@ -67,16 +102,20 @@
 
   &__link, &__link:hover {
     color: white;
+    margin-right: 30px;
     text-decoration: none;
-    margin-right: 10px;
   }
 
   &__icon {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     transition: transform .4s ease;
     will-change: transform;
 
     &.toggled {
-      transform: rotate(180deg);
+      transform: translateY(-50%) rotate(180deg);
     }
   }
 }
