@@ -107,4 +107,25 @@ class CategoryService
     {
         return self::$categories;
     }
+
+    /**
+     * Unwraps array of category
+     * @return array    The amount of elements in the unshifted array
+     */
+    public function unwrap(array $categories): array
+    {
+        $unshifted = $categories;
+        array_unshift($unshifted, ['name' => 'collection', 'children' => $categories]);
+        return $unshifted;
+    }
+
+
+    /**
+     * Gets the children from the category
+     * @return  array|null  The child element
+     */
+    public function hasChildren(array $category): bool
+    {
+        return count($category['children']) > 0;
+    }
 }

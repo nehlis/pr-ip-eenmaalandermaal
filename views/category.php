@@ -2,6 +2,7 @@
 
 
 use App\Controllers\CategoryController;
+use App\Core\Component;
 use App\Services\AuthService;
 use App\Services\CategoryService;
 
@@ -12,8 +13,8 @@ $categoryService = new CategoryService;
 AuthService::checkAuth();
 
 $categories = $categoryService->getCategories();
-highlight_string("<?php\n" . var_export($categories, true) . "?>");
 
+// TODO: Make category list nested
 ?>
 
 <div class="container py-5">
@@ -21,5 +22,6 @@ highlight_string("<?php\n" . var_export($categories, true) . "?>");
         <h1 class="h3 m-0 font-weight-bold">Rubrieken beheren</h1>
     </div>
     <div class="accordion" id="categoryCollapse">
+        <h1>TODO</h1>
     </div>
 </div>
