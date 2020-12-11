@@ -114,6 +114,7 @@ class CategoryController implements IController
     }
 
     /**
+     * Delete function
      * @param int $id
      * @return array|null
      */
@@ -134,14 +135,17 @@ class CategoryController implements IController
 
     /** EXTRA FUNCTIONS */
 
-    public function getDatalist()
+    /**
+     * Function that returns all valid categories needed for the 'veiling toevoegen' page.
+     * @return array|null    Correct formatted categories as an associative array.
+     * @throws Error         Throws an error when no categories have been found.
+     */
+    public function getDatalist(): ?array
     {
-        $query = "SELECT DISTINCT C.ID, C.Name
-                FROM Category C
-                    LEFT JOIN  Category C2 on C2.ParentID = C.ID
-                WHERE C2.ParentID IS NULL";
-
-        $result = $this->database->customQuery($query);
+        $result = $this->database->customQuery("SELECT DISTINCT C.ID, C.Name
+                                                FROM Category C
+                                                    LEFT JOIN  Category C2 on C2.ParentID = C.ID
+                                                WHERE C2.ParentID IS NULL");
 
         if (isset($result) && count($result) > 0) {
             return $result;

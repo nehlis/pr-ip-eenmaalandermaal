@@ -36,9 +36,9 @@ class AuthService
      */
     public function __construct()
     {
-        $this->ac = new AccountController();
-        $this->pc = new PhonenumberController();
-        $this->db = new Database();
+        $this->ac = new AccountController;
+        $this->pc = new PhonenumberController;
+        $this->db = new Database;
     }
 
     /**

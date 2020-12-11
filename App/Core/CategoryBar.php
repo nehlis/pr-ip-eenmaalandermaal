@@ -41,7 +41,7 @@ class CategoryBar
      */
     public function render(): void
     {
-        $this->build(true, array_slice($this->categories, 0, 4));
+        $this->build(array_slice($this->categories, 0, 4), $this->categories);
         echo $this->markup;
     }
 
@@ -67,7 +67,7 @@ class CategoryBar
                         </a>";
 
             if (!empty($category['children'])) {
-                if ($all) {
+                if (!empty($all)) {
                     $this->markup .= "<i class='fas fa-chevron-down a-category-bar__icon'></i>";
                 } else {
                     $this->markup .= "<i class='fas fa-chevron-right a-category-bar__icon'></i>";
@@ -77,7 +77,7 @@ class CategoryBar
             $this->markup .= "</div>";
 
             if (!empty($category['children'])) {
-                $this->build(false, $category['children']);
+                $this->build($category['children']);
             }
 
             $this->markup .= "</li>";
@@ -176,31 +176,28 @@ class CategoryBar
         return $this->categories[0];
     }
 
-    public function getCategories(): array
-    {
-        return $this->categories;
-    }
-
     /** EXTA FUNCTIONS */
 
     /** 
      * Returns datalist containing all formatted rubrieken.
      * Does this recursively.
+     * 
+     * FIXME: Niet verwijderen kan nog handig zijn. Bij definitieve versie wel verwijderen
      */
-    public function getDatalist(array $data, int $counter = 0)
-    {
-        $result = "";
+    // public function getDatalist(array $data, int $counter = 0)
+    // {
+    //     $result = "";
 
-        foreach ($data as $key => &$value) {
-            $result .= '<option data-value="' . $key . '">';
-            $result .= str_repeat('&nbsp;&nbsp;', $counter) . $value['name'];
-            $result .= '</option>';
+    //     foreach ($data as $key => &$value) {
+    //         $result .= '<option data-value="' . $key . '">';
+    //         $result .= str_repeat('&nbsp;&nbsp;', $counter) . $value['name'];
+    //         $result .= '</option>';
 
-            if (!empty($value['children'])) {
-                $result .= $this->getDatalist($value['children'], ++$counter);
-            }
-        }
+    //         if (!empty($value['children'])) {
+    //             $result .= $this->getDatalist($value['children'], ++$counter);
+    //         }
+    //     }
 
-        return $result;
-    }
+    //     return $result;
+    // }
 }
