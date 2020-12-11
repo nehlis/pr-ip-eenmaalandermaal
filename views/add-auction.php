@@ -5,10 +5,12 @@ use App\Services\AuthService;
 use App\Controllers\CategoryController;
 use App\Controllers\CountryController;
 use App\Controllers\ItemController;
+use App\Controllers\FileController;
 
-$catc = new CategoryController();
-$cc = new CountryController();
-$ic = new ItemController();
+$catc = new CategoryController;
+$cc = new CountryController;
+$ic = new ItemController;
+$fc = new FileController;
 
 // Redirect if already logged in
 if (!AuthService::isLoggedIn() || !AuthService::isSeller()) {
@@ -17,7 +19,6 @@ if (!AuthService::isLoggedIn() || !AuthService::isSeller()) {
 
 $categories = $catc->getDatalist();
 $countries = $cc->index();
-
 
 // Validate & Sanitize
 if (count($_POST) > 0) {
@@ -36,11 +37,15 @@ if (count($_POST) > 0) {
 
     $errors = [];
 
+    // File upload configuration 
+    $allowTypes = array('jpg', 'png', 'jpeg');
+
     foreach ($data as $key => $value) {
         if (!$value) {
             $errors[$key] = "Verplicht!";
         }
     }
+
 
     // Auction Add Logic
     if (count($errors) === 0) {
@@ -48,6 +53,40 @@ if (count($_POST) > 0) {
             $auction = $ic->create($data);
 
             // Fotos toevoegen
+            if (isset($_FILES['images'])) {
+
+                foreach ($_FILES['images']['name'] as $key => $val) {
+                    // File upload path \\
+                    $fileName = basename($_FILES['images']['name'][$key]);
+                    $fileName = str_replace(' ', '_', $fileName);
+                    $fileName = date("Ymdhis") . "_" . $fileName;
+                    $path = "/upload/" . $auction["ID"] . "/" . $fileName;
+
+                    $directory = UPLOAD_DIR . "\\" . $auction["ID"] . "\\";
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0777, true);
+                    }
+                    $targetFilePath = $directory . $fileName;
+
+                    // Check whether file type is valid 
+                    $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                    if (in_array($fileType, $allowTypes, true)) {
+                        // Upload file to server 
+                        if (move_uploaded_file($_FILES["images"]["tmp_name"][$key], $targetFilePath)) {
+                            // Image db insert sql 
+                            $insertValuesSQL = [
+                                "[Path]" => $path,
+                                "ItemID" => $auction["ID"]
+                            ];
+                            $files = $fc->create($insertValuesSQL);
+                        } else {
+                            $errors['uploadImage'] = "Afbeelding(en) zijn niet geupload, probeer het later nog eens!";
+                        }
+                    } else {
+                        $errors['uploadImage'] = "Bestand mag alleen " . print_r($allowTypes) . " zijn!";
+                    }
+                }
+            }
 
             // Success message when adding the auction succeeded:
             $success = 'Veiling toegevoegd! <hr> Je veiling wordt actief onder <a href="/veiling?id=' . $auction['ID'] . '">deze</a> link zodra de admin het accepteert!';
@@ -69,12 +108,15 @@ if (count($_POST) > 0) {
             <div class="alert alert-danger  <?= $errors['add'] ? 'd-block' : 'd-none' ?>">
                 <?= $errors['add']; ?>
             </div>
+            <div class="alert alert-danger  <?= $errors['uploadImage'] ? 'd-block' : 'd-none' ?>">
+                <?= $errors['uploadImage']; ?>
+            </div>
 
             <div class="alert alert-success  <?= $success ? 'd-block' : 'd-none' ?>">
                 <?= $success; ?>
             </div>
 
-            <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+            <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="categories" class="form-label">Rubriek</label>
                     <select class="form-select form-control" multiple aria-label="multiple select example" name="categories" required>
@@ -117,7 +159,10 @@ if (count($_POST) > 0) {
 
                 <div class="dropdown-divider my-4"></div>
 
-                <h1>FOTOS HIER</h1>
+                <div class="input-field mb-3">
+                    <label class="active">Foto's</label>
+                    <div class="input-images"></div>
+                </div>
 
                 <div class="dropdown-divider my-4"></div>
 

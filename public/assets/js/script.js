@@ -24,8 +24,7 @@ jQuery(() => {
 
 // Custom HTML Datalist (with value and label)
 document.querySelector("input[list]").addEventListener("input", function (e) {
-    console.log("TEST");
-    var input = e.target,
+    let input = e.target,
         list = input.getAttribute("list"),
         options = document.querySelectorAll(`#${list} option`),
         hiddenInput = document.getElementById(
@@ -36,11 +35,19 @@ document.querySelector("input[list]").addEventListener("input", function (e) {
     hiddenInput.value = label;
 
     for (let i = 0; i < options.length; i++) {
-        var option = options[i];
+        let option = options[i];
 
         if (option.innerText === label) {
             hiddenInput.value = option.getAttribute("data-value");
             break;
         }
     }
+});
+
+$(".input-images").imageUploader({
+    maxFiles: 4,
+    label: "Sleep bestanden hierheen of klik om te bladeren (Maximaal 4)",
+    extensions: [".jpg", ".jpeg", ".png"],
+    mimes: ["image/jpeg", "image/png"],
+    maxSize: 2 * 1024 * 1024,
 });

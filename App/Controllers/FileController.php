@@ -20,7 +20,7 @@ class FileController implements IController
     /**
      * @var string      $table      Table name on which the CRUD operations should apply.
      */
-    private static $table = 'File';
+    private static $table = '[File]';
 
 
     /**
@@ -39,12 +39,11 @@ class FileController implements IController
     public function create(array $data): ?array
     {
         $id = $this->database->create(self::$table, $data);
-
         if ($id) {
             return $this->get($id);
         }
 
-        throw new Error('Bestand niet geregistreerd!');
+        throw new Error('Afbeelding(en) niet toegevoegd!');
     }
 
     /**
@@ -68,7 +67,7 @@ class FileController implements IController
      */
     public function getByAuctionId(int $id): array
     {
-        $result = $this->database->customQuery("SELECT * FROM [" . self::$table . "] WHERE ItemID = $id");
+        $result = $this->database->customQuery("SELECT * FROM " . self::$table . " WHERE ItemID = $id");
 
         if ($result) return $result;
         return [];
@@ -80,8 +79,13 @@ class FileController implements IController
      */
     public function index(): ?array
     {
-        // TODO: Implement index() method.
-        return [];
+        $result = $this->database->index(self::$table);
+
+        if ($result) {
+            return $result;
+        }
+
+        throw new Error("Geen Foto's gevonden!");
     }
 
     /**
@@ -92,8 +96,17 @@ class FileController implements IController
      */
     public function update(int $id, array $data): ?array
     {
-        // TODO: Implement update() method.
-        return [];
+        if (!$this->get($id)) {
+            return null;
+        }
+
+        $result = $this->database->update(self::$table, $id, $data);
+
+        if ($result) {
+            return $this->get($id);
+        }
+
+        throw new Error("Afbeelding waarvan FileID = $id niet geupdate!");
     }
 
     /**
@@ -103,7 +116,36 @@ class FileController implements IController
      */
     public function delete(int $id): ?array
     {
-        // TODO: Implement delete() method.
-        return [];
+        if (!$item = $this->get($id)) {
+            return null;
+        }
+
+        $result = $this->database->delete(self::$table, $id);
+
+        if ($result) {
+            return $item;
+        }
+
+        throw new Error("Afbeelding waarvan FileID = $id niet verwijderd!");
+    }
+
+    /**
+     * @param int $id
+     * @return array|null
+     * @throws Error     Throws error when execution failed.
+     */
+    public function deleteAllImagesByItemID(int $id): ?array
+    {
+        if (!$item = $this->get($id)) {
+            return null;
+        }
+
+        $result = $this->database->customQuery("DELETE FROM [File] WHERE ItemID = " . $id);
+
+        if ($result) {
+            return $item;
+        }
+
+        throw new Error("Afbeelding(en) waarvan ItemID = $id niet verwijderd!");
     }
 }

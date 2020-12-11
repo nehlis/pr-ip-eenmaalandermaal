@@ -32,7 +32,7 @@ class ItemController implements IController
     }
 
     /**
-     * @param   array       $data   Associative array with all Item  data (Title, Description, City, CountryID, StartingPrice, StartDate, EndDate, PaymentMethod, PaymentInstructions, ShippingCosts, SendInstructions, SellerID, ItemCategoryID).
+     * @param   array       $data   Associative array with all Item  data (Title, Description, City, CountryID, StartingPrice, StartDate, EndDate, PaymentMethod, PaymentInstructions, ShippingCosts, SendInstructions, SellerID).
      * @return  array|null          Returns created Item  as array or null.
      * @throws  Error               Throws error when Item  could not be created.
      */
@@ -44,9 +44,9 @@ class ItemController implements IController
 
         $id = $this->database->create(self::$table, $data);
 
-        foreach ($categories as $category) {
-            $this->database->customQuery("INSERT INTO CategoriesByItem (ItemID, CategoryID) VALUES ('$id', '$category')");
-        }
+        // foreach ($categories as $category) {
+        //     $this->database->customQuery("INSERT INTO CategoriesByItem (ItemID, CategoryID) VALUES ('$id', '$category')");
+        // }
 
         if ($id) {
             return $this->get($id);
