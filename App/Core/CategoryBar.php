@@ -41,7 +41,7 @@ class CategoryBar
      */
     public function render(): void
     {
-        $this->build(true, array_slice($this->categories, 0, 4));
+        $this->build(array_slice($this->categories, 0, 4), $this->categories);
         echo $this->markup;
     }
 
@@ -67,7 +67,7 @@ class CategoryBar
                         </a>";
 
             if (!empty($category['children'])) {
-                if ($all) {
+                if (!empty($all)) {
                     $this->markup .= "<i class='fas fa-chevron-down a-category-bar__icon'></i>";
                 } else {
                     $this->markup .= "<i class='fas fa-chevron-right a-category-bar__icon'></i>";
@@ -77,7 +77,7 @@ class CategoryBar
             $this->markup .= "</div>";
 
             if (!empty($category['children'])) {
-                $this->build(false, $category['children']);
+                $this->build($category['children']);
             }
 
             $this->markup .= "</li>";
