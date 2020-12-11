@@ -21,13 +21,13 @@ class CategoryBar
         3 => [],
         4 => [],
     ];
-    
+
     /**
      * The HTML markup.
      * @var
      */
     private $markup;
-    
+
     /**
      * CategoryBar constructor.
      */
@@ -35,7 +35,7 @@ class CategoryBar
     {
         $this->setCategories();
     }
-    
+
     /**
      * Builds the Category Bar and echoes it.
      */
@@ -44,20 +44,20 @@ class CategoryBar
         $this->build(array_slice($this->categories, 0, 4), $this->categories);
         echo $this->markup;
     }
-	
-	/**
-	 * Renders the Category bar in a recursive way.
-	 * @param array $categories Categories to render, works recursive if 'children' array value is not empty.
-	 * @param array $all List of all categories, used for the first call with the 'All' parent.
-	 */
-    public function build(array $categories, array $all = []): void
+
+    /**
+     * Renders the Category bar in a recursive way.
+     * @param bool  $all
+     * @param array $categories
+     */
+    public function build(bool $all = false, array $categories = []): void
     {
-    	if (!empty($all)) {
-            array_unshift($categories, ['name' => 'Alles', 'children' => $all]);
+        if ($all) {
+            array_unshift($categories, ['name' => 'Alles', 'children' => $categories]);
         }
-        
+
         $this->markup .= "<ul class='a-category-bar__list'>";
-        
+
         foreach ($categories as $id => $category) {
             $this->markup .=
                 "<li class='a-category-bar__list-item js-category-bar'>
@@ -65,7 +65,7 @@ class CategoryBar
                         <a href='/veilingen?categorieId=$id' class='a-category-bar__link'>
                             {$category['name']}
                         </a>";
-    
+
             if (!empty($category['children'])) {
                 if (!empty($all)) {
                     $this->markup .= "<i class='fas fa-chevron-down a-category-bar__icon'></i>";
@@ -73,19 +73,19 @@ class CategoryBar
                     $this->markup .= "<i class='fas fa-chevron-right a-category-bar__icon'></i>";
                 }
             }
-    
+
             $this->markup .= "</div>";
-            
+
             if (!empty($category['children'])) {
                 $this->build($category['children']);
             }
-    
+
             $this->markup .= "</li>";
         }
-    
+
         $this->markup .= "</ul>";
     }
-    
+
     /**
      * This method regulates the creation of the categories based on
      * the index method of the category controller.
@@ -94,12 +94,12 @@ class CategoryBar
     public function setCategories(): void
     {
         $cc = new CategoryController;
-        
+
         $this->categories = $this
             ->sortPerLevel($cc->index())
             ->sortAccociatively();
     }
-    
+
     /**
      * Formats the queried data per level and removes the duplicates
      * @param $columns
@@ -117,34 +117,34 @@ class CategoryBar
                 [$column['Level4ID'], $column['Level4Name']],
                 [$column['Level5ID'], $column['Level5Name']],
             ];
-            
+
             foreach ($levels as $index => $level) {
                 [$id, $name] = $level;
-                
+
                 if (is_null($id)) {
                     continue;
                 }
-                
+
                 // If the Level does not exists, add it and initialize the children array.
                 if (!array_key_exists($id, $this->categories[$index])) {
                     $this->categories[$index][$id] = ['name' => $name, 'children' => []];
                 }
-                
+
                 [$childId, $childName] = $levels[$index + 1];
-                
+
                 // If the child is already initialized or empty, don't add it again.
                 if (array_key_exists($childId, $this->categories[$index][$id]['children']) || is_null($childId)) {
                     continue;
                 }
-                
+
                 // Here we add the children (if found) to the children property.
                 $this->categories[$index][$id]['children'][$childId] = ['name' => $childName, 'children' => []];
             }
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Formats all the inputted array from by-level to an associative array.
      * @return array
@@ -158,7 +158,7 @@ class CategoryBar
                 unset($this->categories[$id]);
             }
         }
-        
+
         // Loop through the levels, start at the second last index, stop with the first.
         for ($i = count($this->categories) - 2; $i >= 0; $i--) {
             foreach ($this->categories[$i] as $itemId => $item) {
@@ -170,9 +170,34 @@ class CategoryBar
                 }
             }
         }
-        
+
         // After deprecating each value to the parent, the first index will
         // include all of it's children, so we only return this value.
         return $this->categories[0];
     }
+
+    /** EXTA FUNCTIONS */
+
+    /** 
+     * Returns datalist containing all formatted rubrieken.
+     * Does this recursively.
+     * 
+     * FIXME: Niet verwijderen kan nog handig zijn. Bij definitieve versie wel verwijderen
+     */
+    // public function getDatalist(array $data, int $counter = 0)
+    // {
+    //     $result = "";
+
+    //     foreach ($data as $key => &$value) {
+    //         $result .= '<option data-value="' . $key . '">';
+    //         $result .= str_repeat('&nbsp;&nbsp;', $counter) . $value['name'];
+    //         $result .= '</option>';
+
+    //         if (!empty($value['children'])) {
+    //             $result .= $this->getDatalist($value['children'], ++$counter);
+    //         }
+    //     }
+
+    //     return $result;
+    // }
 }
