@@ -21,7 +21,7 @@ class CategoryController implements IController
      * @var string      $table      Table name on which the CRUD operations should apply.
      */
     private static $table = 'Category';
-    
+
     /**
      * AccountController constructor.
      */
@@ -29,7 +29,7 @@ class CategoryController implements IController
     {
         $this->database = new Database;
     }
-    
+
     /**
      * @param array $data
      * @return array|null
@@ -39,7 +39,7 @@ class CategoryController implements IController
         // TODO: Implement create() method.
         return [];
     }
-    
+
     /**
      * @param int $id
      * @return array|null
@@ -49,7 +49,7 @@ class CategoryController implements IController
         // TODO: Implement get() method.
         return [];
     }
-    
+
     /**
      * Gets all categories in an associative format.
      * @return array|null
@@ -76,11 +76,11 @@ class CategoryController implements IController
             WHERE L1.ParentID = -1
             ORDER BY L1.ID, L2.ID, L3.ID"
         );
-        
+
         if (!$result) {
             throw new Error("Er is iets misgegaan bij het ophalen van de categorieën");
         }
-        
+
         return $result;
     }
 
@@ -89,16 +89,17 @@ class CategoryController implements IController
      * @return array|null       An array of top level categories
      * @throws Error            Error if categories could not be indexed
      */
-    public function indexTopLevel():?array {
+    public function indexTopLevel(): ?array
+    {
         $result = $this->database->getByColumn(self::$table, "ParentID", -1);
 
-        if(!$result) {
+        if (!$result) {
             throw new Error("Er is iets misgegaan tijdens het ophalen van de top-level categorieën");
         }
 
         return $result;
     }
-    
+
     /**
      * @param int   $id
      * @param array $data
@@ -109,7 +110,7 @@ class CategoryController implements IController
         // TODO: Implement update() method.
         return [];
     }
-    
+
     /**
      * @param int $id
      * @return array|null
