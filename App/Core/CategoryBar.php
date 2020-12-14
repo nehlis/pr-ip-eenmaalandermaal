@@ -41,7 +41,7 @@ class CategoryBar
      */
     public function render(): void
     {
-        $this->build(array_slice($this->categories, 0, 4), $this->categories);
+        $this->build(false, array_slice($this->categories, 0, 4));
         echo $this->markup;
     }
 
@@ -77,7 +77,7 @@ class CategoryBar
             $this->markup .= "</div>";
 
             if (!empty($category['children'])) {
-                $this->build($category['children']);
+                $this->build(false, $category['children']);
             }
 
             $this->markup .= "</li>";

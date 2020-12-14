@@ -226,9 +226,10 @@ class ItemController implements IController
      * @return  array|null              Array containing all auctions found in the database
      * @throws  Error                   Throws and error if no auctions were found.
      */
+    // TODO: Add pagination
     public function getOverview(array $filters = null): ?array
     {
-        $query = "SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
+        $query = "SELECT TOP(200) I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                   FROM Item I
                     LEFT JOIN Bidding B On I.ID = B.ItemID
                   WHERE 1 = 1
