@@ -53,6 +53,10 @@ class Router
             'view'  => 'category',
             'title' => 'Rubrieken beheer'
         ],
+        '/veilingen/toevoegen'     => [
+            'view'  => 'add-auction',
+            'title' => 'Veiling Toevoegen'
+        ],
         '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',

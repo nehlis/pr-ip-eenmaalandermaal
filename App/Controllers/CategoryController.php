@@ -36,8 +36,12 @@ class CategoryController implements IController
      */
     public function create(array $data): ?array
     {
-        // TODO: Implement create() method.
-        return [];
+        $id = $this->database->create(self::$table, $data);
+        if ($id) {
+            return $this->get($id);
+        }
+
+        throw new Error('Categorie niet toegevoegd!');
     }
 
     /**
@@ -46,8 +50,13 @@ class CategoryController implements IController
      */
     public function get(int $id): ?array
     {
-        // TODO: Implement get() method.
-        return [];
+        $result = $this->database->get(self::$table, $id);
+
+        if ($result) {
+            return $result;
+        }
+
+        throw new Error("Geen categorie gevonden!");
     }
 
     /**
@@ -107,17 +116,57 @@ class CategoryController implements IController
      */
     public function update(int $id, array $data): ?array
     {
-        // TODO: Implement update() method.
-        return [];
+        if (!$this->get($id)) {
+            return null;
+        }
+
+        $result = $this->database->update(self::$table, $id, $data);
+
+        if ($result) {
+            return $this->get($id);
+        }
+
+        throw new Error("Categorie waarvan ID = $id niet geupdate!");
     }
 
     /**
+     * Delete function
      * @param int $id
      * @return array|null
      */
     public function delete(int $id): ?array
     {
-        // TODO: Implement delete() method.
-        return [];
+        if (!$item = $this->get($id)) {
+            return null;
+        }
+
+        $result = $this->database->delete(self::$table, $id);
+
+        if ($result) {
+            return $item;
+        }
+
+        throw new Error("Categorie waarvan ID = $id niet verwijderd!");
+    }
+
+    /** EXTRA FUNCTIONS */
+
+    /**
+     * Function that returns all valid categories needed for the 'veiling toevoegen' page.
+     * @return array|null    Correct formatted categories as an associative array.
+     * @throws Error         Throws an error when no categories have been found.
+     */
+    public function getDatalist(): ?array
+    {
+        $result = $this->database->customQuery("SELECT DISTINCT C.ID, C.Name
+                                                FROM Category C
+                                                    LEFT JOIN  Category C2 on C2.ParentID = C.ID
+                                                WHERE C2.ParentID IS NULL");
+
+        if (isset($result) && count($result) > 0) {
+            return $result;
+        }
+
+        throw new Error("Geen categorieen gevonden!");
     }
 }

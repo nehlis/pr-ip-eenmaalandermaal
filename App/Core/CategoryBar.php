@@ -14,12 +14,13 @@ class CategoryBar
     /**
      * @var CategoryService $categoryService    The category service which contains functions for categories
      */
-    private $categoryService;
-
-    /**
-     * @var array   $categories     The list of categories to be used in the categorybar
-     */
-    private $categories = [];
+    private $categories = [
+        0 => [],
+        1 => [],
+        2 => [],
+        3 => [],
+        4 => [],
+    ];
 
     /**
      * The HTML markup.
@@ -41,7 +42,7 @@ class CategoryBar
      */
     public function render(): void
     {
-        $this->build(true, array_slice($this->categories, 0, 4));
+        $this->build(false, array_slice($this->categories, 0, 4));
         echo $this->markup;
     }
 
@@ -67,7 +68,7 @@ class CategoryBar
                         </a>";
 
             if (!empty($category['children'])) {
-                if ($all) {
+                if (!empty($all)) {
                     $this->markup .= "<i class='fas fa-chevron-down a-category-bar__icon'></i>";
                 } else {
                     $this->markup .= "<i class='fas fa-chevron-right a-category-bar__icon'></i>";
@@ -97,4 +98,29 @@ class CategoryBar
         $leveledCategories = $this->categoryService->sortPerLevel($cc->index());
         $this->categories = $this->categoryService->sortAssociatively($leveledCategories);
     }
+
+    /** EXTA FUNCTIONS */
+
+    /** 
+     * Returns datalist containing all formatted rubrieken.
+     * Does this recursively.
+     * 
+     * FIXME: Niet verwijderen kan nog handig zijn. Bij definitieve versie wel verwijderen
+     */
+    // public function getDatalist(array $data, int $counter = 0)
+    // {
+    //     $result = "";
+
+    //     foreach ($data as $key => &$value) {
+    //         $result .= '<option data-value="' . $key . '">';
+    //         $result .= str_repeat('&nbsp;&nbsp;', $counter) . $value['name'];
+    //         $result .= '</option>';
+
+    //         if (!empty($value['children'])) {
+    //             $result .= $this->getDatalist($value['children'], ++$counter);
+    //         }
+    //     }
+
+    //     return $result;
+    // }
 }
