@@ -57,6 +57,10 @@ class Router
             'view'  => 'auction-users',
             'title' => 'Gebruikers accounts'
         ],
+        '/auctions-manage'     => [
+            'view'  => 'auctions-manage',
+            'title' => 'Veilingen'
+        ],
         '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',

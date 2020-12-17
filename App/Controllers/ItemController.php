@@ -260,4 +260,36 @@ class ItemController implements IController
 
         throw new Error("Geen veilingen gevonden!");
     }
+    /**
+     * Function that is used to load up items in the auctions (veilingen) view.
+     * @return  array|null              Array containing all auctions found in the database
+     * @throws  Error                   Throws and error if no auctions were found.
+     */
+    // TODO: Add pagination
+    public function getOverviewPagination(): ?array
+    {
+        $query = "SELECT TOP(50) * FROM Item ORDER BY ID DESC";
+
+        $result = $this->database->customQuery($query);
+
+        if ($result) return $result;
+
+        throw new Error("Geen veilingen gevonden!");
+    }
+
+    /**
+     * Function that is used to set an item Inactive
+     * @return  void              
+     * @throws  Error                   Throws and error if no auctions were found.
+     */
+    public function toggleInactive(int $id): void
+    {
+        $item = $this->get($id);
+
+        $result = $this->database->update(self::$table, $id, ['Active' => !$item['Active']]);
+
+        if (!$result) {
+            throw new Error("Blokkeer status niet gewijzigd!");
+        }
+    }
 }
