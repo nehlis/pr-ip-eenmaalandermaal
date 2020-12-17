@@ -13,4 +13,4 @@ define('LAYOUTS_DIR', ROOT_DIR . DS . 'layouts');
 define('PLACEHOLDER', 'https://sovschoice.com/wp-content/uploads/2020/08/placeholder.png');
 define("PLACEHOLDER_ALT", 'https://timmersps.nl/wp-content/uploads/2017/11/img-placeholder.png');
 define("REMOTE_URL", "https://iproject3.icasites.nl");
-define('IS_WINDOWS', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+define('IS_WINDOWS', stripos(PHP_OS, 'WIN') === 0);
