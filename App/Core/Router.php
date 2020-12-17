@@ -53,6 +53,10 @@ class Router
             'view'  => 'add-auction',
             'title' => 'Veiling Toevoegen'
         ],
+        '/auction-users'     => [
+            'view'  => 'auction-users',
+            'title' => 'Gebruikers accounts'
+        ],
         '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',
@@ -112,7 +116,7 @@ class Router
         if (!isset($_GET['referrer']) && !in_array($_SERVER['REQUEST_URI'], $exceptions, true)) {
             return '?referrer=' . $_SERVER['REQUEST_URI'];
         }
-	
-		return '';
-	}
+
+        return '';
+    }
 }

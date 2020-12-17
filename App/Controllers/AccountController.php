@@ -150,7 +150,7 @@ class AccountController implements IController
 
     public function deletePhoneNumberByUserId(int $AccountID): void
     {
-        $this->database->customQuery('DELETE FROM Phonenumber WHERE AccountID = '.$AccountID);
+        $this->database->customQuery('DELETE FROM Phonenumber WHERE AccountID = ' . $AccountID);
     }
 
     // TODO: Docs schrijven
@@ -190,5 +190,23 @@ class AccountController implements IController
         if (!$result) {
             throw new Error("Blokkeer status niet gewijzigd!");
         }
+    }
+
+
+    /**
+     * Function that is used to load up users in the auction users view.
+     * @return  array|null              Array containing all users found in the database
+     * @throws  Error                   Throws and error if no users were found.
+     */
+    // TODO: Add pagination
+    public function getOverview(): ?array
+    {
+        $query = "SELECT TOP(50) * FROM Account";
+
+        $result = $this->database->customQuery($query);
+
+        if ($result) return $result;
+
+        throw new Error("Geen gebruikers gevonden!");
     }
 }
