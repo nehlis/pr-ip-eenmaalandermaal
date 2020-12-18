@@ -24,7 +24,7 @@ if (isset($_POST['ItemID'])) {
         $errors = $error->getMessage();
     }
 
-    // TODO: Redirect?
+    Router::redirect($_SERVER['REQUEST_URI']);
 }
 ?>
 

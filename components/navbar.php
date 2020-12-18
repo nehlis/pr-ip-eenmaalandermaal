@@ -32,6 +32,7 @@ use App\Services\AuthService;
                     <div class="dropdown-divider"></div>
                     <?php if (AuthService::isLoggedIn() && AuthService::isAdmin()) : ?>
                         <a class="dropdown-item" href="/auction-users">Gebruikers</a>
+                        <a class="dropdown-item" href="/auctions-manage">Veilingen</a>
                     <?php endif; ?>
                     <?php if (AuthService::isLoggedIn()) : ?>
                         <a class="dropdown-item" href="/profiel">Profiel</a>
