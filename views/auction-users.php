@@ -16,14 +16,14 @@ $accounts = $ac->getOverview();
 
 if (isset($_POST['AccountID'])) {
 
-    $AccountID = $_POST['AccountID'];
-    $AccountBlocked = $_POST['Blocked'];
-    if ($AccountBlocked) {
-        $result = $ac->toggleBlocked($AccountID);
+    $accountID = $_POST['AccountID'];
+    $accountBlocked = $_POST['Blocked'];
+    if ($accountBlocked) {
+        $result = $ac->toggleBlocked($accountID);
     } else {
-        $result = $ac->toggleBlocked($AccountID);
+        $result = $ac->toggleBlocked($accountID);
     }
-    echo "<meta http-equiv='refresh' content='0'>";
+    Router::redirect($_SERVER['REQUEST_URI']);
 }
 
 ?>
