@@ -15,7 +15,7 @@ if (!AuthService::isLoggedIn() && !AuthService::isAdmin()) {
 $items = $ic->getOverviewPagination();
 
 if (isset($_POST['ItemID'])) {
-    $ItemID = $_POST['ItemID'];
+    $itemID = $_POST['ItemID'];
     try {
         $result = $ic->toggleInactive($ItemID);
         $success = 'Veilig met ID ' . $ItemID . ' aangepast!';
