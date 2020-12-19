@@ -25,6 +25,10 @@ class Router
             'view'  => 'home',
             'title' => 'Homepagina',
         ],
+        '/hoewerkthet' => [
+            'view'  => 'information',
+            'title' => 'Hoe werkt het?'
+        ],
         '/inloggen'    => [
             'view'  => 'login',
             'title' => 'Inloggen',
@@ -112,7 +116,7 @@ class Router
         if (!isset($_GET['referrer']) && !in_array($_SERVER['REQUEST_URI'], $exceptions, true)) {
             return '?referrer=' . $_SERVER['REQUEST_URI'];
         }
-	
-		return '';
-	}
+
+        return '';
+    }
 }
