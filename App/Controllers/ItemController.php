@@ -229,7 +229,7 @@ class ItemController implements IController
     // TODO: Add pagination
     public function getOverview(array $filters = null): ?array
     {
-        $query = "SELECT TOP(200) I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
+        $query = "SELECT TOP(200) I.ID, I.Title, I.EndDate, I.Thumbnail, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                   FROM Item I
                     LEFT JOIN Bidding B On I.ID = B.ItemID
                   WHERE 1 = 1
@@ -251,7 +251,7 @@ class ItemController implements IController
             }
         }
 
-        $query .= " GROUP BY I.ID, I.Title, I.StartingPrice, I.EndDate
+        $query .= " GROUP BY I.ID, I.Title, I.Thumbnail, I.StartingPrice, I.EndDate
                     ORDER BY I.EndDate ASC";
 
         $result = $this->database->customQuery($query);

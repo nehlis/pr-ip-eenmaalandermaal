@@ -2,6 +2,7 @@
 
 use App\Core\Component;
 use App\Controllers\ItemController;
+use App\Services\CardService;
 
 $ic = new ItemController();
 
@@ -116,7 +117,7 @@ if (count($errors) === 0) {
             <?php foreach ($auctions as $item) : ?>
                 <div class="col-md-6 col-lg-4 m-0 p-2">
                     <?php Component::render('card', [
-                        'image'       => PLACEHOLDER,
+                        'image'       => CardService::getThumbnail(REMOTE_URL . $item['Thumbnail']),
                         'title'       => $item['Title'],
                         'price'       => $item['HighestPrice'],
                         'closingTime' => $item['EndDate'],

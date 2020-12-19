@@ -3,6 +3,7 @@
 use App\Core\Component;
 use App\Core\Database;
 use App\Controllers\ItemController;
+use App\Services\CardService;
 
 $ic = new ItemController();
 $db = new Database();
@@ -13,7 +14,6 @@ try {
     $featuredItems = null;
     $customError = $error->getMessage();
 }
-
 ?>
 
 <main role="main" class="container">
@@ -39,7 +39,7 @@ try {
                     <?php foreach ($featuredItems as $item) : ?>
                         <div class="col-xs-12 col-md-4">
                             <?php Component::render('card', [
-                                'image'       => PLACEHOLDER,
+                                'image'       => CardService::getThumbnail(REMOTE_URL . $item["Thumbnail"]),
                                 'title'       => $item['Title'],
                                 'price'       => $item['Amount'],
                                 'closingTime' => $item['EndDate'],
