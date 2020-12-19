@@ -232,8 +232,9 @@ class ItemController implements IController
         $query = "SELECT TOP(200) I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                   FROM Item I
                     LEFT JOIN Bidding B On I.ID = B.ItemID
-                  WHERE 1 = 1
-                    AND AuctionClosed = 'false'";
+                  WHERE EndDate > CURRENT_TIMESTAMP
+                    AND AuctionClosed = 'false'
+                    AND Active = 1";
 
         if (isset($filters)) {
             foreach ($filters as $key => $value) {
