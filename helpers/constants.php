@@ -8,6 +8,7 @@ define('ASSETS_DIR', DS . 'public' . DS . 'assets');
 define('VIEWS_DIR', ROOT_DIR . DS . 'views');
 define('COMPONENTS_DIR', ROOT_DIR . DS . 'components');
 define('LAYOUTS_DIR', ROOT_DIR . DS . 'layouts');
+define('UPLOAD_DIR', ROOT_DIR . DS . 'upload');
 
 // Helpers.
 define('PLACEHOLDER', 'https://sovschoice.com/wp-content/uploads/2020/08/placeholder.png');

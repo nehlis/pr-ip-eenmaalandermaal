@@ -33,13 +33,21 @@ class ItemController implements IController
     }
 
     /**
-     * @param   array       $data   Associative array with all Item  data (Title, Description, City, CountryID, StartingPrice, StartDate, EndDate, PaymentMethod, PaymentInstructions, ShippingCosts, SendInstructions, SellerID, ItemCategoryID).
+     * @param   array       $data   Associative array with all Item  data (Title, Description, City, CountryID, StartingPrice, StartDate, EndDate, PaymentMethod, PaymentInstructions, ShippingCosts, SendInstructions, SellerID).
      * @return  array|null          Returns created Item  as array or null.
      * @throws  Error               Throws error when Item  could not be created.
      */
     public function create(array $data): ?array
     {
+        // Extract categories before adding item to database
+        $categories = $data['Categories'];
+        unset($data['Categories']);
+
         $id = $this->database->create(self::$table, $data);
+
+        // foreach ($categories as $category) {
+        //     $this->database->customQuery("INSERT INTO CategoriesByItem (ItemID, CategoryID) VALUES ('$id', '$category')");
+        // }
 
         if ($id) {
             return $this->get($id);
@@ -168,7 +176,7 @@ class ItemController implements IController
 
 
     /**
-     * Ensures that the auction is set to closed
+     * Ensures that the auction is set to closed 
      * @param int           $id ID from Item
      * @param int           $buyerID ID from buyer
      * @param float         $sellingPrice The celling price
@@ -233,20 +241,21 @@ class ItemController implements IController
 
         throw new Error("Geen uitgelichte items gevonden...");
     }
-	
-	/**
-	 * Function that is used to load up items in the auctions (veilingen) view. It accepts an array with filter data.
-	 * @param array|null $filters Associative array which contains filters for: title, price and categoryId
-	 * @return  array|null              Array containing all auctions found in the database
-	 */
+
+    /**
+     * Function that is used to load up items in the auctions (veilingen) view. It accepts an array with filter data.
+     * @param   array       $filters    Associative array which contains filters for: title, price and categoryId
+     * @return  array|null              Array containing all auctions found in the database
+     * @throws  Error                   Throws and error if no auctions were found.
+     */
+    // TODO: Add pagination
     public function getOverview(array $filters = null): ?array
     {
-        $query = "
-			SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
-            FROM Item I
-            LEFT JOIN Bidding B On I.ID = B.ItemID
-            WHERE AuctionClosed = 'false'
-        ";
+        $query = "SELECT TOP(200) I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
+                  FROM Item I
+                    LEFT JOIN Bidding B On I.ID = B.ItemID
+                  WHERE 1 = 1
+                    AND AuctionClosed = 'false'";
 
         if (isset($filters)) {
             foreach ($filters as $key => $value) {

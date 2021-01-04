@@ -18,73 +18,78 @@ class Router
     /**
      * @var string[]
      */
-	private $routes = [
-		'/'               => [
-			'view'  => 'home',
-			'title' => 'Homepagina',
-			'auth'  => false,
-		],
-		''                => [
-			'view'  => 'home',
-			'title' => 'Homepagina',
-			'auth'  => false,
-		],
-		'/inloggen'       => [
-			'view'  => 'login',
-			'title' => 'Inloggen',
-			'auth'  => false,
-		],
-		'/registreren'    => [
-			'view'  => 'register',
-			'title' => 'Registreren',
-			'auth'  => false,
-		],
-		'/uitloggen'      => [
-			'view'  => 'logout',
-			'title' => 'Uitloggen',
-			'auth'  => false,
-		],
-		'/profiel'        => [
-			'view'  => 'profile',
-			'title' => 'Profiel',
-			'auth'  => true,
-		],
-		'/veilingen'      => [
-			'view'  => 'auctions',
-			'title' => 'Veilingen',
-			'auth'  => false,
-		],
-		'/veiling'        => [
-			'view'  => 'auction',
-			'title' => 'Veiling informatie',
-			'auth'  => false,
-		],
-		'/mijn-veilingen' => [
-			'view'  => 'personal-auctions',
-			'title' => 'Mijn veilingen',
-			'auth'  => true,
-		],
-		'/404'            => [
-			'view'  => '404',
-			'title' => 'Pagina niet gevonden',
-			'auth'  => false,
-		],
-		'/actest'         => [
-			'view'  => 'actest',
-			'title' => '[TEST] User Controller',
-			'auth'  => false,
-		],
-		'/ictest'         => [
-			'view'  => 'ictest',
-			'title' => '[TEST] Item Controller',
-			'auth'  => false,
-		],
-		'/pctest'         => [
-			'view'  => 'pctest',
-			'title' => '[TEST] Phonenumber Controller',
-			'auth'  => false,
-		],
-	];
+private $routes = [
+            '/'           => [
+          'view'  => 'home',
+          'title' => 'Homepagina',
+          'auth'  => false,
+        ],
+        ''                => [
+          'view'  => 'home',
+          'title' => 'Homepagina',
+          'auth'  => false,
+        ],
+        '/inloggen'       => [
+          'view'  => 'login',
+          'title' => 'Inloggen',
+          'auth'  => false,
+        ],
+        '/registreren'    => [
+          'view'  => 'register',
+          'title' => 'Registreren',
+          'auth'  => false,
+        ],
+        '/uitloggen'      => [
+          'view'  => 'logout',
+          'title' => 'Uitloggen',
+          'auth'  => false,
+        ],
+        '/profiel'        => [
+          'view'  => 'profile',
+          'title' => 'Profiel',
+          'auth'  => true,
+        ],
+        '/veilingen'      => [
+          'view'  => 'auctions',
+          'title' => 'Veilingen',
+          'auth'  => false,
+        ],
+        '/veiling'        => [
+          'view'  => 'auction',
+          'title' => 'Veiling informatie',
+          'auth'  => false,
+        ],
+        '/veilingen/toevoegen'     => [
+            'view'  => 'add-auction',
+            'title' => 'Veiling Toevoegen',
+            'auth'  => true,
+        ],
+        '/mijn-veilingen' => [
+			      'view'  => 'personal-auctions',
+			      'title' => 'Mijn veilingen',
+			      'auth'  => true,
+		    ],
+        '/404'         => [
+            'view'  => '404',
+            'title' => 'Pagina niet gevonden',
+            'auth'  => false,
+        ],
+        '/actest'      => [
+            'view'  => 'actest',
+            'title' => '[TEST] User Controller',
+            'auth'  => false,
+        ],
+        '/ictest'      => [
+            'view'  => 'ictest',
+            'title' => '[TEST] Item Controller',
+            'auth'  => false,
+        ],
+        '/pctest'      => [
+            'view'  => 'pctest',
+            'title' => '[TEST] Phonenumber Controller',
+            'auth'  => false,
+        ],
+    ];
 
     /**
      * Router constructor.
