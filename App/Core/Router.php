@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Services\AuthService;
+
 /**
  * Class Router
  * @package Core
@@ -16,56 +18,73 @@ class Router
     /**
      * @var string[]
      */
-    private $routes = [
-        '/'            => [
-            'view'  => 'home',
-            'title' => 'Homepagina',
-        ],
-        ''             => [
-            'view'  => 'home',
-            'title' => 'Homepagina',
-        ],
-        '/inloggen'    => [
-            'view'  => 'login',
-            'title' => 'Inloggen',
-        ],
-        '/registreren' => [
-            'view'  => 'register',
-            'title' => 'Registreren',
-        ],
-        '/uitloggen'   => [
-            'view'  => 'logout',
-            'title' => 'Uitloggen',
-        ],
-        '/profiel'     => [
-            'view'  => 'profile',
-            'title' => 'Profiel',
-        ],
-        '/veilingen'    => [
-            'view'  =>  'auctions',
-            'title' =>  'Veilingen',
-        ],
-        '/veiling'     => [
-            'view'  => 'auction',
-            'title' => 'Veiling informatie'
-        ],
-        '/404'         => [
-            'view'  => '404',
-            'title' => 'Pagina niet gevonden',
-        ],
-        '/actest'      => [
-            'view'  => 'actest',
-            'title' => '[TEST] User Controller',
-        ],
-        '/ictest'      => [
-            'view'  => 'ictest',
-            'title' => '[TEST] Item Controller',
-        ],
-        '/pctest'      => [
-            'view'  => 'pctest',
-            'title' => '[TEST] Phonenumber Controller',
-        ],
-    ];
+	private $routes = [
+		'/'               => [
+			'view'  => 'home',
+			'title' => 'Homepagina',
+			'auth'  => false,
+		],
+		''                => [
+			'view'  => 'home',
+			'title' => 'Homepagina',
+			'auth'  => false,
+		],
+		'/inloggen'       => [
+			'view'  => 'login',
+			'title' => 'Inloggen',
+			'auth'  => false,
+		],
+		'/registreren'    => [
+			'view'  => 'register',
+			'title' => 'Registreren',
+			'auth'  => false,
+		],
+		'/uitloggen'      => [
+			'view'  => 'logout',
+			'title' => 'Uitloggen',
+			'auth'  => false,
+		],
+		'/profiel'        => [
+			'view'  => 'profile',
+			'title' => 'Profiel',
+			'auth'  => true,
+		],
+		'/veilingen'      => [
+			'view'  => 'auctions',
+			'title' => 'Veilingen',
+			'auth'  => false,
+		],
+		'/veiling'        => [
+			'view'  => 'auction',
+			'title' => 'Veiling informatie',
+			'auth'  => false,
+		],
+		'/mijn-veilingen' => [
+			'view'  => 'personal-auctions',
+			'title' => 'Mijn veilingen',
+			'auth'  => true,
+		],
+		'/404'            => [
+			'view'  => '404',
+			'title' => 'Pagina niet gevonden',
+			'auth'  => false,
+		],
+		'/actest'         => [
+			'view'  => 'actest',
+			'title' => '[TEST] User Controller',
+			'auth'  => false,
+		],
+		'/ictest'         => [
+			'view'  => 'ictest',
+			'title' => '[TEST] Item Controller',
+			'auth'  => false,
+		],
+		'/pctest'         => [
+			'view'  => 'pctest',
+			'title' => '[TEST] Phonenumber Controller',
+			'auth'  => false,
+		],
+	];
 
     /**
      * Router constructor.
@@ -83,6 +102,10 @@ class Router
     {
         foreach ($this->routes as $key => $route) {
             if ($this->request === $key) {
+            	if ($route['auth']) {
+            		AuthService::checkAuth();
+            	}
+            	
                 View::render(null, $route);
 
                 return;

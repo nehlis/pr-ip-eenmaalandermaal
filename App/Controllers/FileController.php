@@ -70,7 +70,10 @@ class FileController implements IController
     {
         $result = $this->database->customQuery("SELECT * FROM [" . self::$table . "] WHERE ItemID = $id");
 
-        if ($result) return $result;
+        if ($result) {
+			return $result;
+		}
+        
         return [];
     }
 
