@@ -68,6 +68,10 @@ private $routes = [
             'view'  => 'auction-users',
             'title' => 'Gebruikers accounts'
         ],
+        '/auctions-manage'     => [
+            'view'  => 'auctions-manage',
+            'title' => 'Veilingen'
+        ],
         '/mijn-veilingen' => [
 			      'view'  => 'personal-auctions',
 			      'title' => 'Mijn veilingen',
