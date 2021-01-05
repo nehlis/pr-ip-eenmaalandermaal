@@ -18,46 +18,51 @@ class Router
     /**
      * @var string[]
      */
-private $routes = [
-            '/'           => [
-          'view'  => 'home',
-          'title' => 'Homepagina',
-          'auth'  => false,
+    private $routes = [
+        '/'           => [
+            'view'  => 'home',
+            'title' => 'Homepagina',
+            'auth'  => false,
         ],
         ''                => [
-          'view'  => 'home',
-          'title' => 'Homepagina',
-          'auth'  => false,
+            'view'  => 'home',
+            'title' => 'Homepagina',
+            'auth'  => false,
+        ],
+        '/hoewerkthet' => [
+            'view'  => 'information',
+            'title' => 'Hoe werkt het?',
+            'auth'  => false
         ],
         '/inloggen'       => [
-          'view'  => 'login',
-          'title' => 'Inloggen',
-          'auth'  => false,
+            'view'  => 'login',
+            'title' => 'Inloggen',
+            'auth'  => false,
         ],
         '/registreren'    => [
-          'view'  => 'register',
-          'title' => 'Registreren',
-          'auth'  => false,
+            'view'  => 'register',
+            'title' => 'Registreren',
+            'auth'  => false,
         ],
         '/uitloggen'      => [
-          'view'  => 'logout',
-          'title' => 'Uitloggen',
-          'auth'  => false,
+            'view'  => 'logout',
+            'title' => 'Uitloggen',
+            'auth'  => false,
         ],
         '/profiel'        => [
-          'view'  => 'profile',
-          'title' => 'Profiel',
-          'auth'  => true,
+            'view'  => 'profile',
+            'title' => 'Profiel',
+            'auth'  => true,
         ],
         '/veilingen'      => [
-          'view'  => 'auctions',
-          'title' => 'Veilingen',
-          'auth'  => false,
+            'view'  => 'auctions',
+            'title' => 'Veilingen',
+            'auth'  => false,
         ],
         '/veiling'        => [
-          'view'  => 'auction',
-          'title' => 'Veiling informatie',
-          'auth'  => false,
+            'view'  => 'auction',
+            'title' => 'Veiling informatie',
+            'auth'  => false,
         ],
         '/veilingen/toevoegen'     => [
             'view'  => 'add-auction',
@@ -73,10 +78,10 @@ private $routes = [
             'title' => 'Veilingen'
         ],
         '/mijn-veilingen' => [
-			      'view'  => 'personal-auctions',
-			      'title' => 'Mijn veilingen',
-			      'auth'  => true,
-		    ],
+            'view'  => 'personal-auctions',
+            'title' => 'Mijn veilingen',
+            'auth'  => true,
+        ],
         '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',
@@ -115,10 +120,10 @@ private $routes = [
     {
         foreach ($this->routes as $key => $route) {
             if ($this->request === $key) {
-            	if ($route['auth']) {
-            		AuthService::checkAuth();
-            	}
-            	
+                if ($route['auth']) {
+                    AuthService::checkAuth();
+                }
+
                 View::render(null, $route);
 
                 return;

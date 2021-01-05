@@ -18,7 +18,7 @@
             <div class="col-6 col-md">
                 <h5>Over ons</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Hoe werkt het?</a></li>
+                    <li><a class="text-muted" href="/hoewerkthet">Hoe werkt het?</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md">
