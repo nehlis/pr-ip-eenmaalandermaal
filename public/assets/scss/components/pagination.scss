@@ -1,0 +1,15 @@
+.custom-pagination {
+    width: 100%;
+    margin-top: 20px;
+}
+.custom-pagination form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // flex-direction: column;
+}
+
+.custom-pagination .perPage {
+    width: 110px;
+}

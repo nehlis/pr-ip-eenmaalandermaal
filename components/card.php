@@ -7,6 +7,7 @@
  * @var $price               string De huidige prijs van de veiling.
  * @var $destination         string De detailpagina URL die bij de card hoort.
  */
+
 ?>
 <div class="card">
     <div class="card-label px-3 py-2 rounded-left bg-primary" id="table-auctions">
@@ -16,7 +17,7 @@
             </div>
         </span>
     </div>
-    <img src="<?= $image ?>" class="card-img-top" alt="...">
+    <div class="card-thumbnail" style="background-image: url('<?= $image ?>');"></div>
     <div class="card-body">
         <h5 class="card-title text-uppercase mb-2"><?= $title ?? 'Titel niet gevonden' ?></h5>
         <div class="row">

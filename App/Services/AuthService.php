@@ -69,9 +69,13 @@ class AuthService
         // TODO: Welke data is nodig door de site?
         $_SESSION['id']   = $user['ID'];
         $_SESSION['name'] = "{$user['Firstname']} {$user['Lastname']}";
+        $_SESSION['isAdmin'] = $user['Admin'];
 
         $test = $this->db->customQuery("SELECT * FROM Seller WHERE AccountID = " . $user['ID']);
         $_SESSION['isSeller'] = isset($test) && count($test) > 0 ? true : false;
+
+
+
 
         // Redirect after successfully login
         Router::redirect($_GET['referrer'] ?? '/');
@@ -146,6 +150,16 @@ class AuthService
     {
         return isset($_SESSION['isSeller']) && $_SESSION['isSeller'];
     }
+
+    /**
+     * Is Admin - Check if user is a Admin.
+     * @return bool Returns TRUE if user is a Admin and FALSE otherwise.
+     */
+    public static function isAdmin(): bool
+    {
+        return isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'];
+    }
+
 
     /**
      * Check Auth - Checks whether the user is authenticated. If not the user gets redirected to the login page.
