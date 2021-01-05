@@ -1,52 +1,52 @@
 .footer {
-  margin-top: 3%;
-  padding: 2.5rem 0;
-  border-top: 1px solid #eee;
+    margin-top: 3%;
+    padding: 2.5rem 0;
+    border-top: 1px solid #eee;
 
-  &p:last-child {
-    margin-bottom: 0;
-  }
+    &p:last-child {
+        margin-bottom: 0;
+    }
 }
 
 .copyright {
-  padding: 28px 0;
+    padding: 28px 0;
 }
 
 .copyright span,
 .copyright a {
-  color: #eee;
-  -webkit-transition: all 0.3s linear;
-  -o-transition: all 0.3s linear;
-  transition: all 0.3s linear;
+    color: #eee;
+    -webkit-transition: all 0.3s linear;
+    -o-transition: all 0.3s linear;
+    transition: all 0.3s linear;
 }
 
 .copyright a:hover {
-  color: #007bff;
+    color: #007bff;
 }
 
 .copyright-menu ul {
-  text-align: right;
-  margin: 0;
-  padding-left: 0;
+    text-align: right;
+    margin: 0;
+    padding-left: 0;
 
-  @media screen and (max-width: 770px) {
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-  }
+    @media screen and (max-width: 770px) {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+    }
 }
 
 .copyright-menu li {
-  display: inline-block;
-  padding-left: 20px;
+    display: inline-block;
+    padding-left: 20px;
 
-  @media screen and (max-width: 770px) {
-    padding-left: 0;
-    margin-bottom: 10px;
+    @media screen and (max-width: 770px) {
+        padding-left: 0;
+        margin-bottom: 10px;
 
-    &:last-child {
-      margin-bottom: 0;
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
-  }
 }
