@@ -256,7 +256,7 @@ class ItemController implements IController
         $query = "SELECT I.ID, I.Title, I.EndDate, I.Thumbnail, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                   FROM Item I
                     LEFT JOIN Bidding B On I.ID = B.ItemID";
-        // asdasd
+        // Add Join for category filter
         if ($filters && $filters['categoryId']) {
             $query .= " LEFT JOIN CategoriesByItem CBI On CBI.ItemID = I.ID";
         }
@@ -265,6 +265,7 @@ class ItemController implements IController
                     AND AuctionClosed = 'false'
                     AND Active = 1";
 
+        // Apply filters
         if (isset($filters)) {
             foreach ($filters as $key => $value) {
                 switch ($key) {
