@@ -64,6 +64,10 @@ private $routes = [
             'title' => 'Veiling Toevoegen',
             'auth'  => true,
         ],
+        '/auction-users'     => [
+            'view'  => 'auction-users',
+            'title' => 'Gebruikers accounts'
+        ],
         '/mijn-veilingen' => [
 			      'view'  => 'personal-auctions',
 			      'title' => 'Mijn veilingen',
@@ -136,7 +140,7 @@ private $routes = [
         if (!isset($_GET['referrer']) && !in_array($_SERVER['REQUEST_URI'], $exceptions, true)) {
             return '?referrer=' . $_SERVER['REQUEST_URI'];
         }
-	
-		return '';
-	}
+
+        return '';
+    }
 }

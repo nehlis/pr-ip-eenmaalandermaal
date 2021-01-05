@@ -30,6 +30,9 @@ use App\Services\AuthService;
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <h6 class="dropdown-header">Account</h6>
                     <div class="dropdown-divider"></div>
+                    <?php if (AuthService::isLoggedIn() && AuthService::isAdmin()) : ?>
+                        <a class="dropdown-item" href="/auction-users">Gebruikers</a>
+                    <?php endif; ?>
                     <?php if (AuthService::isLoggedIn()) : ?>
                         <a class="dropdown-item" href="/profiel">Profiel</a>
                         <a class="dropdown-item" href="/mijn-veilingen">Veilingen</a>
