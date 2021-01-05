@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Services\AuthService;
+
 /**
  * Class Router
  * @package Core
@@ -17,57 +19,88 @@ class Router
      * @var string[]
      */
     private $routes = [
-        '/'            => [
+        '/'           => [
             'view'  => 'home',
             'title' => 'Homepagina',
+            'auth'  => false,
         ],
-        ''             => [
+        ''                => [
             'view'  => 'home',
             'title' => 'Homepagina',
+            'auth'  => false,
         ],
-        '/inloggen'    => [
+        '/hoewerkthet' => [
+            'view'  => 'information',
+            'title' => 'Hoe werkt het?',
+            'auth'  => false
+        ],
+        '/inloggen'       => [
             'view'  => 'login',
             'title' => 'Inloggen',
+            'auth'  => false,
         ],
-        '/registreren' => [
+        '/registreren'    => [
             'view'  => 'register',
             'title' => 'Registreren',
+            'auth'  => false,
         ],
-        '/uitloggen'   => [
+        '/uitloggen'      => [
             'view'  => 'logout',
             'title' => 'Uitloggen',
+            'auth'  => false,
         ],
-        '/profiel'     => [
+        '/profiel'        => [
             'view'  => 'profile',
             'title' => 'Profiel',
+            'auth'  => true,
         ],
-        '/veilingen'    => [
-            'view'  =>  'auctions',
-            'title' =>  'Veilingen',
+        '/veilingen'      => [
+            'view'  => 'auctions',
+            'title' => 'Veilingen',
+            'auth'  => false,
         ],
-        '/veiling'     => [
+        '/veiling'        => [
             'view'  => 'auction',
-            'title' => 'Veiling informatie'
+            'title' => 'Veiling informatie',
+            'auth'  => false,
         ],
         '/veilingen/toevoegen'     => [
             'view'  => 'add-auction',
-            'title' => 'Veiling Toevoegen'
+            'title' => 'Veiling Toevoegen',
+            'auth'  => true,
+        ],
+        '/auction-users'     => [
+            'view'  => 'auction-users',
+            'title' => 'Gebruikers accounts'
+        ],
+        '/auctions-manage'     => [
+            'view'  => 'auctions-manage',
+            'title' => 'Veilingen'
+        ],
+        '/mijn-veilingen' => [
+            'view'  => 'personal-auctions',
+            'title' => 'Mijn veilingen',
+            'auth'  => true,
         ],
         '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',
+            'auth'  => false,
         ],
         '/actest'      => [
             'view'  => 'actest',
             'title' => '[TEST] User Controller',
+            'auth'  => false,
         ],
         '/ictest'      => [
             'view'  => 'ictest',
             'title' => '[TEST] Item Controller',
+            'auth'  => false,
         ],
         '/pctest'      => [
             'view'  => 'pctest',
             'title' => '[TEST] Phonenumber Controller',
+            'auth'  => false,
         ],
     ];
 
@@ -87,6 +120,10 @@ class Router
     {
         foreach ($this->routes as $key => $route) {
             if ($this->request === $key) {
+                if ($route['auth']) {
+                    AuthService::checkAuth();
+                }
+
                 View::render(null, $route);
 
                 return;
@@ -112,7 +149,7 @@ class Router
         if (!isset($_GET['referrer']) && !in_array($_SERVER['REQUEST_URI'], $exceptions, true)) {
             return '?referrer=' . $_SERVER['REQUEST_URI'];
         }
-	
-		return '';
-	}
+
+        return '';
+    }
 }

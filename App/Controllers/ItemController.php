@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Interfaces\IController;
 use App\Core\Database;
+use App\Services\AuthService;
 use Error;
 
 /**
@@ -95,6 +96,27 @@ class ItemController implements IController
 
         throw new Error("Item met id = $id niet gevonden!");
     }
+	
+	/**
+	 * Get's all the Items that belong to a specific account.
+	 * @param int $accountId
+	 * @return array|null
+	 */
+	public function getByAccount(int $accountId): array
+	{
+		$result = $this->database->customQuery("
+			SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
+			FROM Item I
+			LEFT JOIN Bidding B On I.ID = B.ItemID
+			WHERE AuctionClosed = 'false'
+			AND StartDate < GETDATE() AND EndDate > GETDATE()
+			AND SellerID = $accountId
+			GROUP BY I.ID, I.Title, I.StartingPrice, I.EndDate
+            ORDER BY I.EndDate
+        ");
+		
+		return $result ?? [];
+	}
 
     /**
      * @return array|null   Returns array with all iterms
@@ -222,18 +244,21 @@ class ItemController implements IController
 
     /**
      * Function that is used to load up items in the auctions (veilingen) view. It accepts an array with filter data.
+     * @param   int         $pageNumber Number of page
+     * @param   int         $perPage    Number of items to display per page
      * @param   array       $filters    Associative array which contains filters for: title, price and categoryId
      * @return  array|null              Array containing all auctions found in the database
      * @throws  Error                   Throws and error if no auctions were found.
      */
     // TODO: Add pagination
-    public function getOverview(array $filters = null): ?array
+    public function getOverview(int $pageNumber, int $perPage, array $filters = null): ?array
     {
-        $query = "SELECT TOP(200) I.ID, I.Title, I.EndDate, I.Thumbnail, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
+        $query = "SELECT I.ID, I.Title, I.EndDate, I.Thumbnail, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                   FROM Item I
                     LEFT JOIN Bidding B On I.ID = B.ItemID
-                  WHERE 1 = 1
-                    AND AuctionClosed = 'false'";
+                  WHERE EndDate > CURRENT_TIMESTAMP
+                    AND AuctionClosed = 'false'
+                    AND Active = 1";
 
         if (isset($filters)) {
             foreach ($filters as $key => $value) {
@@ -254,10 +279,48 @@ class ItemController implements IController
         $query .= " GROUP BY I.ID, I.Title, I.Thumbnail, I.StartingPrice, I.EndDate
                     ORDER BY I.EndDate ASC";
 
+        // Pagination
+        $query .= " OFFSET (($pageNumber-1) * $perPage) ROWS FETCH NEXT $perPage ROWS ONLY";
+
+
+        $result = $this->database->customQuery($query);
+
+        if ($result) {
+			return $result;
+		}
+
+        throw new Error("Geen veilingen gevonden!");
+    }
+    /**
+     * Function that is used to load up items in the auctions (veilingen) view.
+     * @return  array|null              Array containing all auctions found in the database
+     * @throws  Error                   Throws and error if no auctions were found.
+     */
+    // TODO: Add pagination
+    public function getOverviewPagination(): ?array
+    {
+        $query = "SELECT TOP(50) * FROM Item ORDER BY ID DESC";
+
         $result = $this->database->customQuery($query);
 
         if ($result) return $result;
 
         throw new Error("Geen veilingen gevonden!");
+    }
+
+    /**
+     * Function that is used to set an item Inactive
+     * @return  void              
+     * @throws  Error                   Throws and error if no auctions were found.
+     */
+    public function toggleInactive(int $id): void
+    {
+        $item = $this->get($id);
+
+        $result = $this->database->update(self::$table, $id, ['Active' => !$item['Active']]);
+
+        if (!$result) {
+            throw new Error("Blokkeer status niet gewijzigd!");
+        }
     }
 }

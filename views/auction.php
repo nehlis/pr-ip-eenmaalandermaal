@@ -11,6 +11,7 @@ $ic = new ItemController;
 $bc = new BiddingController;
 $fc = new FileController;
 
+
 $isLoggedIn = AuthService::isLoggedIn();
 
 $auctionId = (int)$_GET['id'];
