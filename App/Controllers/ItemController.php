@@ -96,15 +96,15 @@ class ItemController implements IController
 
         throw new Error("Item met id = $id niet gevonden!");
     }
-	
-	/**
-	 * Get's all the Items that belong to a specific account.
-	 * @param int $accountId
-	 * @return array|null
-	 */
-	public function getByAccount(int $accountId): array
-	{
-		$result = $this->database->customQuery("
+
+    /**
+     * Get's all the Items that belong to a specific account.
+     * @param int $accountId
+     * @return array|null
+     */
+    public function getByAccount(int $accountId): array
+    {
+        $result = $this->database->customQuery("
 			SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
 			FROM Item I
 			LEFT JOIN Bidding B On I.ID = B.ItemID
@@ -114,9 +114,9 @@ class ItemController implements IController
 			GROUP BY I.ID, I.Title, I.StartingPrice, I.EndDate
             ORDER BY I.EndDate
         ");
-		
-		return $result ?? [];
-	}
+
+        return $result ?? [];
+    }
 
     /**
      * @return array|null   Returns array with all iterms
@@ -255,8 +255,13 @@ class ItemController implements IController
     {
         $query = "SELECT I.ID, I.Title, I.EndDate, I.Thumbnail, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                   FROM Item I
-                    LEFT JOIN Bidding B On I.ID = B.ItemID
-                  WHERE EndDate > CURRENT_TIMESTAMP
+                    LEFT JOIN Bidding B On I.ID = B.ItemID";
+        // asdasd
+        if ($filters && $filters['categoryId']) {
+            $query .= " LEFT JOIN CategoriesByItem CBI On CBI.ItemID = I.ID";
+        }
+
+        $query .= " WHERE EndDate > CURRENT_TIMESTAMP
                     AND AuctionClosed = 'false'
                     AND Active = 1";
 
@@ -270,7 +275,7 @@ class ItemController implements IController
                         $query .= " AND IIF(B.Amount IS NULL, I.StartingPrice, B.Amount) BETWEEN $value[0] AND $value[1]";
                         break;
                     case 'categoryId':
-                        $query .= " AND I.CategoryID = $value";
+                        $query .= " AND CBI.CategoryID = $value";
                         break;
                 }
             }
@@ -282,12 +287,11 @@ class ItemController implements IController
         // Pagination
         $query .= " OFFSET (($pageNumber-1) * $perPage) ROWS FETCH NEXT $perPage ROWS ONLY";
 
-
         $result = $this->database->customQuery($query);
 
         if ($result) {
-			return $result;
-		}
+            return $result;
+        }
 
         throw new Error("Geen veilingen gevonden!");
     }
