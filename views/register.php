@@ -24,7 +24,7 @@ $phonenumbers = array();
 
 if (isset($_POST["phoneNumbers"]) && ($amountPhonenumbers = count($_POST["phoneNumbers"])) > 0) {
     for ($i = 0; $i < $amountPhonenumbers; $i++) {
-        if (trim($_POST["phoneNumbers"][$i]) !== '') {
+        if (!empty(trim($_POST["phoneNumbers"][$i]))) {
             $phonenumbers[] = $_POST["phoneNumbers"][$i];
         }
     }
