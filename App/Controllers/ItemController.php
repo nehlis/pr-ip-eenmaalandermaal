@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Interfaces\IController;
 use App\Core\Database;
+use App\Services\AuthService;
 use Error;
 
 /**
@@ -95,6 +96,27 @@ class ItemController implements IController
 
         throw new Error("Item met id = $id niet gevonden!");
     }
+	
+	/**
+	 * Get's all the Items that belong to a specific account.
+	 * @param int $accountId
+	 * @return array|null
+	 */
+	public function getByAccount(int $accountId): array
+	{
+		$result = $this->database->customQuery("
+			SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
+			FROM Item I
+			LEFT JOIN Bidding B On I.ID = B.ItemID
+			WHERE AuctionClosed = 'false'
+			AND StartDate < GETDATE() AND EndDate > GETDATE()
+			AND SellerID = $accountId
+			GROUP BY I.ID, I.Title, I.StartingPrice, I.EndDate
+            ORDER BY I.EndDate
+        ");
+		
+		return $result ?? [];
+	}
 
     /**
      * @return array|null   Returns array with all iterms
@@ -263,7 +285,9 @@ class ItemController implements IController
 
         $result = $this->database->customQuery($query);
 
-        if ($result) return $result;
+        if ($result) {
+			return $result;
+		}
 
         throw new Error("Geen veilingen gevonden!");
     }
