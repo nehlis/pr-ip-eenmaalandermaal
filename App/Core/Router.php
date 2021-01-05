@@ -69,17 +69,24 @@ class Router
             'title' => 'Veiling Toevoegen',
             'auth'  => true,
         ],
-        '/auction-users'     => [
+        '/veilingen-gebruikers'     => [
             'view'  => 'auction-users',
-            'title' => 'Gebruikers accounts'
+            'title' => 'Gebruikers accounts',
+            'auth'  => true,
         ],
-        '/auctions-manage'     => [
+        '/veilingen-beheren'     => [
             'view'  => 'auctions-manage',
-            'title' => 'Veilingen'
+            'title' => 'Veilingen beheren',
+            'auth'  => true,
         ],
         '/mijn-veilingen' => [
             'view'  => 'personal-auctions',
             'title' => 'Mijn veilingen',
+            'auth'  => true,
+        ],
+        '/registratie-verkoper' => [
+            'view'  => 'seller-registration',
+            'title' => 'Registratie verkoper',
             'auth'  => true,
         ],
         '/404'         => [

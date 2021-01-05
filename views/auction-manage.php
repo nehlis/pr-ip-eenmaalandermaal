@@ -2,9 +2,9 @@
 
 use App\Core\Router;
 use App\Services\AuthService;
-use App\Controllers\AccountController;
+use App\Controllers\ItemController;
 
-$ac = new AccountController();
+$ic = new ItemController();
 
 
 // Redirect if already logged in
@@ -12,13 +12,17 @@ if (!AuthService::isLoggedIn() && !AuthService::isAdmin()) {
     Router::redirect('/inloggen?referrer=' . $_SERVER['REQUEST_URI']);
 }
 
-$accounts = $ac->getOverview();
+$items = $ic->getOverviewPagination();
 
-if (isset($_POST['AccountID'])) {
-
-    $accountID = $_POST['AccountID'];
-    $accountBlocked = $_POST['Blocked'];
-    $result = $ac->toggleBlocked($accountID);
+if (isset($_POST['ItemID'])) {
+    $itemID = $_POST['ItemID'];
+    try {
+        $result = $ic->toggleInactive($ItemID);
+        $success = 'Veilig met ID ' . $ItemID . ' aangepast!';
+        unset($_POST);
+    } catch (Error $error) {
+        $errors = $error->getMessage();
+    }
 
     Router::redirect($_SERVER['REQUEST_URI']);
 }
@@ -31,8 +35,8 @@ if (isset($_POST['AccountID'])) {
                 <h1 class="h3 m-0 font-weight-bold">Gebruikers beheren</h1>
             </div>
 
-            <div class="alert alert-danger  <?= $errors['add'] ? 'd-block' : 'd-none' ?>">
-                <?= $errors['add']; ?>
+            <div class="alert alert-danger  <?= $errors ? 'd-block' : 'd-none' ?>">
+                <?= $errors; ?>
             </div>
 
             <div class="alert alert-success  <?= $success ? 'd-block' : 'd-none' ?>">
@@ -42,26 +46,26 @@ if (isset($_POST['AccountID'])) {
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Voornaam</th>
-                        <th scope="col">Achternaam</th>
-                        <th scope="col">Actie</th>
+                        <th scope="col">Titel</th>
+                        <th scope="col">VerkopersID</th>
+                        <th scope="col">VeilingGesloten?</th>
+                        <th scope="col">Actief</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($accounts as $account) : ?>
+                    <?php foreach ($items as $item) : ?>
                         <tr>
-                            <th scope="row"> <?= $account['ID'] ?></th>
-                            <td><?= $account['Email'] ?></td>
-                            <td><?= $account['Username'] ?></td>
-                            <td><?= $account['Firstname'] ?></td>
-                            <td><?= $account['Lastname'] ?></td>
+                            <th scope="row"> <?php echo $item['ID'] ?></th>
+                            <td><?php echo $item['Title'] ?></td>
+
+                            <td><?php // TODO: Adding SellerID to Seller Query?
+                                echo $item['SellerID'] ?></td>
+                            <td><?php echo $item['AuctionClosed'] ? 'Ja' : 'Nee' ?></td>
                             <td>
                                 <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
-                                    <input type="hidden" name="AccountID" value="<?= $account['ID'] ?>" />
-                                    <button type="submit" class="btn btn-<?= $account['Blocked'] ? 'danger' : 'warning' ?> btn-sm" name="Blocked" value='<?= $account['Blocked'] ?>'>
-                                        <i class="far fa-lg <?= $account['Blocked'] ? 'fa-lock' : 'fa-lock-open' ?>"></i>
+                                    <input type="hidden" name="ItemID" value="<?= $item['ID'] ?>" />
+                                    <button type="submit" class="btn btn-<?= $item['Active'] ? 'warning' : 'danger' ?> btn-sm" name="Active" value='<?= $item['Active'] ?>'>
+                                        <i class="far fa-lg <?= $item['Active'] ? 'fa-lock-open' : 'fa-lock' ?>"></i>
                                     </button>
                                 </form>
                             </td>
