@@ -33,7 +33,7 @@ if (count($_POST) > 0) {
     $data['SendInstructions'] = $_POST['shippingInstructions'];
     $data['Duration'] = $_POST['duration'];
     $data['SellerID'] = $_SESSION['id'];
-    $data['Categories'] = [$_POST['categories']];
+    $data['Categories'] = $_POST['categories'];
 
     $errors = [];
 
@@ -119,7 +119,7 @@ if (count($_POST) > 0) {
             <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="categories" class="form-label">Rubriek</label>
-                    <select class="form-select form-control" multiple aria-label="multiple select example" name="categories" required>
+                    <select class="form-select form-control" multiple aria-label="multiple select example" name="categories[]" required>
                         <?php
                         foreach ($categories as $category) :
                         ?>
