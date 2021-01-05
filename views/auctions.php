@@ -5,6 +5,11 @@ use App\Controllers\ItemController;
 
 $ic = new ItemController();
 
+// Handle Pagination
+$pageNumber = isset($_GET['pageNumber']) && is_numeric($_GET['pageNumber']) && $_GET['pageNumber'] > 0 ? (int) $_GET['pageNumber'] : 1;
+$perPage = isset($_GET['perPage']) && is_numeric($_GET['perPage']) && $_GET['perPage'] <= 96 && $_GET['perPage'] > 0 ? (int) $_GET['perPage'] : 12;
+
+
 // Validation & Sanization
 if (isset($_GET['searchValue']) && !empty($_GET['searchValue'])) {
     $filters['searchValue'] = $_GET['searchValue'];
@@ -43,13 +48,12 @@ if (isset($filters)) {
 if (count($errors) === 0) {
     // Search logic
     try {
-        $auctions = $ic->getOverview($filters);
+        $auctions = $ic->getOverview($pageNumber, $perPage, $filters);
     } catch (Error $err) {
         $errors['overview'] = $err->getMessage();
     }
 }
 ?>
-
 <main role="main" class="container">
     <div class="row">
         <div class=" col-md-4 col-lg-3 mt-3 mt-md-5">
@@ -131,6 +135,43 @@ if (count($errors) === 0) {
                 </div>
             </div>
         <?php endif; ?>
+
+        <!-- Pagination -->
+        <div class="custom-pagination">
+            <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="get">
+                <!-- Page number -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination mb-0">
+                        <li class="page-item <?php if ($pageNumber === 1) echo 'disabled' ?>">
+                            <button type="submit" name="pageNumber" class="page-link" tabindex="-1" value="<?= $pageNumber - 1 ?>" <?php if ($pageNumber === 1) echo 'disabled' ?>>Vorige</a>
+                        </li>
+                        <li class=" page-item disabled">
+                            <a class="page-link" href="#"><?= $pageNumber ?></a>
+                        </li>
+                        <li class="page-item <?php if (!isset($auctions) || count($auctions) < $perPage) 'disabled' ?>">
+                            <button type="submit" name="pageNumber" class="page-link" value="<?= $pageNumber + 1 ?>" <?php if (!isset($auctions) || count($auctions) < $perPage) 'disabled' ?>">Volgende</a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+
+                <!-- Re-apply filters -->
+                <input type="hidden" name="title" value="<?= $filters['title'] ?? '' ?>">
+
+                <!-- Display per page -->
+                <div class="input-group ml-3 perPage">
+                    <select name="perPage" class="form-control">
+                        <option value="12" <?php if ($perPage === 12) echo 'selected' ?>>12</option>
+                        <option value="24" <?php if ($perPage === 24) echo 'selected' ?>>24</option>
+                        <option value="48" <?php if ($perPage === 48) echo 'selected' ?>>48</option>
+                        <option value="96" <?php if ($perPage === 96) echo 'selected' ?>>96</option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-primary"><i class="fas fa-sync"></i></button>
+                </div>
+
+            </form>
+        </div>
     </div>
     </div>
 </main>

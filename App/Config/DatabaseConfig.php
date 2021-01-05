@@ -16,11 +16,9 @@ class DatabaseConfig
     public static function getDSN(): string
     {
         if (IS_WINDOWS) {
-            $dsn = "sqlsrv:server=" . self::HOST . "; Database=" . self::DATABASE;
-        } else {
-            $dsn = "dblib:host=" . self::HOST . ";dbname=" . self::DATABASE;
-        }
+			return "sqlsrv:server=" . self::HOST . "; Database=" . self::DATABASE;
+		}
         
-        return $dsn;
+        return "dblib:host=" . self::HOST . ";dbname=" . self::DATABASE;
     }
 }
