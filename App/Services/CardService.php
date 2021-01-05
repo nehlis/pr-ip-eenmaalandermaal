@@ -15,7 +15,10 @@ class CardService
      */
     public static function getThumbnail(string $path): string
     {
-        if ($path == REMOTE_URL || $path == REMOTE_URL . "/thumbnails/" || $path == NULL) return PLACEHOLDER;
-        return $path;
+        return $path == REMOTE_URL
+            || $path == REMOTE_URL . "/thumbnails/"
+            || $path == NULL
+            ? PLACEHOLDER
+            : $path;
     }
 }
