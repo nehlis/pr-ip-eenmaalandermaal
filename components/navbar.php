@@ -36,7 +36,7 @@ use App\Services\AuthService;
                     <?php endif; ?>
                     <?php if (AuthService::isLoggedIn()) : ?>
                         <a class="dropdown-item" href="/profiel">Profiel</a>
-
+                        <a class="dropdown-item" href="/mijn-veilingen">Veilingen</a>
                         <a class="dropdown-item" href="/uitloggen">Uitloggen</a>
                     <?php else : ?>
                         <a class="dropdown-item" href="/inloggen<?= Router::getReferrer(['/', '/inloggen', '/registreren', '/uitloggen']) ?>">

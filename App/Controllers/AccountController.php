@@ -201,9 +201,7 @@ class AccountController implements IController
     // TODO: Add pagination
     public function getOverview(): ?array
     {
-        $query = "SELECT TOP(50) * FROM Account";
-
-        $result = $this->database->customQuery($query);
+        $result = $this->database->customQuery("SELECT TOP(50) * FROM Account");
 
         if ($result) return $result;
 

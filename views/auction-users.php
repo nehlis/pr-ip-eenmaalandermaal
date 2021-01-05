@@ -16,14 +16,11 @@ $accounts = $ac->getOverview();
 
 if (isset($_POST['AccountID'])) {
 
-    $AccountID = $_POST['AccountID'];
-    $AccountBlocked = $_POST['Blocked'];
-    if ($AccountBlocked) {
-        $result = $ac->toggleBlocked($AccountID);
-    } else {
-        $result = $ac->toggleBlocked($AccountID);
-    }
-    echo "<meta http-equiv='refresh' content='0'>";
+    $accountID = $_POST['AccountID'];
+    $accountBlocked = $_POST['Blocked'];
+    $result = $ac->toggleBlocked($accountID);
+
+    Router::redirect($_SERVER['REQUEST_URI']);
 }
 
 ?>
@@ -58,11 +55,11 @@ if (isset($_POST['AccountID'])) {
                 <tbody>
                     <?php foreach ($accounts as $account) : ?>
                         <tr>
-                            <th scope="row"> <?php echo $account['ID'] ?></th>
-                            <td><?php echo $account['Email'] ?></td>
-                            <td><?php echo $account['Username'] ?></td>
-                            <td><?php echo $account['Firstname'] ?></td>
-                            <td><?php echo $account['Lastname'] ?></td>
+                            <th scope="row"> <?= $account['ID'] ?></th>
+                            <td><?= $account['Email'] ?></td>
+                            <td><?= $account['Username'] ?></td>
+                            <td><?= $account['Firstname'] ?></td>
+                            <td><?= $account['Lastname'] ?></td>
                             <td>
                                 <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
                                     <input type="hidden" name="AccountID" value="<?= $account['ID'] ?>" />
