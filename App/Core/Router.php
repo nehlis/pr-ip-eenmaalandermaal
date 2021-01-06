@@ -79,6 +79,11 @@ class Router
             'title' => 'Veilingen beheren',
             'auth'  => true,
         ],
+        '/accodeer-verkopers' => [
+            'view'  => 'grant-sellers',
+            'title' => 'Verkopers accoderen',
+            'auth'  => true,
+        ],
         '/mijn-veilingen' => [
             'view'  => 'personal-auctions',
             'title' => 'Mijn veilingen',
