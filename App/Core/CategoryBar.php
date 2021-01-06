@@ -67,8 +67,8 @@ class CategoryBar
                         </a>";
 
             if (!empty($category['children'])) {
-            	$direction = !empty($all) ? 'down' : 'right';
-				$this->markup .= "<i class='fas fa-chevron-{$direction} a-category-bar__icon'></i>";
+            	$direction = $all ? 'down' : 'right';
+				$this->markup .= "<i class='fas fa-chevron-$direction a-category-bar__icon'></i>";
             }
 
             $this->markup .= "</div>";
