@@ -29,8 +29,8 @@ if (isset($_POST) && count($_POST) > 0) {
     $accountController->deletePhoneNumberByUserId($userId);
 
     // Edit each phone if post is set.
-    if (is_array($_POST["phoneNumbers"])) {
-        foreach ($_POST["phoneNumbers"] as $number) {
+    if( is_array( $_POST["phoneNumbers"] ) ) {
+        foreach( $_POST["phoneNumbers"] as $number ) {
             $accountController->addPhoneNumberByUser(['AccountID' => $userId, 'Phonenumber' => $number]);
         }
     }

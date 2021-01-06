@@ -70,7 +70,11 @@ class AuthService
         $_SESSION['id']   = $user['ID'];
         $_SESSION['name'] = "{$user['Firstname']} {$user['Lastname']}";
         $_SESSION['isAdmin'] = $user['Admin'];
-        $_SESSION['isSeller'] = $user['Seller'];
+
+        $test = $this->db->customQuery("SELECT * FROM Seller WHERE AccountID = " . $user['ID']);
+        $_SESSION['isSeller'] = isset($test) && count($test) > 0 ? true : false;
+
+
 
 
         // Redirect after successfully login

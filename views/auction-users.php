@@ -22,7 +22,10 @@ if (isset($_POST['AccountID'])) {
 
     Router::redirect($_SERVER['REQUEST_URI']);
 }
+
 ?>
+
+
 
 <main role="main" class="container mt-5">
     <div class="row d-flex justify-content-center">
@@ -38,7 +41,7 @@ if (isset($_POST['AccountID'])) {
             <div class="alert alert-success  <?= $success ? 'd-block' : 'd-none' ?>">
                 <?= $success; ?>
             </div>
-            <table class="table table-hover">
+            <table class="table">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">ID</th>
