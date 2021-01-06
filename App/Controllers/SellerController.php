@@ -42,7 +42,22 @@ class SellerController implements IController
             return $this->get($id);
         }
 
-        throw new Error('Account niet aangemaakt!');
+        throw new Error('Verzoek niet ingediend!');
+    }
+
+
+    /**
+     * @return array|null
+     */
+    public function getSellersToValidate(): ?array
+    {
+        $result = $this->database->customQuery("SELECT * FROM Seller INNER JOIN Account ON Seller.AccountID = Account.ID  WHERE AccountID in (SELECT ID FROM Account WHERE Seller = 0)");
+
+        if ($result) {
+            return $result;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -51,14 +66,14 @@ class SellerController implements IController
      */
     public function get(int $id): ?array
     {
-        $result = $this->database->getByColumn(self::$table, 'AccountID', $id)[0];
+        $result = $this->database->getByColumn(self::$table, 'AccountID', $id);
         if ($result) {
-            return $result;
+            return $result[0];
         } else {
-            return null;
+            return [];
         }
 
-        throw new Error("Account met id = $id niet gevonden!");
+        throw new Error("Verkoper met AccountID = $id niet gevonden!");
     }
 
     /**
@@ -72,7 +87,7 @@ class SellerController implements IController
             return $result;
         }
 
-        throw new Error("Geen vragen gevonden!");
+        throw new Error("Geen verkopers gevonden!");
     }
 
     /**
@@ -106,6 +121,25 @@ class SellerController implements IController
         }
 
         $result = $this->database->delete(self::$table, $id);
+
+        if ($result) {
+            return $seller;
+        }
+
+        throw new Error("Verkoper waarvan ID = $id niet verwijderd!");
+    }
+
+    /**
+     * @param int $id
+     * @return array|null
+     */
+    public function deleteByAccountID(int $id): ?array
+    {
+        if (!$seller = $this->get($id)) {
+            return null;
+        }
+
+        $result = $this->database->customQuery("DELETE FROM Seller WHERE AccountID = " . $id);
 
         if ($result) {
             return $seller;
