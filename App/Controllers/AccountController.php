@@ -192,6 +192,23 @@ class AccountController implements IController
         }
     }
 
+    /**
+     * Function that is used to toggle a seller true/false
+     * @param int                       Account ID
+     * @return  void                    Returns nothing
+     * @throws  Error                   Throws and error if no users were found.
+     */
+    public function toggleSeller(int $id): void
+    {
+        $user = $this->get($id);
+
+        $result = $this->database->update(self::$table, $id, ['Seller' => !$user['Seller']]);
+
+        if (!$result) {
+            throw new Error("Seller status niet gewijzigd!");
+        }
+    }
+
 
     /**
      * Function that is used to load up users in the auction users view.
