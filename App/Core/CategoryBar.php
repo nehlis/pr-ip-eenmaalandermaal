@@ -61,10 +61,10 @@ class CategoryBar
         foreach ($categories as $id => $category) {
             $this->markup .=
                 "<li class='a-category-bar__list-item js-category-bar'>
-                    <div>
-                        <a href='/veilingen?categorieId=$id' class='a-category-bar__link'>
-                            {$category['name']}
-                        </a>";
+                  <div>
+                    <a href='/veilingen?categorieId=$id' class='a-category-bar__link'>
+                      {$category['name']}
+                    </a>";
 
             if (!empty($category['children'])) {
             	$direction = $all ? 'down' : 'right';
