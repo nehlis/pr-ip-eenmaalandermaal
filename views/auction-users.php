@@ -38,7 +38,7 @@ if (isset($_POST['AccountID'])) {
             <div class="alert alert-success  <?= $success ? 'd-block' : 'd-none' ?>">
                 <?= $success; ?>
             </div>
-            <table class="table">
+            <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">ID</th>
