@@ -16,18 +16,44 @@ if (AuthService::isSeller()) {
     Router::redirect('/profiel');
 }
 
-$userId = $_SESSION['id'];
+$AccountID = $_SESSION['id'];
 $name = $_SESSION['name'];
-$seller = $sellerController->get($userId);
+$seller = $sellerController->get($AccountID);
+
+if (isset($_POST["Bankname"]) && isset($_POST["BankAccountNumber"]) && isset($_POST["CreditcardNumber"]) && isset($_POST["ControlOptionName"])) {
+    $Bankname = $_POST["Bankname"];
+    $BankAccountNumber = $_POST["BankAccountNumber"];
+    $CreditcardNumber = $_POST["CreditcardNumber"];
+    $ControlOptionName = $_POST["ControlOptionName"];
+
+
+    $insertValuesSQL = [
+        "AccountID" => $AccountID,
+        "Bankname" => $Bankname,
+        "BankAccountNumber" => $BankAccountNumber,
+        "CreditcardNumber" => $CreditcardNumber,
+        "ControlOptionName" => $ControlOptionName
+    ];
+    try {
+        $success = $sellerController->create($insertValuesSQL);
+        unset($_POST);
+    } catch (Error $error) {
+        $errors['created'] = $error->getMessage();
+    }
+
+    Router::redirect($_SERVER['REQUEST_URI'] . "/?success=account%aangemaakt!");
+}
+
 ?>
 
 <div class="signup-wrapper py-5">
-    <form class="form-signup py-5" onsubmit="convertJsToPhp();" action="/profiel" method="POST">
-        <div class="alert py-3 alert-success <?= isset($edited) ? 'd-block' : 'd-none' ?>" role="alert">
-            Aanpassing succesvol
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    <form class="form-signup py-5" action="/registratie-verkoper" method="POST">
+        <div class="alert alert-danger  <?= $errors['created'] ? 'd-block' : 'd-none' ?>">
+            <?= $errors['created']; ?>
+        </div>
+
+        <div class="alert alert-success  <?= $success ? 'd-block' : 'd-none' ?>">
+            <?= $success; ?>
         </div>
         <div class="alert alert-primary text-center text-uppercase">
             <h1 class="h3 m-0 font-weight-bold">Registratie verkoper voor:<br><?= $name ?></h1>
@@ -36,23 +62,23 @@ $seller = $sellerController->get($userId);
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="bankname">Banknaam</label>
-                    <input type="text" class="form-control" value="<?php $seller['Bankname'] ?? '' ?>" name="Bankname" id="bankname" <?= $seller['Bankname'] ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" value="<?= isset($seller['Bankname']) ? $seller['Bankname'] : ''; ?>" name="Bankname" id="bankname" <?= isset($seller['Bankname']) ? 'disabled' : ''; ?> required>
                 </div>
                 <div class="form-group">
                     <label for="bankaccountnumber">Rekeningnummer</label>
-                    <input type="text" class="form-control" value="<?= $seller['BankAccountNumber'] ?? '' ?>" name="BankAccountNumber" id="bankaccountnumber" <?= $seller['BankAccountNumber'] ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" value="<?= isset($seller['BankAccountNumber']) ? $seller['BankAccountNumber'] : '' ?>" name="BankAccountNumber" id="bankaccountnumber" <?= isset($seller['BankAccountNumber']) ? 'disabled' : '' ?> required>
                 </div>
                 <div class="form-group">
                     <label for="creditcardnumber">Creditcardnummer</label>
-                    <input type="text" class="form-control" name="CreditcardNumber" value="<?= $seller['CreditcardNumber'] ?? '' ?>" id="creditcardnumber" <?= $seller['CreditcardNumber'] ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" name="CreditcardNumber" value="<?= isset($seller['CreditcardNumber']) ? $seller['CreditcardNumber'] : '' ?>" id="creditcardnumber" <?= isset($seller['CreditcardNumber']) ? 'disabled' : '' ?> required>
                 </div>
                 <div class="form-group">
                     <label for="controloptionname">Controle optie</label>
-                    <input type="text" class="form-control" value="<?= $seller['ControlOptionName'] ?? '' ?>" name="ControlOptionName" id="controloptionname" <?= $seller['ControlOptionName'] ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" value="<?= isset($seller['ControlOptionName']) ? $seller['ControlOptionName'] : '' ?>" name="ControlOptionName" id="controloptionname" <?= isset($seller['ControlOptionName']) ? 'disabled' : '' ?> required>
                 </div>
             </div>
 
-            <?php if ($seller['AccountID']) : ?>
+            <?php if (isset($seller['AccountID'])) : ?>
                 <button type="submit" disabled class="btn btn-primary mt-3 w-100">Wachten op goedkeuring...</button>
             <?php else : ?>
                 <button type="submit" class="btn btn-primary mt-3 w-100">Verzoek indienen</button>
