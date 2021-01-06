@@ -2,6 +2,11 @@
 
 use App\Core\Router;
 use App\Services\AuthService;
+use App\Controllers\SellerController;
+
+$sellerController  = new SellerController;
+
+$sellersToValidate = $sellerController->getSellersToValidate();
 
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,6 +44,7 @@ use App\Services\AuthService;
                     <?php if (AuthService::isLoggedIn() && AuthService::isAdmin()) : ?>
                         <a class="dropdown-item" href="/veilingen-gebruikers">Beheer Gebruikers</a>
                         <a class="dropdown-item" href="/veilingen-beheren">Beheer veilingen</a>
+                        <a class="dropdown-item" href="/accodeer-verkopers">Accodeer verkopers <span class="badge badge-primary badge-pill"><?= count($sellersToValidate) ?></span></a>
                     <?php endif; ?>
                     <?php if (AuthService::isLoggedIn()) : ?>
                         <a class="dropdown-item" href="/profiel">Profiel</a>
