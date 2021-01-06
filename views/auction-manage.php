@@ -32,7 +32,7 @@ if (isset($_POST['ItemID'])) {
     <div class="row d-flex justify-content-center">
         <div class="col-md-12">
             <div class="alert alert-primary text-center text-uppercase">
-                <h1 class="h3 m-0 font-weight-bold">Gebruikers beheren</h1>
+                <h1 class="h3 m-0 font-weight-bold">Veilingen beheren</h1>
             </div>
 
             <div class="alert alert-danger  <?= $errors ? 'd-block' : 'd-none' ?>">
