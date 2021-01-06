@@ -2,6 +2,11 @@
 
 use App\Core\Router;
 use App\Services\AuthService;
+use App\Controllers\SellerController;
+
+$sellerController  = new SellerController;
+
+$sellersToValidate = $sellerController->getSellersToValidate();
 
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -21,7 +26,13 @@ use App\Services\AuthService;
             </div>
         </form>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item mr-2"><a href="/veilingen/toevoegen" class="btn btn-success">Veiling Toevoegen</a></li>
+            <li class="nav-item mr-2">
+                <?php if (AuthService::isLoggedIn() && AuthService::isSeller() || !AuthService::isLoggedIn()) : ?>
+                    <a href="/veilingen/toevoegen" class="btn btn-success">Veiling Toevoegen</a>
+                <?php else : ?>
+                    <a href="/registratie-verkoper" class="btn btn-warning">Registreer als verkoper</a>
+                <?php endif; ?>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-user"></i>
@@ -31,12 +42,13 @@ use App\Services\AuthService;
                     <h6 class="dropdown-header">Account</h6>
                     <div class="dropdown-divider"></div>
                     <?php if (AuthService::isLoggedIn() && AuthService::isAdmin()) : ?>
-                        <a class="dropdown-item" href="/auction-users">Gebruikers</a>
-                        <a class="dropdown-item" href="/auctions-manage">Veilingen</a>
+                        <a class="dropdown-item" href="/veilingen-gebruikers">Beheer Gebruikers</a>
+                        <a class="dropdown-item" href="/veilingen-beheren">Beheer veilingen</a>
+                        <a class="dropdown-item" href="/accodeer-verkopers">Accodeer verkopers <span class="badge badge-primary badge-pill"><?= count($sellersToValidate) ?></span></a>
                     <?php endif; ?>
                     <?php if (AuthService::isLoggedIn()) : ?>
                         <a class="dropdown-item" href="/profiel">Profiel</a>
-                        <a class="dropdown-item" href="/mijn-veilingen">Veilingen</a>
+                        <a class="dropdown-item" href="/mijn-veilingen">Mijn Veilingen</a>
                         <a class="dropdown-item" href="/uitloggen">Uitloggen</a>
                     <?php else : ?>
                         <a class="dropdown-item" href="/inloggen<?= Router::getReferrer(['/', '/inloggen', '/registreren', '/uitloggen']) ?>">
