@@ -72,7 +72,6 @@ class AuthService
         $_SESSION['isAdmin'] = $user['Admin'];
         $_SESSION['isSeller'] = $user['Seller'];
 
-
         // Redirect after successfully login
         Router::redirect($_GET['referrer'] ?? '/');
     }
