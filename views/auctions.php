@@ -2,6 +2,7 @@
 
 use App\Core\Component;
 use App\Controllers\ItemController;
+use App\Controllers\CategoryController;
 use App\Services\CardService;
 
 $ic = new ItemController();
@@ -9,6 +10,12 @@ $ic = new ItemController();
 // Handle Pagination
 $pageNumber = isset($_GET['pageNumber']) && is_numeric($_GET['pageNumber']) && $_GET['pageNumber'] > 0 ? (int) $_GET['pageNumber'] : 1;
 $perPage = isset($_GET['perPage']) && is_numeric($_GET['perPage']) && $_GET['perPage'] <= 96 && $_GET['perPage'] > 0 ? (int) $_GET['perPage'] : 12;
+
+// Get category name if provided
+if ($_GET['categorieId']) {
+    $cc = new CategoryController();
+    $categoryName = $cc->get($_GET['categorieId'])['Name'];
+}
 
 
 // Validation & Sanization
@@ -56,6 +63,13 @@ if (count($errors) === 0) {
 }
 ?>
 <main role="main" class="container">
+    <div class="row mt-5 mx-3 text-center">
+        <div class="col alert alert-primary">
+            <h1>
+                <?= $categoryName ?>
+            </h1>
+        </div>
+    </div>
     <div class="row">
         <div class=" col-md-4 col-lg-3 mt-3 mt-md-5">
             <div class="row d-flex justify-content-between align-items-center px-4">

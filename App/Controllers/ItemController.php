@@ -255,11 +255,17 @@ class ItemController implements IController
     {
         $query = "SELECT I.ID, I.Title, I.EndDate, I.Thumbnail, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
                   FROM Item I
-                    LEFT JOIN Bidding B On I.ID = B.ItemID
-                  WHERE EndDate > CURRENT_TIMESTAMP
+                    LEFT JOIN Bidding B On I.ID = B.ItemID";
+        // Add Join for category filter
+        if ($filters && $filters['categoryId']) {
+            $query .= " LEFT JOIN CategoriesByItem CBI On CBI.ItemID = I.ID";
+        }
+
+        $query .= " WHERE EndDate > CURRENT_TIMESTAMP
                     AND AuctionClosed = 'false'
                     AND Active = 1";
 
+        // Apply filters
         if (isset($filters)) {
             foreach ($filters as $key => $value) {
                 switch ($key) {
@@ -270,7 +276,7 @@ class ItemController implements IController
                         $query .= " AND IIF(B.Amount IS NULL, I.StartingPrice, B.Amount) BETWEEN $value[0] AND $value[1]";
                         break;
                     case 'categoryId':
-                        $query .= " AND I.CategoryID = $value";
+                        $query .= " AND CBI.CategoryID = $value";
                         break;
                 }
             }
@@ -281,7 +287,6 @@ class ItemController implements IController
 
         // Pagination
         $query .= " OFFSET (($pageNumber-1) * $perPage) ROWS FETCH NEXT $perPage ROWS ONLY";
-
 
         $result = $this->database->customQuery($query);
 
