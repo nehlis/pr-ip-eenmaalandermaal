@@ -41,7 +41,7 @@ if (isset($_POST["Bankname"]) && isset($_POST["BankAccountNumber"]) && isset($_P
         $errors['created'] = $error->getMessage();
     }
 
-    Router::redirect($_SERVER['REQUEST_URI'] . "/?success=account%aangemaakt!");
+    Router::redirect($_SERVER['REQUEST_URI'] . "?success=account%aangemaakt!");
 }
 
 ?>
