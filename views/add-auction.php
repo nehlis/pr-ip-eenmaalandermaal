@@ -83,7 +83,7 @@ if (count($_POST) > 0) {
                             $errors['uploadImage'] = "Afbeelding(en) zijn niet geupload, probeer het later nog eens!";
                         }
                     } else {
-                        $errors['uploadImage'] = "Bestand mag alleen " . print_r($allowTypes) . " zijn!";
+                        $errors['uploadImage'] = "Bestand mag alleen " . implode(", ", $allowTypes) . " zijn!";
                     }
                 }
             }
