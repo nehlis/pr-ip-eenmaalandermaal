@@ -63,7 +63,7 @@ if (count($errors) === 0) {
 }
 ?>
 <main role="main" class="container">
-    <div class="row mt-5 mx-3 text-center">
+    <div class="row mt-5 mx-3 text-center <?= $categoryName ? 'd-block' : 'd-none' ?>">
         <div class="col alert alert-primary">
             <h1>
                 <?= $categoryName ?>
