@@ -6,7 +6,7 @@ use App\Controllers\SellerController;
 
 $sellerController  = new SellerController;
 
-$sellersToValidate = $sellerController->getSellersToValidate();
+$sellersToValidate = $sellerController->getNumberOfSellersToValidate();
 
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

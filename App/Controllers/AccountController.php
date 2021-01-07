@@ -215,10 +215,9 @@ class AccountController implements IController
      * @return  array|null              Array containing all users found in the database
      * @throws  Error                   Throws and error if no users were found.
      */
-    // TODO: Add pagination
-    public function getOverview(): ?array
+    public function getOverview(int $pageNumber, int $perPage): ?array
     {
-        $result = $this->database->customQuery("SELECT TOP(50) * FROM Account");
+        $result = $this->database->customQuery("SELECT * FROM Account ORDER BY ID DESC OFFSET (($pageNumber-1) * $perPage) ROWS FETCH NEXT $perPage ROWS ONLY");
 
         if ($result) return $result;
 
