@@ -333,7 +333,15 @@ class ItemController implements IController
     {
         $item = $this->get($id);
 
-        $result = $this->database->update(self::$table, $id, ['Active' => !$item['Active']]);
+        $startDate = date("Y-m-d H:i:s");
+        $endDate = date('Y-m-d H:i:s', strtotime($startDate . ' +' . $item['Duration'] . ' day'));
+
+        if (!$item['Active']) {
+            $result = $this->database->update(self::$table, $id, ['Active' => !$item['Active'], 'StartDate' => $startDate, 'EndDate' => $endDate]);
+        } else {
+            $result = $this->database->update(self::$table, $id, ['Active' => !$item['Active']]);
+        }
+
 
         if (!$result) {
             throw new Error("Blokkeer status niet gewijzigd!");
