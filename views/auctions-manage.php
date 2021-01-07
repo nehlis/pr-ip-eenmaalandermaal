@@ -17,8 +17,8 @@ $items = $ic->getOverviewPagination();
 if (isset($_POST['ItemID'])) {
     $itemID = $_POST['ItemID'];
     try {
-        $result = $ic->toggleInactive($ItemID);
-        $success = 'Veilig met ID ' . $ItemID . ' aangepast!';
+        $result = $ic->toggleInactive($itemID);
+        $success = 'Veilig met ID ' . $itemID . ' aangepast!';
         unset($_POST);
     } catch (Error $error) {
         $errors = $error->getMessage();
@@ -26,13 +26,15 @@ if (isset($_POST['ItemID'])) {
 
     Router::redirect($_SERVER['REQUEST_URI']);
 }
+
 ?>
+
 
 <main role="main" class="container mt-5">
     <div class="row d-flex justify-content-center">
         <div class="col-md-12">
             <div class="alert alert-primary text-center text-uppercase">
-                <h1 class="h3 m-0 font-weight-bold">Gebruikers beheren</h1>
+                <h1 class="h3 m-0 font-weight-bold">Veilingen beheren</h1>
             </div>
 
             <div class="alert alert-danger  <?= $errors ? 'd-block' : 'd-none' ?>">
@@ -58,7 +60,7 @@ if (isset($_POST['ItemID'])) {
                             <th scope="row"> <?php echo $item['ID'] ?></th>
                             <td><?php echo $item['Title'] ?></td>
 
-                            <td><?php // TODO: Adding SellerID to Seller Query?
+                            <td><?php
                                 echo $item['SellerID'] ?></td>
                             <td><?php echo $item['AuctionClosed'] ? 'Ja' : 'Nee' ?></td>
                             <td>

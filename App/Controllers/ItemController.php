@@ -4,8 +4,11 @@ namespace App\Controllers;
 
 use App\Interfaces\IController;
 use App\Core\Database;
+use App\Controllers\CategoriesByItemController;
 use App\Services\AuthService;
 use Error;
+
+
 
 /**
  * Item Controller
@@ -15,6 +18,7 @@ use Error;
 class ItemController implements IController
 {
     /**
+     
      * @var Database $database Database class which contains all generic CRUD functions.
      */
     private $database;
@@ -40,13 +44,20 @@ class ItemController implements IController
     public function create(array $data): ?array
     {
         // Extract categories before adding item to database
+        $cbic = new CategoriesByItemController;
+
         $categories = $data['Categories'];
         unset($data['Categories']);
 
         $id = $this->database->create(self::$table, $data);
 
         foreach ($categories as $category) {
-            $this->database->customQuery("INSERT INTO CategoriesByItem (ItemID, CategoryID) VALUES ('$id', '$category')");
+            try {
+                $values = array("ItemID" => $id, "CategoryID" => $category);
+                $cbic->create($values);
+            } catch (Error $err) {
+                throw $err;
+            }
         }
 
         if ($id) {
@@ -322,7 +333,15 @@ class ItemController implements IController
     {
         $item = $this->get($id);
 
-        $result = $this->database->update(self::$table, $id, ['Active' => !$item['Active']]);
+        $startDate = date("Y-m-d H:i:s");
+        $endDate = date('Y-m-d H:i:s', strtotime($startDate . ' +' . $item['Duration'] . ' day'));
+
+        if (!$item['Active']) {
+            $result = $this->database->update(self::$table, $id, ['Active' => !$item['Active'], 'StartDate' => $startDate, 'EndDate' => $endDate]);
+        } else {
+            $result = $this->database->update(self::$table, $id, ['Active' => !$item['Active']]);
+        }
+
 
         if (!$result) {
             throw new Error("Blokkeer status niet gewijzigd!");
