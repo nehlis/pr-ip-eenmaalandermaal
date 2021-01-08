@@ -312,10 +312,9 @@ class ItemController implements IController
      * @return  array|null              Array containing all auctions found in the database
      * @throws  Error                   Throws and error if no auctions were found.
      */
-    // TODO: Add pagination
-    public function getOverviewPagination(): ?array
+    public function getOverviewPagination($pageNumber, $perPage): ?array
     {
-        $query = "SELECT TOP(50) * FROM Item ORDER BY ID DESC";
+        $query = "SELECT * FROM Item ORDER BY ID DESC OFFSET (($pageNumber-1) * $perPage) ROWS FETCH NEXT $perPage ROWS ONLY";
 
         $result = $this->database->customQuery($query);
 
