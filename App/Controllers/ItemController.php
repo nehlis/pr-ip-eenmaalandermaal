@@ -116,14 +116,11 @@ class ItemController implements IController
     public function getByAccount(int $accountId): array
     {
         $result = $this->database->customQuery("
-			SELECT I.ID, I.Title, I.EndDate, MAX(IIF(B.Amount IS NULL, I.StartingPrice, B.Amount)) as HighestPrice
+			SELECT *
 			FROM Item I
-			LEFT JOIN Bidding B On I.ID = B.ItemID
-			WHERE AuctionClosed = 'false'
-			AND StartDate < GETDATE() AND EndDate > GETDATE()
-			AND SellerID = $accountId
-			GROUP BY I.ID, I.Title, I.StartingPrice, I.EndDate
-            ORDER BY I.EndDate
+			WHERE I.SellerID = 4129
+			AND I.StartDate < GETDATE() AND I.EndDate > GETDATE()
+			ORDER BY I.EndDate
         ");
 
         return $result ?? [];

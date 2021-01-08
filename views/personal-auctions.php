@@ -20,7 +20,7 @@ $auctions = $ic->getByAccount($_SESSION['id']);
           <?php Component::render('card', [
             'image'       => PLACEHOLDER,
             'title'       => $item['Title'],
-            'price'       => $item['HighestPrice'],
+            'price'       => $item['StartingPrice'],
             'closingTime' => $item['EndDate'],
             'destination' => "/veiling?id={$item['ID']}"
           ]); ?>
@@ -35,3 +35,4 @@ $auctions = $ic->getByAccount($_SESSION['id']);
 	  <?php endif; ?>
   </div>
 </div>
+<script src="./public/assets/js/countdown-timer.js"></script>
