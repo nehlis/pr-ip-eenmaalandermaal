@@ -17,8 +17,8 @@ $steps = [
         'description' => [
             'De eerste stap om te verkopen is het aanmaken van een verkopersaccount. Dit doet u op de registratiepagina.',
         ],
-        'hint'        => '\'Rechtsboven -> Account -> Registreren\' of klik op het <i class="fas fa-external-link-alt"></i> icoontje aan de rechterzijde',
-        'link'        => "/registreren"
+        'hint'        => '\'Rechtsboven -> Account -> Registreer als verkoper\' of klik op het <i class="fas fa-external-link-alt"></i> icoontje aan de rechterzijde',
+        'link'        => "/registratie-verkoper"
     ],
     "Stap 2"   => [
         'title'       => "Plaats een nieuwe veiling",
