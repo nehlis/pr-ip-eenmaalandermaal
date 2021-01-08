@@ -1,15 +1,18 @@
 <?php
 
+use App\Controllers\CategoryController;
 use App\Core\Component;
 use App\Core\Database;
 use App\Controllers\ItemController;
 use App\Services\CardService;
 
 $ic = new ItemController();
+$cc = new CategoryController();
 $db = new Database();
 
 try {
     $featuredItems = $ic->getFeaturedItems(3);
+    $randomCategories = $cc->getRandomItems();
 } catch (Error $error) {
     $featuredItems = null;
     $customError = $error->getMessage();
@@ -20,9 +23,9 @@ try {
     <div class="row py-5">
         <div class="col-12">
             <?php Component::render('jumbotron-image', [
-                'background' => PLACEHOLDER,
-                'title'      => 'Hier een pakkende advertentie titel',
-                'textColor'  => 'purple',
+                'background' => REMOTE_URL . "/public/assets/img/banner.jpg",
+                'title'      => '&nbsp;&nbsp;',
+                'textColor'  => '',
             ]); ?>
         </div>
     </div>
@@ -60,19 +63,20 @@ try {
 
     <div class="row py-5">
         <div class="col-12">
-            <h2 class="mb-4 font-weight-bold">Populaire categorieën</h2>
+            <h2 class="mb-4 font-weight-bold">Ontdek categorieën</h2>
         </div>
         <div class="col-12">
             <div class="row">
-                <?php for ($x = 0; $x < 8; $x++) : ?>
+                <?php foreach ($randomCategories as $rCategory) : ?>
                     <div class="col-xs-12 col-md-6 col-lg-3 p-0">
                         <?php Component::render('category', [
-                            'title'      => "categorie {$x}",
+                            'title'      => $rCategory['Name'],
                             'titleColor' => 'black',
-                            'background' => PLACEHOLDER,
+                            'background' => CardService::getThumbnail(REMOTE_URL . $rCategory["Thumbnail"]),
+                            'link'       => $rCategory['ID'],
                         ]); ?>
                     </div>
-                <?php endfor; ?>
+                <?php endforeach ?>
             </div>
         </div>
     </div>
