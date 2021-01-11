@@ -118,7 +118,7 @@ class ItemController implements IController
         $result = $this->database->customQuery("
 			SELECT *
 			FROM Item I
-			WHERE I.SellerID = 4129
+			WHERE I.SellerID = $accountId
 			AND I.StartDate < GETDATE() AND I.EndDate > GETDATE()
 			ORDER BY I.EndDate
         ");
