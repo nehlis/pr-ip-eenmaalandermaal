@@ -45,11 +45,24 @@ class SellerController implements IController
         throw new Error('Verzoek niet ingediend!');
     }
 
+    /**
+     * @return array|null
+     */
+    public function getSellersToValidate($pageNumber, $perPage): ?array
+    {
+        $result = $this->database->customQuery("SELECT * FROM Seller INNER JOIN Account ON Seller.AccountID = Account.ID  WHERE AccountID in (SELECT ID FROM Account WHERE Seller = 0) ORDER BY ID DESC OFFSET (($pageNumber-1) * $perPage) ROWS FETCH NEXT $perPage ROWS ONLY");
+
+        if ($result) {
+            return $result;
+        } else {
+            return null;
+        }
+    }
 
     /**
      * @return array|null
      */
-    public function getSellersToValidate(): ?array
+    public function getNumberOfSellersToValidate(): ?array
     {
         $result = $this->database->customQuery("SELECT * FROM Seller INNER JOIN Account ON Seller.AccountID = Account.ID  WHERE AccountID in (SELECT ID FROM Account WHERE Seller = 0)");
 

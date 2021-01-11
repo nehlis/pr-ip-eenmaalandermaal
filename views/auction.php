@@ -52,14 +52,24 @@ if (isset($_POST) && count($_POST) > 0 && isset($_SESSION['id'])) {
             <div class="row d-flex justify-content-end">
                 <div class="col-12">
                     <h4 class="text-secondary">
-                        Totale looptijd: <script>
-                            getTotalDuration("<?= $auction['StartDate'] ?>", "<?= $auction['EndDate'] ?>");
-                        </script>
+                        <?php if (!$auction['Active']) : ?>
+                            Veiling nog niet actief!
+                        <?php else : ?>
+                            Totale looptijd: <script>
+                                getTotalDuration("<?= $auction['StartDate'] ?>", "<?= $auction['EndDate'] ?>");
+                            </script>
+                        <?php endif ?>
                     </h4>
                     <div class="bg-primary p-3 rounded text-center">
-                        <h1 class="text-white m-0 p-0 font-weight-bold countdownTimer" id="<?= $auction['EndDate'] ?>">
-                            Laden..
-                        </h1>
+                        <?php if (!$auction['Active']) : ?>
+                            <h2 class="text-white m-0 p-0 font-weight-bold">
+                                Nog niet bekend!
+                            </h2>
+                        <?php else : ?>
+                            <h1 class="text-white m-0 p-0 font-weight-bold countdownTimer" id="<?= $auction['EndDate'] ?>">
+                                Laden..
+                            </h1>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>
@@ -101,7 +111,7 @@ if (isset($_POST) && count($_POST) > 0 && isset($_SESSION['id'])) {
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6 pl-sm-0 mb-3 mb-sm-0">
-                                        <button type="submit" id="submitBtn" class="btn btn-primary btn-block" <?php if (!$isLoggedIn) : ?> disabled <?php endif ?>>Bod plaatsen</button>
+                                        <button type="submit" id="submitBtn" class="btn btn-primary btn-block" <?php if (!$isLoggedIn || !$auction['Active']) : ?> disabled <?php endif ?>>Bod plaatsen</button>
                                     </div>
                                 </form>
                                 <?php if (!$isLoggedIn) : ?>

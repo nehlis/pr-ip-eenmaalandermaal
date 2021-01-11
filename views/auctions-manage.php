@@ -11,14 +11,17 @@ $ic = new ItemController();
 if (!AuthService::isLoggedIn() && !AuthService::isAdmin()) {
     Router::redirect('/inloggen?referrer=' . $_SERVER['REQUEST_URI']);
 }
+// Handle Pagination
+$pageNumber = isset($_GET['pageNumber']) && is_numeric($_GET['pageNumber']) && $_GET['pageNumber'] > 0 ? (int) $_GET['pageNumber'] : 1;
+$perPage = isset($_GET['perPage']) && is_numeric($_GET['perPage']) && $_GET['perPage'] <= 96 && $_GET['perPage'] > 0 ? (int) $_GET['perPage'] : 12;
 
-$items = $ic->getOverviewPagination();
+$items = $ic->getOverviewPagination($pageNumber, $perPage);
 
 if (isset($_POST['ItemID'])) {
     $itemID = $_POST['ItemID'];
     try {
-        $result = $ic->toggleInactive($ItemID);
-        $success = 'Veilig met ID ' . $ItemID . ' aangepast!';
+        $result = $ic->toggleInactive($itemID);
+        $success = 'Veilig met ID ' . $itemID . ' aangepast!';
         unset($_POST);
     } catch (Error $error) {
         $errors = $error->getMessage();
@@ -26,13 +29,15 @@ if (isset($_POST['ItemID'])) {
 
     Router::redirect($_SERVER['REQUEST_URI']);
 }
+
 ?>
+
 
 <main role="main" class="container mt-5">
     <div class="row d-flex justify-content-center">
         <div class="col-md-12">
             <div class="alert alert-primary text-center text-uppercase">
-                <h1 class="h3 m-0 font-weight-bold">Gebruikers beheren</h1>
+                <h1 class="h3 m-0 font-weight-bold">Veilingen beheren</h1>
             </div>
 
             <div class="alert alert-danger  <?= $errors ? 'd-block' : 'd-none' ?>">
@@ -58,7 +63,7 @@ if (isset($_POST['ItemID'])) {
                             <th scope="row"> <?php echo $item['ID'] ?></th>
                             <td><?php echo $item['Title'] ?></td>
 
-                            <td><?php // TODO: Adding SellerID to Seller Query?
+                            <td><?php
                                 echo $item['SellerID'] ?></td>
                             <td><?php echo $item['AuctionClosed'] ? 'Ja' : 'Nee' ?></td>
                             <td>
@@ -74,14 +79,38 @@ if (isset($_POST['ItemID'])) {
                 </tbody>
             </table>
         </div>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
+        <!-- Pagination -->
+        <div class="custom-pagination">
+            <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="get">
+                <!-- Page number -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination mb-0">
+                        <li class="page-item <?php if ($pageNumber === 1) echo 'disabled' ?>">
+                            <button type="submit" name="pageNumber" class="page-link" tabindex="-1" value="<?= $pageNumber - 1 ?>" <?php if ($pageNumber === 1) echo 'disabled' ?>>Vorige</a>
+                        </li>
+                        <li class=" page-item disabled">
+                            <a class="page-link" href="#"><?= $pageNumber ?></a>
+                        </li>
+                        <li class="page-item <?php if (!isset($auctions) || count($auctions) < $perPage) echo 'disabled' ?>">
+                            <button type="submit" name="pageNumber" class="page-link" value="<?= $pageNumber + 1 ?>" <?php if (!isset($auctions) || count($auctions) < $perPage) 'disabled' ?>">Volgende</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Re-apply filters -->
+                <input type="hidden" name="title" value="<?= $filters['title'] ?? '' ?>">
+
+                <!-- Display per page -->
+                <div class="input-group ml-3 perPage">
+                    <select name="perPage" class="form-control">
+                        <option value="12" <?php if ($perPage === 12) echo 'selected' ?>>12</option>
+                        <option value="24" <?php if ($perPage === 24) echo 'selected' ?>>24</option>
+                        <option value="48" <?php if ($perPage === 48) echo 'selected' ?>>48</option>
+                        <option value="96" <?php if ($perPage === 96) echo 'selected' ?>>96</option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-primary"><i class="fas fa-sync"></i></button>
+                </div>
+
+            </form>
+        </div>
     </div>
 </main>

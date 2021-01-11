@@ -178,4 +178,18 @@ class CategoryController implements IController
 
         return $result;
     }
+  
+    public function getRandomItems(): ?array
+    {
+        $result = $this->database->customQuery("SELECT TOP 8 C.ID, C.Name, I.Thumbnail FROM Category C
+                                                INNER JOIN CategoriesByItem CBI on C.ID = CBI.CategoryID
+                                                INNER JOIN Item I on I.ID = CBI.ItemID
+                                                ORDER BY NEWID()");
+
+        if ($result) {
+            return $result;
+        }
+
+        throw new Error("Items niet gevonden!");
+    }
 }
