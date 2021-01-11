@@ -94,6 +94,11 @@ class Router
             'title' => 'Registratie verkoper',
             'auth'  => true,
         ],
+        '/admin/rubrieken'     => [
+            'view'  => 'category-manager',
+            'title' => 'Berheer Rubrieken',
+            'auth'  => true,
+        ],
         '/404'         => [
             'view'  => '404',
             'title' => 'Pagina niet gevonden',

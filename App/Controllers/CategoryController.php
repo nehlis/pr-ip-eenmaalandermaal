@@ -65,26 +65,26 @@ class CategoryController implements IController
      */
     public function index(): ?array
     {
-        $result = $this->database->customQuery(
-            "SELECT
-            L1.ID AS Level1ID,
-            L1.Name AS Level1Name,
-            L2.ID AS Level2ID,
-            L2.Name AS Level2Name,
-            L3.ID AS Level3ID,
-            L3.Name AS Level3Name,
-            L4.ID AS Level4ID,
-            L4.Name AS Level4Name,
-            L5.ID AS Level5ID,
-            L5.Name AS Level5Name
-            FROM Category AS L1
-            LEFT JOIN Category AS L2 ON L2.ParentID = L1.ID
-            LEFT JOIN Category AS L3 ON l3.ParentID = l2.ID
-            LEFT JOIN Category AS L4 ON l4.ParentID = l3.ID
-            LEFT JOIN Category AS L5 ON l5.ParentID = l4.ID
-            WHERE L1.ParentID = -1
-            ORDER BY L1.ID, L2.ID, L3.ID"
-        );
+        $query = "SELECT
+        L1.ID AS Level1ID,
+        L1.Name AS Level1Name,
+        L2.ID AS Level2ID,
+        L2.Name AS Level2Name,
+        L3.ID AS Level3ID,
+        L3.Name AS Level3Name,
+        L4.ID AS Level4ID,
+        L4.Name AS Level4Name,
+        L5.ID AS Level5ID,
+        L5.Name AS Level5Name
+        FROM Category AS L1
+        LEFT JOIN Category AS L2 ON L2.ParentID = L1.ID
+        LEFT JOIN Category AS L3 ON l3.ParentID = l2.ID
+        LEFT JOIN Category AS L4 ON l4.ParentID = l3.ID
+        LEFT JOIN Category AS L5 ON l5.ParentID = l4.ID
+        WHERE L1.ParentID = -1
+        ORDER BY L1.ID, L2.ID, L3.ID";
+
+        $result = $this->database->customQuery($query);
 
         if (!$result) {
             throw new Error("Er is iets misgegaan bij het ophalen van de categorieën");
@@ -101,7 +101,7 @@ class CategoryController implements IController
     public function update(int $id, array $data): ?array
     {
         if (!$this->get($id)) {
-            return null;
+            throw new Error("Categorie waarvan ID = $id niet gevonden!");
         }
 
         $result = $this->database->update(self::$table, $id, $data);
@@ -121,7 +121,12 @@ class CategoryController implements IController
     public function delete(int $id): ?array
     {
         if (!$item = $this->get($id)) {
-            return null;
+            throw new Error("Categorie waarvan ID = $id niet gevonden!");
+        }
+
+        // Check if rubriek has children
+        if ($this->database->customQuery("SELECT * FROM [Category] WHERE ParentID = $id")) {
+            throw new Error("Niet verwijderd: rubriek heeft subrubrieken!");
         }
 
         $result = $this->database->delete(self::$table, $id);
@@ -130,7 +135,7 @@ class CategoryController implements IController
             return $item;
         }
 
-        throw new Error("Categorie waarvan ID = $id niet verwijderd!");
+        throw new Error("Rubriek waarvan ID: $id niet verwijderd!");
     }
 
     /** EXTRA FUNCTIONS */
@@ -154,6 +159,26 @@ class CategoryController implements IController
         throw new Error("Geen categorieen gevonden!");
     }
 
+    /**
+     * Gets all categories in an associative format.
+     * @return array|null
+     */
+    public function indexAll(int $pageNumber = 1, int $perPage = 12): ?array
+    {
+        $query = "SELECT *
+        FROM Category 
+        ORDER BY SortNumber, ID
+        OFFSET (($pageNumber-1) * $perPage) ROWS FETCH NEXT $perPage ROWS ONLY";
+
+        $result = $this->database->customQuery($query);
+
+        if (!$result) {
+            throw new Error("Er is iets misgegaan bij het ophalen van de categorieën");
+        }
+
+        return $result;
+    }
+  
     public function getRandomItems(): ?array
     {
         $result = $this->database->customQuery("SELECT TOP 8 C.ID, C.Name, I.Thumbnail FROM Category C
