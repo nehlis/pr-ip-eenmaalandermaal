@@ -14,7 +14,6 @@ use Error;
 class ItemController implements IController
 {
     /**
-     
      * @var Database $database Database class which contains all generic CRUD functions.
      */
     private $database;
