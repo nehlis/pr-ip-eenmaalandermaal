@@ -249,15 +249,14 @@ class ItemController implements IController
 
         throw new Error("Geen uitgelichte items gevonden...");
     }
-
-    /**
-     * Function that is used to load up items in the auctions (veilingen) view. It accepts an array with filter data.
-     * @param   int         $pageNumber Number of page
-     * @param   int         $perPage    Number of items to display per page
-     * @param   array       $filters    Associative array which contains filters for: title, price and categoryId
-     * @return  array|null              Array containing all auctions found in the database
-     * @throws  Error                   Throws and error if no auctions were found.
-     */
+	
+	/**
+	 * Function that is used to load up items in the auctions (veilingen) view. It accepts an array with filter data.
+	 * @param int        $pageNumber Number of page
+	 * @param int        $perPage    Number of items to display per page
+	 * @param array|null $filters    Associative array which contains filters for: title, price and categoryId
+	 * @return  array|null              Array containing all auctions found in the database
+	 */
     // TODO: Add pagination
     public function getOverview(int $pageNumber, int $perPage, array $filters = null): ?array
     {
@@ -304,27 +303,31 @@ class ItemController implements IController
 
         throw new Error("Geen veilingen gevonden!");
     }
-    /**
-     * Function that is used to load up items in the auctions (veilingen) view.
-     * @return  array|null              Array containing all auctions found in the database
-     * @throws  Error                   Throws and error if no auctions were found.
-     */
+	
+	/**
+	 * Function that is used to load up items in the auctions (veilingen) view.
+	 * @param $pageNumber
+	 * @param $perPage
+	 * @return  array|null              Array containing all auctions found in the database
+	 */
     public function getOverviewPagination($pageNumber, $perPage): ?array
     {
         $query = "SELECT * FROM Item ORDER BY ID DESC OFFSET (($pageNumber-1) * $perPage) ROWS FETCH NEXT $perPage ROWS ONLY";
 
         $result = $this->database->customQuery($query);
 
-        if ($result) return $result;
+        if ($result) {
+			return $result;
+		}
 
         throw new Error("Geen veilingen gevonden!");
     }
-
-    /**
-     * Function that is used to set an item Inactive
-     * @return  void              
-     * @throws  Error                   Throws and error if no auctions were found.
-     */
+	
+	/**
+	 * Function that is used to set an item Inactive
+	 * @param int $id
+	 * @return  void
+	 */
     public function toggleInactive(int $id): void
     {
         $item = $this->get($id);
