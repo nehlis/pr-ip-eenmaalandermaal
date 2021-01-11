@@ -4,11 +4,7 @@ namespace App\Controllers;
 
 use App\Interfaces\IController;
 use App\Core\Database;
-use App\Controllers\CategoriesByItemController;
-use App\Services\AuthService;
 use Error;
-
-
 
 /**
  * Item Controller
