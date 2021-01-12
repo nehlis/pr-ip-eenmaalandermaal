@@ -25,7 +25,7 @@ if (isset($_POST) && count($_POST) > 0) {
     // Validate and update all account values.
     if ($accountValidator->validate()) {
         $accountController->update($userId, $accountValidator->getData());
-        Router::redirect("/profiel");
+        $edited = true;
     }
     $accountController->deletePhoneNumberByUserId($userId);
 
