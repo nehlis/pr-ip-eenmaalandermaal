@@ -4,6 +4,7 @@ use App\Services\AuthService;
 use App\Controllers\AccountController;
 use App\Controllers\CountryController;
 use App\Controllers\QuestionController;
+use App\Core\Router;
 use App\Validators\AccountValidator;
 
 $accountController  = new AccountController;
@@ -24,7 +25,7 @@ if (isset($_POST) && count($_POST) > 0) {
     // Validate and update all account values.
     if ($accountValidator->validate()) {
         $accountController->update($userId, $accountValidator->getData());
-        $edited = true;
+        Router::redirect("/profiel");
     }
     $accountController->deletePhoneNumberByUserId($userId);
 
