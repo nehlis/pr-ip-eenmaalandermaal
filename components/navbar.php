@@ -44,6 +44,7 @@ $sellersToValidate = $sellerController->getNumberOfSellersToValidate();
                     <?php if (AuthService::isLoggedIn() && AuthService::isAdmin()) : ?>
                         <a class="dropdown-item" href="/veilingen-gebruikers">Beheer Gebruikers</a>
                         <a class="dropdown-item" href="/veilingen-beheren">Beheer veilingen</a>
+                        <a class="dropdown-item" href="/admin/rubrieken">Beheer Categorieën</a>
                         <a class="dropdown-item" href="/accodeer-verkopers">Accodeer verkopers <span class="badge badge-primary badge-pill"><?= $sellersToValidate ? count($sellersToValidate) : '0'  ?></span></a>
                     <?php endif; ?>
                     <?php if (AuthService::isLoggedIn()) : ?>
