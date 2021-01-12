@@ -17,6 +17,8 @@ $isLoggedIn = AuthService::isLoggedIn();
 $auctionId = (int)$_GET['id'];
 $auction = $ic->getDetailed($auctionId)[0];
 
+if($auction['Active'] === "0") Router::redirect("/404");
+
 $biddings = $bc->indexBiddingsWithUsernameByAuctionId($auctionId);
 
 $veilingImages = array(PLACEHOLDER);
