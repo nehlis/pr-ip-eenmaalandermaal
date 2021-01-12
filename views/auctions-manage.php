@@ -91,8 +91,8 @@ if (isset($_POST['ItemID'])) {
                         <li class=" page-item disabled">
                             <a class="page-link" href="#"><?= $pageNumber ?></a>
                         </li>
-                        <li class="page-item <?php if (!isset($auctions) || count($auctions) < $perPage) echo 'disabled' ?>">
-                            <button type="submit" name="pageNumber" class="page-link" value="<?= $pageNumber + 1 ?>" <?php if (!isset($auctions) || count($auctions) < $perPage) 'disabled' ?>">Volgende</a>
+                        <li class="page-item <?php if (!isset($items) || count($items) < $perPage) echo 'disabled' ?>">
+                            <button type="submit" name="pageNumber" class="page-link" value="<?= $pageNumber + 1 ?>" <?php if (!isset($items) || count($items) < $perPage) 'disabled' ?>">Volgende</a>
                         </li>
                     </ul>
                 </nav>
