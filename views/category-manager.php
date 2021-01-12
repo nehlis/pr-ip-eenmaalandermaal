@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\CategoryController;
+use App\Core\Router;
 
 // Handle Pagination url params
 $pageNumber = isset($_GET['pageNumber']) && is_numeric($_GET['pageNumber']) && $_GET['pageNumber'] > 0 ? (int) $_GET['pageNumber'] : 1;
@@ -25,7 +26,6 @@ if (isset(($_POST['edit']))) {
   if (strlen($data['name']) > 1 && is_string($data['name'])) {
     try {
       $cc->update($data['id'], ["Name" => $data['name']]);
-      print_r($data);
       $categories = $cc->indexAll($pageNumber, $perPage);
     } catch (Error $err) {
       $error['edit'] = $err->getMessage();
@@ -33,6 +33,8 @@ if (isset(($_POST['edit']))) {
   } else {
     $errors['edit'] = "Ongeldige input!";
   }
+
+  Router::redirect($_SERVER['REQUEST_URI']);
 }
 
 
@@ -50,6 +52,8 @@ if (isset(($_POST['delete']))) {
   else {
     $errors['delete'] = "Kon niet verwijderen!";
   }
+
+  Router::redirect($_SERVER['REQUEST_URI']);
 }
 ?>
 
