@@ -86,7 +86,7 @@ if (isset($_POST['ItemID'])) {
                 <nav aria-label="Page navigation example">
                     <ul class="pagination mb-0">
                         <li class="page-item <?php if ($pageNumber === 1) echo 'disabled' ?>">
-                            <button type="submit" name="pageNumber" class="page-link" tabindex="-1" value="<?= $pageNumber - 1 ?>" <?php if ($pageNumber === 1) echo 'disabled' ?>>Vorige</a>
+                            <button type="submit" name="pageNumber" class="page-link" tabindex="-1" value="<?= $pageNumber - 1 ?>" <?php if ($pageNumber === 1) echo 'disabled' ?>>Vorige</button>
                         </li>
                         <li class=" page-item disabled">
                             <a class="page-link" href="#"><?= $pageNumber ?></a>

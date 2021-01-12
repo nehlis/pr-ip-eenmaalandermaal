@@ -19,7 +19,7 @@ Als je een component wil gebruiken kan je de ``Component:render()`` methode gebr
 Component::render('card', [
     'title' => 'Veiling',
     'cta'   => 'Reageer nu',
-])
+]);
 
 // In card.php
 <h4><?= $title; ?></h4>
