@@ -57,7 +57,7 @@ if (isset(($_POST['delete']))) {
   <div class="row py-5">
     <div class="col-12">
       <div class="alert alert-primary text-center text-uppercase">
-        <h1 class="h3 m-0 font-weight-bold">Veilingen beheren</h1>
+        <h1 class="h3 m-0 font-weight-bold">Categorieën beheren</h1>
       </div>
 
 
