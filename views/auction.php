@@ -32,12 +32,19 @@ if (isset($_POST) && count($_POST) > 0 && isset($_SESSION['id'])) {
     $userId = $_SESSION['id'];
     $bidding = $_POST['bidding'];
     if ($bidding > $auction['BiddingAmount']) {
-        $bc->create([
-            'ItemID' => $auctionId,
-            'AccountID' => $userId,
-            'Time' => date("Y-m-d H:i:s"),
-            'Amount' => $bidding
-        ]);
+        $result = $bc->canBidBePlaced($auctionId);
+
+        if ($result == null) {
+            Router::redirect("/veiling?id=$auctionId?message=Bod%kan%niet%geplaatst%worden");
+        } else {
+            $bc->create([
+                'ItemID' => $auctionId,
+                'AccountID' => $userId,
+                'Time' => date("Y-m-d H:i:s"),
+                'Amount' => $bidding
+            ]);
+        }
+
         Router::redirect("/veiling?id=$auctionId");
     }
 }

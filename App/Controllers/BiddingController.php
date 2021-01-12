@@ -135,4 +135,19 @@ class BiddingController implements IController
 
         throw new Error("Bieding waarvan ID = $id niet verwijderd!");
     }
+
+
+    /**
+     * @param int       $id     Auction ID
+     * @return array            Returns fetched rows or an empty array if no biddings are found
+     */
+    public function canBidBePlaced(int $id): ?array
+    {
+        $result = $this->database->customQuery("SELECT * FROM Item WHERE ID = $id AND Active = 1 AND EndDate > GETDATE()");
+
+        if ($result) {
+            return $result;
+        }
+        return null;
+    }
 }
