@@ -66,11 +66,11 @@ if (isset($_POST["Bankname"]) && isset($_POST["BankAccountNumber"]) && isset($_P
                 </div>
                 <div class="form-group">
                     <label for="bankaccountnumber">Rekeningnummer</label>
-                    <input type="text" class="form-control" maxlength="16" value="<?= isset($seller['BankAccountNumber']) ? $seller['BankAccountNumber'] : '' ?>" name="BankAccountNumber" id="bankaccountnumber" <?= isset($seller['BankAccountNumber']) ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" maxlength="20" value="<?= isset($seller['BankAccountNumber']) ? $seller['BankAccountNumber'] : '' ?>" name="BankAccountNumber" id="bankaccountnumber" <?= isset($seller['BankAccountNumber']) ? 'disabled' : '' ?> required>
                 </div>
                 <div class="form-group">
                     <label for="creditcardnumber">Creditcardnummer</label>
-                    <input type="text" class="form-control" maxlength="20" name="CreditcardNumber" value="<?= isset($seller['CreditcardNumber']) ? $seller['CreditcardNumber'] : '' ?>" id="creditcardnumber" <?= isset($seller['CreditcardNumber']) ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" maxlength="16" name="CreditcardNumber" value="<?= isset($seller['CreditcardNumber']) ? $seller['CreditcardNumber'] : '' ?>" id="creditcardnumber" <?= isset($seller['CreditcardNumber']) ? 'disabled' : '' ?> required>
                 </div>
                 <div class="form-group">
                     <label for="controloptionname">Controle optie</label>
