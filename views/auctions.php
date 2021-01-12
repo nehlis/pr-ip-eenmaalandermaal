@@ -114,7 +114,7 @@ if (count($errors) === 0) {
                                 </div>
 
                                 <div class="input-group">
-                                    <input type="number" name="minPrijs" class="form-control" placeholder="van" value="<?= $_GET['minPrijs'] ?? '' ?>">
+                                    <input type="number" name="minPrijs" class="form-control" placeholder="van" min="0" value="<?= $_GET['minPrijs'] ?? '' ?>">
                                     <input type="number" name="maxPrijs" class="form-control" placeholder="tot" value="<?= $_GET['maxPrijs'] ?? '' ?>">
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-outline-primary" title="Pas filter toe">
