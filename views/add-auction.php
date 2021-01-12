@@ -144,7 +144,7 @@ if (count($_POST) > 0) {
                         <div class="alert alert-danger  <?= $errors['StartingPrice'] ? 'd-block' : 'd-none' ?>">
                             <?= $errors['StartingPrice']; ?>
                         </div>
-                        <input type="number" name="startprice" id="startprice" class="form-control" placeholder="10,00" value="<?= $_POST['startprice'] ?? "" ?>" required>
+                        <input type="number" name="startprice" id="startprice" class="form-control" step='0.01' value='0.00' placeholder="10.00" value="<?= $_POST['startprice'] ?? "" ?>" required>
 
                     </div>
                 </div>
@@ -219,7 +219,7 @@ if (count($_POST) > 0) {
                     <div class="alert alert-danger  <?= $errors['ShippingCosts'] ? 'd-block' : 'd-none' ?>">
                         <?= $errors['ShippingCosts']; ?>
                     </div>
-                    <input type="number" name="shippingcost" id="shippingcost" class="form-control" placeholder="6,95" value="<?= $_POST['shippingcost'] ?? "" ?>">
+                    <input type="number" name="shippingcost" id="shippingcost" class="form-control"  step='0.01' value='0.00' placeholder="6.95" value="<?= $_POST['shippingcost'] ?? "" ?>">
                 </div>
 
                 <div class="mb-3">
