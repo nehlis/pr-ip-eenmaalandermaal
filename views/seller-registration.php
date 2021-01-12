@@ -62,19 +62,19 @@ if (isset($_POST["Bankname"]) && isset($_POST["BankAccountNumber"]) && isset($_P
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="bankname">Banknaam</label>
-                    <input type="text" class="form-control" value="<?= isset($seller['Bankname']) ? $seller['Bankname'] : ''; ?>" name="Bankname" id="bankname" <?= isset($seller['Bankname']) ? 'disabled' : ''; ?> required>
+                    <input type="text" class="form-control" maxlength="50" value="<?= isset($seller['Bankname']) ? $seller['Bankname'] : ''; ?>" name="Bankname" id="bankname" <?= isset($seller['Bankname']) ? 'disabled' : ''; ?> required>
                 </div>
                 <div class="form-group">
                     <label for="bankaccountnumber">Rekeningnummer</label>
-                    <input type="text" class="form-control" value="<?= isset($seller['BankAccountNumber']) ? $seller['BankAccountNumber'] : '' ?>" name="BankAccountNumber" id="bankaccountnumber" <?= isset($seller['BankAccountNumber']) ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" maxlength="16" value="<?= isset($seller['BankAccountNumber']) ? $seller['BankAccountNumber'] : '' ?>" name="BankAccountNumber" id="bankaccountnumber" <?= isset($seller['BankAccountNumber']) ? 'disabled' : '' ?> required>
                 </div>
                 <div class="form-group">
                     <label for="creditcardnumber">Creditcardnummer</label>
-                    <input type="text" class="form-control" name="CreditcardNumber" value="<?= isset($seller['CreditcardNumber']) ? $seller['CreditcardNumber'] : '' ?>" id="creditcardnumber" <?= isset($seller['CreditcardNumber']) ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" maxlength="20" name="CreditcardNumber" value="<?= isset($seller['CreditcardNumber']) ? $seller['CreditcardNumber'] : '' ?>" id="creditcardnumber" <?= isset($seller['CreditcardNumber']) ? 'disabled' : '' ?> required>
                 </div>
                 <div class="form-group">
                     <label for="controloptionname">Controle optie</label>
-                    <input type="text" class="form-control" value="<?= isset($seller['ControlOptionName']) ? $seller['ControlOptionName'] : '' ?>" name="ControlOptionName" id="controloptionname" <?= isset($seller['ControlOptionName']) ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" maxlength="50" value="<?= isset($seller['ControlOptionName']) ? $seller['ControlOptionName'] : '' ?>" name="ControlOptionName" id="controloptionname" <?= isset($seller['ControlOptionName']) ? 'disabled' : '' ?> required>
                 </div>
             </div>
 
