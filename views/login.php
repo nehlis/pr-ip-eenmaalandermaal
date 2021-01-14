@@ -37,10 +37,10 @@ if (isset($email, $password)) {
     <div class="alert alert-danger <?= isset($error) ? 'd-block' : 'd-none' ?>" role="alert"> <?= $error ?> </div>
 
     <label for="inputEmail" class="sr-only">Emailadres</label>
-    <input type="email" id="inputEmail" name="Email" class="form-control" placeholder="Emailadres" value="<?= $_POST['Email'] ?? 'admin@eenmaalandermaal.nl' ?>" required autofocus>
+    <input type="email" id="inputEmail" name="Email" class="form-control" placeholder="Emailadres" value="<?= $_POST['Email'] ?? '' ?>" required autofocus>
 
     <label for="inputPassword" class="sr-only">Wachtwoord</label>
-    <input type="password" id="inputPassword" name="Password" class="form-control" placeholder="Password" value="<?= $_POST['Password'] ?? 'admin' ?>" required>
+    <input type="password" id="inputPassword" name="Password" class="form-control" placeholder="Password" value="<?= $_POST['Password'] ?? '' ?>" required>
 
     <div class="d-flex justify-content-between">
       <label>
