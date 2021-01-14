@@ -35,6 +35,8 @@ if (isset($_POST) && count($_POST) > 0) {
             $accountController->addPhoneNumberByUser(['AccountID' => $userId, 'Phonenumber' => $number]);
         }
     }
+
+    Router::redirect("/profile");
 }
 $phoneNumbers = $accountController->getPhoneNumbers($userId);
 $user = $accountController->get($userId);
