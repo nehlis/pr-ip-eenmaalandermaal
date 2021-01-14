@@ -55,13 +55,73 @@ if (isset(($_POST['delete']))) {
 
   Router::redirect($_SERVER['REQUEST_URI']);
 }
+
+// Add rubriek
+if (isset(($_POST['add']))) {
+  $data['name'] = htmlspecialchars($_POST['addName']);
+  $data['parentId'] = (int) htmlspecialchars($_POST['addParentId']);
+
+  if (is_integer($data['parentId']) && is_string($data['name']) && strlen($data['name']) > 0)
+    try {
+      $cc->create(['ParentId' => $data['parentId'], 'Name' => $data['name']]);
+      $categories = $cc->indexAll($pageNumber, $perPage);
+    } catch (Error $err) {
+      $errors['add'] = $err->getMessage();
+    }
+  else {
+    $errors['add'] = "Kon niet toevoegen!";
+  }
+
+  Router::redirect($_SERVER['REQUEST_URI']);
+}
 ?>
 
 <main role="main" class="container">
   <div class="row py-5">
     <div class="col-12">
-      <div class="alert alert-primary text-center text-uppercase">
-        <h1 class="h3 m-0 font-weight-bold">Categorieën beheren</h1>
+      <div class="row">
+        <div class="col-2">
+          <button type="button" class="btn btn-lg btn-success" data-toggle="modal" data-target="<?= "#addModal" ?>"><i class="far fa-plus"></i></button>
+
+          <!-- Add Modal -->
+          <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Rubriek toevoegen</h5>
+                  <button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"><i class="far fa-times"></i></button>
+                </div>
+                <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" class="mx-0">
+                  <div class="modal-body d-flex flex-column">
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Parent ID</label>
+                      <input type="text" class="form-control" id="name" name="addParentId" value="<?= $_POST['addID'] ?? '' ?>">
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Naam</label>
+                      <input type="text" class="form-control" id="name" name="addName" value="<?= $_POST['addName'] ?? '' ?>">
+                    </div>
+                  </div>
+
+                  <form action="<?= $_SERVER['REQUEST_URI'] ?>">
+                    <div class="modal-footer d-flex justify-content-between">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuleren</button>
+                      <button type="submit" class="btn btn-success" name="add" value="1">Toevoegen</button>
+                    </div>
+                  </form>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-10">
+          <div class="alert alert-primary text-center text-uppercase">
+            <h1 class="h3 m-0 font-weight-bold">Categorieën beheren</h1>
+          </div>
+        </div>
+
       </div>
 
 
