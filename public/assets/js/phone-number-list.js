@@ -6,7 +6,7 @@ const makeId = () =>
     Math.random().toString(36).substring(2, 15) +
     Math.random().toString(36).substring(2, 15);
 
-if (window.currentPhoneNumbers !== undefined) {
+if (window.currentPhoneNumbers !== undefined && window.currentPhoneNumbers !== null) {
     window.currentPhoneNumbers.forEach((pn) => {
         let _pn = { ...pn };
         _pn._id = makeId();

@@ -27,7 +27,11 @@ if (isset($_POST) && count($_POST) > 0) {
         $accountController->update($userId, $accountValidator->getData());
         $edited = true;
     }
-    $accountController->deletePhoneNumberByUserId($userId);
+    try {
+        $accountController->deletePhoneNumberByUserId($userId);
+    } catch (Exception $e) {
+        // Geen telefoonnummers gevonden
+    }
 
     // Edit each phone if post is set.
     if (is_array($_POST["phoneNumbers"])) {
@@ -35,11 +39,12 @@ if (isset($_POST) && count($_POST) > 0) {
             $accountController->addPhoneNumberByUser(['AccountID' => $userId, 'Phonenumber' => $number]);
         }
     }
-
-    Router::redirect("/profile");
+    
+    Router::redirect("/profiel");
+} else {
+    $phoneNumbers = $accountController->getPhoneNumbers($userId);
+    $user = $accountController->get($userId);
 }
-$phoneNumbers = $accountController->getPhoneNumbers($userId);
-$user = $accountController->get($userId);
 
 ?>
 
