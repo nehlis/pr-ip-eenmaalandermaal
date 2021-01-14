@@ -40,15 +40,14 @@ $sellersToValidate = $sellerController->getNumberOfSellersToValidate();
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
           <?php if (AuthService::isLoggedIn() && AuthService::isAdmin()) : ?>
             <h6 class="dropdown-header">Beheersomgeving</h6>
-            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/veilingen-gebruikers">Beheer Gebruikers</a>
             <a class="dropdown-item" href="/veilingen-beheren">Beheer Veilingen</a>
             <a class="dropdown-item" href="/admin/rubrieken">Beheer Categorieën</a>
             <a class="dropdown-item" href="/accodeer-verkopers">Accodeer verkopers <span class="badge badge-primary badge-pill"><?= $sellersToValidate ? count($sellersToValidate) : '0'  ?></span></a>
           <?php endif; ?>
           <?php if (AuthService::isLoggedIn()) : ?>
-            <h6 class="dropdown-header">Account</h6>
             <div class="dropdown-divider"></div>
+            <h6 class="dropdown-header">Account</h6>
             <a class="dropdown-item" href="/profiel">Profiel</a>
             <a class="dropdown-item" href="/mijn-veilingen">Mijn Veilingen</a>
             <a class="dropdown-item" href="/uitloggen">Uitloggen</a>
