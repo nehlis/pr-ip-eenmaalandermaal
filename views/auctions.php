@@ -152,7 +152,6 @@ if (count($errors) === 0) {
       <div class="col-md-12">
         <div class="alert alert-danger" role="alert">
           <?= $errors['overview'] ?? "Geen veilingen  gevonden!" ?>
-          <?= $errors['cat'] ?? "Geen veilingen  gevonden!" ?>
         </div>
       </div>
     <?php endif; ?>
