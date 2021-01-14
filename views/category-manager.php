@@ -28,7 +28,7 @@ if (isset(($_POST['edit']))) {
       $cc->update($data['id'], ["Name" => $data['name']]);
       $categories = $cc->indexAll($pageNumber, $perPage);
     } catch (Error $err) {
-      $error['edit'] = $err->getMessage();
+      $errors['edit'] = $err->getMessage();
     }
   } else {
     $errors['edit'] = "Ongeldige input!";
@@ -130,6 +130,14 @@ if (isset(($_POST['add']))) {
           <?= $error ?>
         </div>
       <?php endforeach; ?>
+
+      <?php
+      if (isset($errors)) {
+        foreach ($errors as $error) {
+          echo '        <div class="alert alert-danger">' . $error . '</div>';
+        }
+      }
+      ?>
 
       <?php if (isset($categories) && count($categories) > 0) : ?>
         <table class="table">
