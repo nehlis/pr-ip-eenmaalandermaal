@@ -38,7 +38,6 @@ $sellersToValidate = $sellerController->getNumberOfSellersToValidate();
           <i class="fas fa-user"></i> <?= $_SESSION['name'] ?? 'Account' ?>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-          <div class="dropdown-divider"></div>
           <?php if (AuthService::isLoggedIn() && AuthService::isAdmin()) : ?>
             <h6 class="dropdown-header">Beheersomgeving</h6>
             <div class="dropdown-divider"></div>
